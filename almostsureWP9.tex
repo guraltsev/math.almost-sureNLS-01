@@ -1,0 +1,1934 @@
+%\documentclass[a4paper,two-side,10pt]{article}
+\documentclass[10pt,leqno]{amsart}
+%\usepackage[frenchb]{babel}
+%\usepackage{fancyhdr}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{bbm}
+\usepackage{amsmath}
+\usepackage{amsmath,amsfonts,amssymb,amsthm} 
+\usepackage{amsthm}
+\usepackage{latexsym}
+\usepackage{amssymb}
+%\usepackage[dvips]{graphicx}
+\usepackage[all]{xy}
+\usepackage{calc}
+\usepackage{multicol}
+%\pagestyle{fancy}
+\usepackage{todonotes}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{propriete}{Propriï¿½tï¿½}[section]
+\newtheorem{defi}[thm]{Definition}
+\newtheorem{lemt}{Lemme technique}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{etape}{Step}[section]
+\newtheorem{rmq}[thm]{Remark}
+\newtheorem{step}{Step}
+\usepackage{appendix}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\makeatletter
+\newcommand{\pushright}[1]{\ifmeasuring@#1\else\omit\hfill$\displaystyle#1$\fi\ignorespaces}
+\newcommand{\pushleft}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\hfill\fi\ignorespaces}
+\makeatother
+
+\newcommand{\alert}[1]{\textcolor{red}{#1}}
+\renewcommand\minalignsep{5pt}
+\newcommand{\R}{\mathbb{R}}
+\numberwithin{equation}{section}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Hy}{\mathbb{H}}
+\newcommand{\Cc}{\mathbb{C}}
+\newcommand{\M}[1]{\mathcal{M}_{#1}(\mathbb{R})}
+\newcommand{\as}{\backslash}
+\newcommand{\en}[1]{\{1,\dots,#1\}}
+\newcommand{\pt}[2]{\frac{\partial #1}{\partial#2}}
+\newcommand{\ptd}[2]{\frac{\partial^2 #1}{\partial {#2}^2}}
+\newcommand{\ptdd}[3]{\frac{\partial^2 #1}{\partial #2 \partial #3}}
+\newcommand{\coo}[2]{(#1_1,\dots,#1_{#2})}
+\newcommand{\ch}{\text{ch}}
+\newcommand{\sh}{\text{sh}}
+\newcommand{\lab}{\label}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\fref}{\eqref}
+\newcommand{\ra}[4]{ \left\{ \begin{array}{ccc} #1 & \longrightarrow & #2\\ #3 & \longmapsto & #4 \end{array} \right.}
+\newcommand{\cad}{c'est-ï¿½-dire }
+\newcommand{\ud}{\text{d}}
+\newcommand{\e}{\varepsilon}
+\newcommand{\atan}{\text{Arctan}}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumii}{\roman{enumii}}
+\newcounter{exercice}
+\newenvironment{exo}{\par\smallskip \addtocounter{exercice}{1} \textbf{\large Exercice \arabic{exercice}} \\}{\medskip \par}
+
+%\title{Type II singularity for the energy critical fourth order Schr\"odinger equation}
+
+%\addtolength{\hoffset}{-1.5cm} \addtolength{\textwidth}{2.5cm}
+%\addtolength{\textheight}{1cm}
+\begin{document}
+\title[Local well-posedness for cubic NLS]{Almost sure local well-posedness for cubic nonlinear Schr\" odinger equation with higher order operators}
+\author[Jean-Baptiste Casteras]{Jean-Baptiste Casteras}
+\address{CMAFcIO, Faculdade de Ci\^encias da Universidade de Lisboa, Edificio C6, Piso 1, Campo Grande 1749-016 Lisboa, Portugal}
+\email{jeanbaptiste.casteras@gmail.com}
+\author[Juraj F\" oldes]{Juraj F\" oldes}
+\address{Dept. of Mathematics, University of Virginia, 322 Kerchof Hall, Charlottesville, VA 22904-4137}
+\email{foldes@virginia.edu}
+\author[Gennady Uraltsev]{Gennady Uraltsev}
+\address{Dept. of Mathematics, University of Virginia, Kerchof Hall, Charlottesville, VA 22904-4137}
+\email{gennady.uraltsev@gmail.com}
+%\author[L\' eonard Monsaingeon]{L\' eonard Monsaingeon}
+%\address{GFM, Faculdade de Ci\^encias da Universidade de Lisboa, Edificio C6, Piso 1, Campo Grande 1749-016 Lisboa, Portugal and  IECL Universit\' e de Lorraine, F-54506, Vandoeuvre-l\`es-Nancy Cedex, France.}
+%\email{leonard.monsaingeon@univ-lorraine.fr}
+\thanks{J.-B.C. supported by FCT - Funda\c c\~ao para a Ci\^encia e a Tecnologia, under the project: UIDB/04561/2020, J. F. was partly supported by grant NSF-DMS-1816408}
+%; L.M. was funded by the Portuguese Science Foundation through a personal grant 2020/00162/CEECIND as well as the FCT project PTDC/MAT-STA/28812/2017}
+\subjclass[2000]{35Q41, 37L50}
+\keywords{Schr\"odinger equation; almost-sure local well-posedness; random initial data}
+
+
+\begin{abstract}
+In this paper, we study the local well-posedness of the following cubic nonlinear Schr\" odinger equation
+$$ (i\partial_t - P) u = \pm |u|^2 u\ on\ I\times \R^d ,$$
+with randomized initial data, where $P$ is an operator $P$ whose Fourier symbol is an even polynomial of degree $s$. Using the framework of Dodson, L\" uhrmann and Mendelson ('19), we are able to improve the results concerning the standard Schr\" odinger equation (i.e. when $P$ is the Laplacian) of B\' enyi, Oh and Pocovnicu ('15) in any dimension. Quite interestingly, we  also exhibit the present of three different regimes depending on $s$ and $d$. 
+
+\end{abstract}
+
+\maketitle
+
+
+
+\section{Introduction}
+We consider a cubic nonlinear Schr\" odinger equation with a general self-adjoint operator $P$ of order $s$ having constant coefficients. More precisely, we investigate 
+the local well-posedness of the following problem
+\begin{equation}
+\label{intro}
+\begin{cases} (i\partial_t - P) u = \pm |u|^2 u \qquad \textrm{on} \quad \ I\times \R^d ,
+\\ u(0)=f \in H_x^S (\R^d) . \end{cases}
+\end{equation}
+When $P=-\Delta$, \eqref{intro} is the classical cubic Schr\" odinger equation, whereas if $P= \Delta^2 -\mu \Delta$, $\mu \in \{-1,0,1\}$ then,  
+\eqref{intro}  becomes the fourth order Schr\" odinger equation with mixed dispersion introduced by Karpman and Shagalov \cite{MR1779828} (see also \cite{MR1372681}). Notice that if $P= \Delta^{s/2}$,
+\eqref{intro} possesses a natural scaling. Specifically, 
+if $u$ satisfies the equation in \eqref{intro}, then 
+$$u_{\lambda}(t,x)= \lambda^{\frac{s}{2}} u(\lambda^s t, \lambda x),\ \lambda>0 $$
+also satisfies the same equation. 
+In addition, 
+$$\|u_\lambda (0)\|_{\dot{H}^\gamma}= \lambda^{\gamma + \frac{s}{2} - \frac{d}{2}} \|u(0)\|_{\dot{H}^\gamma} = \lambda^{\gamma +\frac{s - d}{2}} \|f\|_{\dot{H}^\gamma}.$$
+Denote $S_c = \frac{d-s}{2}$, and based on the above scaling,  for initial data $f \in H^{S} (\R^d)$, we say that the Cauchy problem \eqref{intro} is 
+$$
+\begin{cases}\text{subcritical}\\  \text{critical}\\ \text{supercritical} \end{cases} \qquad  \textrm{if} \quad S\begin{cases}>S_c,\\ =S_c, \\ <S_c . \end{cases}
+$$ 
+Our goal is to investigate the local well-posedness of \eqref{intro} for randomized initial data in the supercritical regime. In the subcritical or critical regime, local solutions can be constructed using Strichartz estimates and a classical fixed point argument. We refer to \cite{MR2002047,MR1055532,MR2415387,MR2288737} for some results concerning the classical nonlinear Schr\" odinger equation and to \cite{MR2353631,MR2746203} for results on the fourth order one. On the other hand, in the supercritical regime problem \eqref{intro} is ill-posed by a result of 
+Chirst, Colliander, and Tao \cite{christ2003ill}. However, it is known that suitable randomizations of the initial data can be used to construct local or even global solutions in the supercritical regime. Bourgain \cite{MR1309539,MR1374420}  introduced randomization  to prove existence of solutions to the periodic nonlinear Schr\" odinger equation. His approach was based on the construction of invariant measures (see also \cite{MR939505,MR4312285} for other results in this direction). We also refer to \cite{MR4236191,MR2425134} for more references on related problems.
+
+ In the following, we use a randomization of initial data based on a unit-scale decomposition of frequency space. Let us mention that other randomizations have been investigated in \cite{MR3237443,MR3022846,MR2569900,spitz2021almost}. Let $\psi \in C_c^\infty (\R^d)$ be an even, non-negative cut-off function supported in the unit-ball of $\R^d$ centered at $0$ and such that, for all $\xi \in \R^d$,
+$$\sum_{k\in \Z^d} \psi (\xi -k)=1.$$
+For $f\in H_x^{\gamma} (\R^d)$, $\gamma\in \R$, and $k\in \Z^d$, define the function $Q_k f : \R^d \rightarrow \mathbb{C}$ as 
+\begin{equation}\label{proj1}
+(Q_k f)(x)= \mathcal{F}^{-1}\big(\psi (\xi -k) \mathcal{F} (f) (\xi)\big)(x), \qquad   \textrm{for} \quad  x\in \R^d \,,
+\end{equation}
+where $\mathcal{F}(f)$ stands for the Fourier transform of $f$. Let $(g_k)_{k\in \Z^d}$ be a sequence of independent, standard (zero-mean, unit variance), 
+complex valued Gaussian random variables on a probability space 
+$(\Omega , \mathcal{A}, \mathbb{P})$. For $f\in H^S_x (\R^d)$, we define its randomization by
+\begin{equation}\label{ricc}
+f^\omega = \sum_{k\in \Z^d} g_k (\omega) Q_k f.
+\end{equation}
+Since $Q_k f$ is localized in the Fourier space,  Bernstein inequality (Young's inequality applied to a convolution with a smooth function) implies for 
+any $1 \leq r_1 \leq r_2 \leq \infty$ and any $k \in \Z^d$ that 
+\begin{equation}\label{usbe}
+\|Q_k f\|_{L^{r_2}_x(\R^d)} \leq C(r_1, r_2) \|Q_k f\|_{L^{r_1}_x(\R^d)}
+\end{equation} 
+with a constant $C$ that is independent of $k$.
+
+Our randomization does not improve the differentiability of $f$ in the sense that if $f\in H^{\gamma}(\R^d) \backslash H^{\gamma+\varepsilon}(\R^d)$ for some $\epsilon > 0$, then $f^\omega\in H^{\gamma}(\R^d) \backslash H^{\gamma+\varepsilon}(\R^d)$ almost surely, see \cite{MR2425133}. However,  the space-time integrability properties of the linear evolution given by $e^{-itP}f^\omega$ improve compared to 
+the deterministic one, see Lemma \ref{lemproba1} below. 
+
+The literature contains several well-posedness results using our randomization. B\' enyi, Oh, and Pocovnicu \cite{MR3350022} proved the almost sure local well-posedness of \eqref{intro} with $P=-\Delta$ for $d\geq 3$ and $S>\frac{d-1}{d+1}\frac{d-2}{2}$ in the following sense: there exist $c,C,\gamma>0$ such that  for each $0<T<<1$, there exists a set $\Omega_T \subset \Omega$ with the following properties :
+\begin{itemize}
+\item $\mathbb{P}(\Omega_T^c)<C \exp (-\frac{c}{T^\gamma \|f\|_{H^S}^2}).$
+ \item For each $\omega \in \Omega_T$, there exists a unique solution u to \eqref{intro} with $u(0)=f^\omega$ in the class
+$$e^{-it\Delta}f^\omega +C([-T,T] ; H^{\frac{d-2}{2}}(\R^d)) \subset C([-T,T] ; H^{S}(\R^d)) .$$
+\end{itemize}
+Later, Brereton \cite{MR3907746} obtained analogous results for $P = -\Delta$ and quintic nonlinearity.  When $d=3$, Shen, Soffer, and Wu \cite{shen2021almost}, very recently, obtained the local well-posedness of \eqref{intro} (with the Laplacian) for $S\geq \frac{1}{6}$ improving \cite{MR3350022}. All the previous results rely on a fixed point argument for operators on variants of the $X^{s,b}$ 
+spaces adapted to the variation spaces $V^p$ and \(U^{p}\) introduced by Koch, Tataru, and collaborators \cite{MR2526409, MR2824485, MR3618884}. 
+The result of \cite{MR3350022} was also improved by Dodson, L\" uhrmann, and Mendelson \cite{dodson} when $d=4$, which corresponds to the energy-critical Schr\" odinger equation. More precisely, they proved the local well-posedness of \eqref{intro} when $P=-\Delta$, $d=4$, and $S>\frac{1}{3}$. It is important to note, that instead of using the atomistic framework of \cite{MR3350022}, \cite{dodson} 
+used an anisotropic norm denoted by $L_e^{p,q}$, $e\in \R^d$, introduced by Ionescu and Kenig \cite{ionescu1,ionescu2}  to prove well-posedness for the Schr\" odinger map equation. 
+
+By using iterative procedure based on a partial power expansion in terms of the free evolution of the random data, 
+ B\' enyi, Oh, and Pocovnicu \cite{bop2} improved the regularity assumption of  \cite{MR3350022} . 
+ In a forthcoming work, we adapt their iterative procedure to the functional framework used in this paper.
+
+The only local well-posedness  
+result for higher order operators $P$ and randomized data was obtained in \cite{MR4214037} for  
+$P= \Delta^2 - \mu \Delta$, $\mu \geq 0$, $d\geq 5$ and $S>\max\big\{\frac{(d-1)(d-4)}{2(d+5)},\frac{d-4}{4} \big\}$. 
+  
+%Let us mention that we almost recover the result of \cite{shen2021almost} when $d=3$ and $P=-\Delta$ (we do not get the equality but just $S>\frac{1}{6}$). 
+ The aim of this paper is to extend the framework of \cite{dodson} to arbitrary dimension and more general operator $P$ with real, smooth symbol $p$.
+We assume that there is a real $s \geq 2$ such that for all \(\xi\) large enough one has 
+\begin{equation} \label{aonth}
+|\xi|^{s-1} \lesssim |\partial_{\xi_k} p(\xi)| \lesssim |\xi|^{s-1} \,, \quad 
+|\partial^2_{\xi_k\xi_k} p(\xi)| \lesssim |\xi|^{s-2} \,, \quad |\partial^3_{\xi_k\xi_k \xi_k} p(\xi)| \lesssim |\xi|^{s-3},
+\end{equation}
+for each $k \in \{1, \cdots, d\}$ and
+\begin{equation}\label{hots}
+|\xi|^{d(s-2)} \lesssim |\textrm{det} H p(\xi)| \lesssim |\xi|^{d(s-2)}
+\end{equation}
+where $Hp$ is the Hessian of $p$. These conditions are trivially satisfied if $P = \Delta^{s/2} + Q$ for $s \geq 2$ and $Q$ is a lower order operator with real smooth symbol. 
+ 
+For the differentiability $S$ of initial data, we show,  quite interestingly, that there are three different regimes: 
+\begin{equation}\label{asos}
+S_{\min}(s,d) = (d - s)\times
+\begin{cases}
+ \frac{(d - 2s + 1)}{2(d - 1)} & s \leq \frac{d + 2}{3} \,, \\
+\frac{1}{6} & \frac{d + 2}{3} <  s \leq \frac{d + 1}{2} \,, \\
+ \frac{3s - d - 2}{2(d + s - 2)}  & s  >  \frac{d + 1}{2} \,. 
+\end{cases}
+\end{equation}
+
+
+%$$\sigma=\begin{cases} \frac{s-1}{2} ,& s<\frac{d+3}{4},\\ \frac{d-s}{6} ,& \frac{d+3}{4}\leq s \leq \frac{d+1}{2},\\  - ( \frac{d-1}{6}+ \frac{2s-d-1}{d+s-2} \frac{d-3s+2}{6} )_+ + \frac{s-1}{2}+ \frac{2s-d-1}{d+s-2} \frac{d-3s +2}{2} ,& s >\frac{d+1}{2}. \end{cases}$$
+Our main result reads as follows:
+%\alert{We assume that $P$ is an operator of even degree $s$}
+
+\begin{thm}
+\label{mainthm}
+Fix $s \geq 2$, an integer $d>s$, and $S>S_{\min}(s,d)$ with $S_{\min}$ as in \eqref{asos}.  
+Let $P$ be an operator whose Fourier symbol $p$ is smooth, real, and satisfies \eqref{aonth} and \eqref{hots}. 
+Assume $f\in H_x^S (\R^d)$ and denote  the randomization of $f$ as in \eqref{recc}. 
+Then for a.e. $\omega \in \Omega$, there exists an open interval $0\in I$ and a unique solution
+$$u(t) \in e^{-itP}f^\omega +C(I; \dot{H}_x^{\frac{d-s}{2}} (\R^d))$$
+to
+\begin{equation}
+\label{eqintro}
+\begin{cases} (i\partial_t - P) u = \pm |u|^2 u\ on\ I\times \R^d ,\\ u(0)=f^\omega . \end{cases}
+\end{equation}
+\end{thm}
+
+To compare with existing results, we choose $P=-\Delta$, that is, $s = 2$. Then, 
+\begin{equation*}
+S_{\min}(2,d) = (d - 2)\times
+\begin{cases}
+ \frac{(d - 3)}{2(d - 1)} & d\geq 4 \,, \\
+\frac{1}{6} & \ d=3 \,. 
+ %\frac{3s - d - 2}{2(d + s - 2)}  & s  >  \frac{d + 1}{2} \,. 
+\end{cases}
+\end{equation*}
+Hence, we recover the range of regularities of \cite{dodson} for $d=4$, almost recover \cite{shen2021almost} when $d=3$ (we do not prove the borderline case) and improve that of \cite{MR3350022} for any dimension. We believe our methods can refined to recover probabilistic estimates for the time of existence of solutions. Notice that the regime $s>  \frac{d + 1}{2}$ does not appear for the Laplacian case $s = 2$. When $P=\Delta^2$, we find
+\begin{equation*}
+S_{\min}(4,d) = (d - 4)\times
+\begin{cases}
+ \frac{(d - 7)}{2(d - 1)} & d \geq 10 \,, \\
+\frac{1}{6} & 7\leq d<10 \,, \\
+ \frac{10 - d }{2(d + 2)}  & 4<d<7 \,. 
+\end{cases}
+\end{equation*}
+Thus, we improve the result of \cite{MR4214037} except when $d=5$. A possible explanation is that our framework (using anisotropic norms) is well adapted to when $s\leq \dfrac{d+1}{2}$ 
+whereas the framework of \cite{MR3350022,shen2021almost} (using the spaces $U^p$ and $V^p$) is better suited for  $s> \frac{d + 1}{2}$. We also plan to investigate this point in a future work.
+
+We remark that  our assumptions on the operator $P$ allow for sign changing symbol, for example if $P = \Delta^2 \pm \Delta$. Also, our assumptions cover lower order terms, which are not necessarily radial. 
+
+
+%(its Fourier transform being even degree polynomial) allows us to reduce a certain oscillatory integral in $\R^d$ (corresponding to a truncated $L^\infty$ estimate of the dispersive propagator of $P$) to a radial one (see the proof of \eqref{IK1} below). For more general operators, it would be worse, leading to weaker well-posedness results. We do not pursue 
+%this direction, but one could apply our method for any operator satisfying the Strichartz estimates and a certain temporal $L^\infty$ decay for a truncation of the propagator. 
+
+
+%\alert{Our approach benefits from a maximal function $L^{2,\infty}_e$ and a smoothing $L^{\infty ,2}_e$ estimates for the free evolution of the random intial data, which enables us gain some derivatives (see in particular \eqref{IK3} which asserts that there is a $\frac{s-1}{2}$ gain).  
+% }
+
+
+ The proof of Theorem \ref{mainthm} follows closely \cite{dodson}. The main idea is to subtract the free (random) evolution and rewrite \eqref{eqintro} as a forced cubic equation
+\begin{equation}\label{eqda}
+\begin{cases} (i\partial_t -P) v = \pm |F+v|^2 (F+v),\\ v(t_0)=0 \in \dot{H}_x^{\frac{d-s}{2}} (\R^d) \end{cases}
+\end{equation}
+where $F=e^{-itP}f^\omega$ is random and $\dot{H}_x^S$ is a homogeneous Sobolev space. 
+Due to randomization, $F$ has almost surely better space-time integrability properties then its deterministic counter-part. The framework can be divided into the following steps. 
+
+\noindent
+\textbf{Step 1.} We control the linear evolution $F$ in a Besov-type norm 
+$Y$ based on a dyadic decomposition of Fourier space.  On each dyadic anulus, the norm of $Y$ is a weighted (with weights parametrized by $A,B$ and $C$) combination of
+ $L_t^q L_x^p$ norms and anisotropic norms $L_{e_l}^{a,b}$ and $L_{e_l}^{b,a}$,  
+for carefully chosen positive parameters $q,p,a$, and $b$.  The weights $A, B, C$ are directly linked with the value of $S$, so that 
+we want to choose them as small as possible.
+
+\noindent
+\textbf{Step 2.} We use a fixed point argument for \(v\) in a space $X$ endowed endowed with a norm based, again, on a dyadic composition of Fourier space. The norm on $X$ is a weighted combination of Strichartz admissible $L_t^r L_x^b$ norms and anisotropic norms.  Thanks to a smoothing and maximal function estimates, we show that if  the right hand side of \eqref{eqda} belongs to $G$ (another Besov-type space), then $v$ belongs to $X$. In addition, if the time is short then the $X$-norm of $v$ is small. 
+
+\noindent
+\textbf{Step 3.} 
+The main technical difficulty is to show that if $F \in Y$ and $v \in X$, then the right-hand side of \eqref{eqda} belongs to $G$. Here, we factor the right hand side of the evolution \eqref{eqda} and treat each term separately; each factor is split dyadically in Fourier space. At this point, we need a precise choice of parameters $A$, $B$, $C$, which consequently determine the regularity of the initial condition $S$. We show that for small dimensions the strictest condition on $S$ is induced by $F^3$ term. 
+%The main difficulty comes from estimating the nonlinear term. In order to do so, we will need to impose two conditions on the parameters $A,B$ and $C$ namely \eqref{relAB} and \eqref{relAB1} (this two conditions implying \eqref{relAB2}). The condition \eqref{relAB} comes from the term $F^3$ whereas \eqref{relAB1} (resp. \eqref{relAB2}) is related to the term $F^2 v$ (resp. $Fv^2$). We will see that when $s>\frac{d+2}{3}$ (see Lemma \ref{lastmainlem}), the condition \eqref{relAB} is the most restrictive one so the leading nonlinear term is $F^3$.
+As observed in \cite{bop2}, one can hope to absorb $F^3$ to linear evolution, by using the next term in the expansion, that is, by replacing $F$ by 
+$F(t) -i \int_0^t e^{-i(t-t^\prime)P} |F(t^\prime)|^2 F(t^\prime) dt^\prime +C(I; \dot{H}_x^{\alpha} (\R^d))$, for some $\alpha>0$ for $f\in H^{S_1}_x (\R^d)$ with $S_1<S$. 
+However,  in high dimensions,  which corresponds to a regime where the nonlinearity is `very supercritical', it seems that the most restrictive nonlinear term is $Fv^2$ or $F^2 v$, and further expansion is less obvious. 
+
+The organization of the paper is as follows: in Section \ref{prelim}, we recall classical facts about the Littlewood-Paley (dyadic Fourier space) projections and introduce the anisotropic norms $L^{p,q}_e$. We then prove maximal function and local smoothing estimates for the free evolution operator. In Section \ref{sec:lin}, we prove a linear Strichartz-type estimate for functions belonging to the space $X(I)$, which is a mixture of Strichartz norms and $L^{p,q}_e$ norms. Section \ref{sec:nonlin} contains trilinear estimates that control interactions coming from the cubic nonlinearity. Finally, in Section \ref{sec:random}, we recall probabilistic estimates for randomized initial data. Then, we give a localized maximal function estimate which allows us to prove that the free evolution of $f^\omega$ belongs to $Y(\R)$ when $S$ is large enough. Finally, we establish Theorem \ref{mainthm} by using a fixed point argument. 
+
+Theorem \ref{mainthm} applies for \(d<s\). We will assume this condition henceforth and we will avoid stating it explicitly in any of the statements that follow. 
+
+\subsection{Notation}
+\begin{itemize}
+\item We denote $\mathcal{F}(f)(\xi) = \hat{f}(\xi)=\int_{\R^{d}}f(x) e^{-i \xi x} d x$ the Fourier transform of the function $f$. The dimension \(d\) is extrapolated from context.
+\item For functions $a, b$  we write $a\lesssim b$ if there exists a constant $C>0$ such that $a\leq Cb$.
+\item We use the notation $a\approx b$, if $a\lesssim b$ and $b\lesssim a$.
+\item We denote the ball of radius \(r\) and center \(x\) as \(B_{r}(x)\); if \(x=0\) we simply write \(B_{r}\). The dimension of the ball is to be understood from context unless explicitly written e.g. \(B_{r}^{d}\).
+\item For $p\geq 1$, $p^\prime$ stands for the dual of $p$, that is,  $\dfrac{1}{p^\prime}+\dfrac{1}{p}=1$.
+\item For $\alpha >0$,  $\dot{H}^\alpha (\R^d)$ denotes the homogeneous Sobolev space endowed with the semi-norm
+$$\|u\|_{\dot{H}^\alpha (\R^d)}^2 = \int_{\R^d} |(-\Delta)^{\alpha /2} u(x)|^2 dx.$$
+\item We denote by $\langle .\rangle$ the japanese bracket: $\langle N\rangle = (1+N^2)^{\frac{1}{2}}$.
+\end{itemize}
+
+
+\section{Generalities}\label{prelim}
+In this section, we recall basic facts about Littlewood-Paley projections, Strichartz estimates and an anisotropic norm $L^{p,q}_e$ introduced by Ionescu and Kenig \cite{ionescu1,ionescu2}, the usage of which is the main novelty of this paper. Then, we prove a maximal function estimate \eqref{IK1} and a local smoothing estimate \eqref{IK3} for $L^{p,q}_e$. The estimate \eqref{IK3} in particular allow us to `gain' $\dfrac{s-1}{2}$ derivatives in our estimates of the nonlinear terms. 
+
+We begin by defining the Littlewood-Paley projections $P_N$ for $N\in 2^{\Z}$. We henceforth fix a cutoff function $\varphi \in C_{c}^{\infty} (\R)$, i.e. a function such that $\phi (\xi)=1$ for $|\xi|\leq 1$ and $\varphi (\xi)=0$ for $|\xi|>1+2^{-100}$. We set
+\begin{equation}\label{dyadic-anulus-bump}
+\Delta_{0}\phi(\xi)=\phi(2\xi)-\phi(\xi)\qquad\Delta_{N}\phi(\xi)=\Delta_{0}\phi(\xi/N) .
+\end{equation}
+The functions \(\Delta_{N}\phi(\xi)\) are supported on \(N/2<|\xi|<N(1+2^{-100})\) and are constantly \(1\) when \((1+2^{-100})N/2<|\xi|<N\). We set
+\begin{equation}\label{LPproj}
+\widehat{P_N f} (\xi)= \Delta_{N}\phi(|\xi|)\hat{f} (\xi).
+\end{equation} 
+Note that this projection is different than the one introduced in \eqref{proj1}. Next, we recall the classical Bernstein estimates.
+
+\begin{lem}
+\label{bern}
+Fix $N\in 2^{\Z}$. For any $1\leq r_1 \leq r_2 \leq \infty$ and any $s\geq 0$, it holds
+$$\|P_N f\|_{L_x^{r_2} (\R^d)}\lesssim N^{d(1/r_1 - 1/r_2)} \|P_N f\|_{L_x^{r_1}(\R^d)},$$
+and
+$$\||\nabla|^{\pm s} P_N f \|_{L_x^{r_1} (\R^d)} \approx N^{\pm s} \|P_N f\|_{L_x^{r_1} (\R^d)}.$$
+\end{lem}
+Since we use an anisotropic norm, we will also need to define anisotropic Littlewood-Paley projections. Let $\{e_1 ,\ldots, e_d\}$ be an orthonormal basis of $\R^d$. For any $N\in 2^{\Z}$ and any $l=1,\ldots ,d$, we define
+\begin{equation} \label{LP-anisotropic}
+\widehat{P_{N,e_l} f} (\xi) = \Delta_{N}\phi(\xi\cdot e_l)\hat{f} (\xi)
+\end{equation}
+with \(\phi\) as in \eqref{dyadic-anulus-bump}. By support considerations in Fourier space, for any \(l\in\{1,\ldots,d\}\) it holds that
+\begin{equation}
+\label{e1}
+\Big( \prod_{l=1}^{d}\big(1-\sum_{k=-d}^{d} P_{2^{k}N,e_l}\big)\Big) P_{N} =0.
+\end{equation}
+
+
+Next, we recall the Strichartz estimates for general self-adjoint operator $P$ of order $s$ with constant coefficients. We say that a pair $(q,r)$ is admissible (for $P$) if
+\begin{equation}
+\label{defadmissible}
+\frac{s}{q} +\frac{d}{r}=\frac{d}{2},\ 
+\begin{cases}r\in [2, \frac{2d}{d-s}) & \textrm{if } \ d> s, \\  
+r\in [2,\infty ) & \textrm{if } \ d=s,\\ 
+r\in [2,\infty] &  \textrm{if } \ d <  s. 
+\end{cases}
+\end{equation}
+
+
+
+
+\begin{lem}[\cite{MR2787438,MR3852677,MR1151250,MR1646048}]
+\label{strichartz}
+Let $d\geq 1$, $\mu \geq 0$. Assume that $(q,r)$ and $(\tilde{q},\tilde{r})$ are admissible. Then, there exists $t_0>0$ such that, for any $I\subset \R$ such that $|I|\leq t_0$,
+\begin{equation}
+\label{strichartze1}
+\|e^{-it P} f\|_{L_t^q L_x^r (I\times \R^d)} \lesssim \|f\|_{L^2 (\R^d )},
+\end{equation}
+and
+$$\left\|\int_I e^{is P  } f(s,.) ds\right\|_{L_x^2 (\R^d)}\lesssim \|f\|_{L_t^{q^\prime} L_x^{r^\prime} (I\times \R^d)}. $$
+Assuming that $0\in I$, we also have
+\begin{equation}
+\label{strichartze3}
+\left\|\int_I e^{-i(t-s)P  } f(s,.) ds \right\|_{L_t^q L_x^r (I\times \R^d)}\lesssim \|f\|_{L_t^{\tilde{q}^\prime} L_x^{\tilde{r}^\prime} (I\times \R^d)} . 
+\end{equation}
+\end{lem}
+\begin{rmq}
+Notice that the evolution group \(e^{-(t-s)P}\) commutes with projections \(P_{N}\), \(P_{N,e_{l}}\) for any \(l\in\{1,\ldots,d\}\) and any \(N\in2^{\Z}\), and with \(Q_{n}\) for \(n\in\Z^{d}\). Thus the bounds above also hold with \(f\) replaced by \(P_{N}f\), \(P_{N,e_{l}}f\), and \(Q_{n}f\) on both sides of the inequality.
+\end{rmq}
+In all the following, we will assume that any time intervals we consider are of lenght less than the $t_0$ given in the previous proposition in order for the Strichartz estimate to hold. Since we are only interested in local existence, this is not restrictive at all and we will not explicitely write it anymore.\\
+ To introduce the anisotropic norms, decompose $x\in \R^d$  for any $l \in \{1, \dots, d\}$ as
+$$
+x=x_l e_l+\displaystyle\sum_{i=1,\ i\neq l}^d x_i e_i := x_l e_l + x^\prime_l 
+$$
+and, if there is no possible confusion, we write $x^\prime := x_l^\prime$.  
+Fix $I \subset \R$ and $l \in \{1, \dots, d\}$,  and for $1 \leq p,q<\infty$ define
+$$\|f\|_{L_{e_l}^{p,q} (I\times \R^d )} = \Bigg(\int_{\R}  \Bigg(\int_I \int_{\R^{d-1}} |f(t,x_le_{l}+x_l')|^q dx_l' dt\Bigg)^{\frac{p}{q}} dx_l \Bigg)^{1/p} \,,$$
+where $f : I \times \R^d \to \mathbb{C}$ is such that the right hand side is finite.
+When $p=\infty$ or $q=\infty$, we use the standard modifications by supremum norm. 
+Next, we establish a maximal and a local smoothing estimates for our anisotropic norm. 
+
+
+
+\begin{lem}
+\label{1lemIK}
+Let \(P\) satsify the conditions \eqref{aonth} and \eqref{hots}. Given an interval $I\subset \R$ we have, for $N$ large enough,
+\begin{equation}\label{IK1}
+\| e^{-it P }  P_N f\|_{L_{e_l}^{2,\infty} (I\times \R^d)}\lesssim N^{X_1} \|P_N f\|_{L_x^2 (\R^d )},
+\end{equation}
+and
+\begin{equation}
+\label{IK3}
+\|e^{-it P }  P_{N',e_l }  P_N f \|_{L_{e_l}^{\infty ,2} (I \times \R^d)} \lesssim N^{X_2} \|P_N f\|_{L^2 (\R^d )} \qquad\forall N'\approx N,
+\end{equation}
+with
+$$X_1 =\dfrac{d-1}{2} ,\qquad X_2= -\dfrac{s-1}{2}.$$
+\end{lem}
+\begin{rmq}
+Notice that the constant $X_1$ in \eqref{IK1} does not depend on $P$ but only on the dimension $d$, whereas $X_2$ only depends on the order of $P$ but not on $d$.
+\end{rmq}
+
+\begin{proof}
+First, we prove \eqref{IK1}. Without loss of generality, we assume $l=1$. We use a \(TT^{*}\) argument. For the purpose of this proof let
+\begin{equation*}
+T f(x)=\frac{1}{(2\pi)^{d}} \int_{\R\times\R^{d-1}} e^{i\big(\xi_{1}x_{1}+\xi'x'-i t p(\xi_{1},\xi')\big)} h_{N}(\xi_{1},\xi')\hat{f}(\xi_{1},\xi')d \xi_{1}d{\xi'},
+\end{equation*}
+where $p$ is the symbol of the operator $P$, that is, $p(\xi)=\hat{P}(\xi)$, and
+\begin{equation*}
+h_{N}(\xi_{1},\xi')=\phi\Big(\frac{|(\xi_{1},\xi')|}{2N}\Big)-\phi\Big(\frac{4|(\xi_{1},\xi')|}{N}\Big)=\sum_{k=-1}^{1}\Delta_{2^{k}N}\phi(|(\xi_{1},\xi')|)
+\end{equation*}
+so that \(h_{N}(\xi_{1},\xi')\Delta_{N}\phi(|(\xi_{1},\xi')|)=\Delta_{N}\phi(|(\xi_{1},\xi')|)\). Our claim follows by showing that \(\|Tf\|_{L_{e_l}^{2,\infty} (I\times \R^d)}\lesssim N^{X_{1}} \|f\|_{L^{2}_{x}(\R^{d})}\) or equivalently that \(\|T^{*}g\|_{L^{2}_{x}(\R^{d})}^{2}\lesssim N^{2X_{1}}\|g\|_{L_{e_l}^{2,1} (I\times \R^d)}^{2}\). This is further reduced to showing that
+\begin{equation*}
+\|TT^{*}g\|_{L_{e_l}^{2,\infty} (I\times \R^d)}\lesssim N^{2X_{1}}\|g\|_{L_{e_l}^{2,1} (I\times \R^d)}.
+\end{equation*}
+A direct computation shows that
+\begin{equation*}
+TT^{*}g (t,x_{1},x')= \int_{\R\times\R^{d-1}\times\R} K_{N}(t-s,x_{1}-y_{1},x'-y') g(y_{1},y',s)d y_{1}d y' ds
+\end{equation*}
+where we have set 
+\begin{equation*}
+ K_{N}(t,x_1 ,x') =\frac{1}{(2\pi)^{2d}}\int_{\R \times \R^{d-1}} e^{i(x_1 \xi_1 +x^\prime . \xi^\prime)} e^{-it p (\xi_1, \xi^\prime) }  h_{N}(\xi_{1},\xi')d\xi_1 d\xi'.
+\end{equation*}
+It is thus sufficient to show that
+$$
+\left\| K_{N}(t,x_1 ,x^\prime)\right\|_{L^1_{x_1}\big(\R; L^\infty_{t,x'}(I\times\R^{d-1})\big)} \lesssim N^{2X_1}.
+$$
+
+Let us start by recording that 
+$$| K_{N}(t,x_1 ,x')|\lesssim  \min (N^d , |t|^{-\frac{d}{s}}). $$
+% By our assumptions, $p$ is a polynomial of even degree $s \geq 2$. 
+%Using the Van der Corput Lemma and a rescaling, we find, for any $x^\prime \in \R^{d-1}$ and $x_1 \in \R$,
+%$$\displaystyle|\int_{\R^{d-1}} e^{ix^\prime . \xi^\prime } e^{-it p (\xi_1 , \xi^\prime )} h (\dfrac{|\xi|^\prime }{N}) d\xi^\prime | \lesssim \min (N^{d-1} , |t|^{-(d-1)/s})$$
+%and
+%$$|\int_{\R} e^{ix_1 \xi_1} e^{-itp(\xi_1 ,\xi^\prime)} h(\dfrac{\xi_1 }{ N}) d\xi_1 | \lesssim \min (N , |t|^{-1/s} ).$$
+Indeed, the bound by $N^d$ follows by exchanging the absolute value and the integral and by noticing that \(h_{N}\) is supported on a set of measure \(N^{d}\). The bound by $|t|^{-\frac{d}{s}}$ follows from  \cite[Theorem 3.1]{MR3710698}.  Note that the assumptions of \cite[Theorem 3.1]{MR3710698} are satisfied by \eqref{aonth} and \eqref{hots} on the support of $h_N(\xi)$. 
+%
+%latter reference requires the Hessian of $p$ to be non-degenerate, which is not true for all $\xi$, but it is true 
+%for $\xi$ in the support of $h\left(\frac{\xi_1}{ N}\right) h\left(\frac{|\xi^\prime|}{N}\right)$ for $N$ sufficiently large.
+To gain decay in \(x_{1}\) we exploit the oscillations of the phase factor by integating by parts twice:
+\begin{align*}
+K_{N}(t,x_1 ,x') &=-i\int_{\R \times \R^{d-1}} \frac{\frac
+  {d}{d \xi_{1}}e^{i\big(x_1 \xi_1 +x' \cdot \xi' -t p (\xi_1, \xi')\big)}}{x_1 - t\partial_{\xi_{1}}p(\xi_{1}, \xi')}    h_N(\xi_{1},\xi')d\xi_1 d\xi'
+\\ & = i\int_{\R \times \R^{d-1}}  e^{i\big(x_1 \xi_1 +x' \cdot \xi' -t p (\xi_1, \xi')\big)} \frac{d}{d \xi_{1}}\Big[\frac{h_N(\xi_{1},\xi')}{x_1 - t\partial_{\xi_{1}}p (\xi_1, \xi')} \Big] d\xi_1 d\xi^\prime
+\\ & =
+\begin{aligned}[t]
+&-\int_{\R \times \R^{d-1}}  e^{i\big(x_1 \xi_1 +x' \cdot \xi' -t p (\xi_1, \xi')\big)}
+\\ & 
+\qquad\times\frac{d}{d \xi_{1}}\left[\frac{1}{x_1 - t\partial_{\xi_{1}}p (\xi_1, \xi')} \frac{d}{d \xi_{1}}\Big[\frac{h_N(\xi_{1},\xi')}{x_1 - t\partial_{\xi_{1}}p (\xi_1, \xi')} \Big]\right] d\xi_1 d\xi'.
+\end{aligned}
+% &= N^{d - 1}\int_{\R \times \R^{d-1}}  e^{i(x_1 \xi_1 + N x^\prime \xi^\prime)} e^{-it p (\xi_1, N\xi^\prime) }\times \\
+%& \pushright{\times 
+% \partial_{\xi_1}\left[ \frac{1}{x_1 - tp'_{\xi_1}(\xi_1, N\xi')}
+% \partial_{\xi_1}\left[\frac{h_N\left(\xi_1\right) h\left(|\xi^\prime|\right)}{x_1 - tp'_{\xi_1}(\xi_1, N\xi')} \right]\right] d\xi_1 d\xi^\prime \,.}
+\end{align*}
+By scaling it holds that
+\begin{equation*}
+\big|(\partial_{\xi_1})^{k} h_N(\xi_1,\xi')\big| \lesssim N^{-k}1_{|(\xi_{1},\xi')|\lesssim N} \qquad\forall k\in\N
+\end{equation*}
+To control the denominator we restrict ourselves to the regime  $|x_1| \gtrsim N^{s-1} |t|$. Since the term \(h_{N}(\xi_{1},\xi')\) vanishes unless \(|(\xi_{1},\xi')|\lesssim N|t|\) and by \eqref{aonth} we have  $|\partial_{\xi_{1}}p(\xi_{1},\xi')| \lesssim \big|(\xi_{1},\xi')\big|^{s-1}$ it holds that
+\begin{equation*}
+\frac{1}{|x_1 - t\partial_{\xi_{1}}p(\xi_{1},\xi')|} \lesssim\frac{1}{|x_1|}
+\end{equation*}
+Furthermore, in this regime, from \eqref{aonth} it follows that
+$$
+\Bigg|\partial_{\xi_1}  \Big(\frac{1}{x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')}\Big)\Bigg|
+=
+ \Bigg|\frac{t \partial_{\xi_{1},\xi_1}^{2}p(\xi_1, \xi')) }{(x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi'))^2}\Bigg| \lesssim 
+\frac{ |t| \,\big|(\xi_1, \xi')\big|^{s-2} }{|x_1|^{2} } \lesssim 
+\frac{1}{N |x_1|}
+$$
+and similarly that
+$$
+\Bigg|\partial^2_{\xi_1,\xi_1}  \Big(\frac{1}{x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')}\Big)\Bigg|
+\lesssim
+\frac{1}{N^2 |x_1|^2}.
+$$
+We thus obtain that for $|x_1| \gtrsim N^{s-1} |t|$ it holds that 
+$$|K_{N}(t,x_1 ,x')|\lesssim 
+\frac{1}{\langle N x_1 \rangle^{2}}  \int_{|(\xi_{1},\xi')|\lesssim2^{N}} d\xi_{1}d\xi'\lesssim
+  \frac{N^d}{\langle N x_1 \rangle^{2}}.$$
+The above estimates combined yield
+\begin{multline*}
+\sup_{t\in \R , x' \in \R^{d-1}} |K_{N} (t,x_1, x')| \lesssim   \frac{N^d}{\langle N |x_1|\rangle^{2}} +\min\Big(N^d , 1_{\{|x_1| \lesssim N^{s-1} |t|\} }  |t|^{-\frac{d}{s}}\Big)\\
+\begin{aligned}
+& \lesssim   \frac{N^d}{\langle N x_1\rangle^{2}} + N^d \min \left(1,|Nx_1|^{-\frac{d}{s} } \right)\\
+&\lesssim N^{d} \bigg( \frac{1}{\langle N x_1\rangle^{2}}  +\frac{1}{\langle N x_1\rangle^{d/s}} \bigg).
+\end{aligned}
+\end{multline*}
+An integration in $x_1$ yields
+$$\left|\int_{\R} \sup_{t\in \R , x^\prime \in \R^{d-1}} |K_{N} (t,x_1, x')| dx_1 \right| \lesssim N^{d-1} 
+%+N^{d-1 +s-d/y_1}\lesssim \begin{cases}N^{d-1},& if\ y_1\leq d/s,\\ N^{d-1 +s-d/y_1},& if\ y_1 \geq d/s \end{cases}. 
+$$
+and \eqref{IK1} follows. 
+%This establishes that $X_1=\begin{cases} \frac{d-1}{2},& if\ y_1\leq \frac{d}{s},\\ \frac{d-1 +s-d/y_1}{2},& if\  y_1 \geq \frac{d}{s}  \end{cases}$.
+
+Now let us prove \eqref{IK3}. We will assume that \(N'=N\), modifications for \(N'\approx N\) are straightforward. Let us fix \(x_{1}\) and estimate
+\begin{equation*}
+I_{x_{1}}=\int_\R \int_{\R^{d-1}} \left|\int_\R \int_{\R^{d-1}} e^{i\big(x_1 \xi_1 +i x'\cdot\xi' -tp(\xi_{1},\xi')\big)} \widehat{P_N f}(\xi_1 ,\xi') \Delta_{N}\phi(\xi_{1}) d\xi' d\xi_1\right|^2 dx' dt, 
+\end{equation*}
+that appears on the RHS of \eqref{IK3}. Using Plancherel's identity in the variable \(x'\) yields
+$$I_{x_{1}}\approx \int_\R \int_{\R^{d-1}} \left|\int_\R e^{i\big(x_1 \xi_1 -tp(\xi_{1},\xi')\big)}\widehat{P_N f}(\xi_1 ,\xi') \Delta_{N}\phi(\xi_{1}) d\xi_1\right| ^2 d\xi' dt. $$
+Let us restrict our analysis to 
+$$I_{x_{1}}^{+}:= \int_\R \int_{\R^{d-1}} \left|\int_{0}^{+\infty} e^{i\big(x_1 \xi_1 -tp(\xi_{1},\xi')\big)}\widehat{P_N f}(\xi_1 ,\xi') \Delta_{N}\phi(\xi_{1}) d\xi_1\right| ^2 d\xi' dt. $$
+The term \(I_{x_{1}}^{-}\), defined analogously, is dealt with symmetrically.
+If \(N\) is sufficiently large, the integrand of \(I_{x_{1}}^{+}\) vanishes unless \(\xi_{1}\approx N\).  In this regime, the function $\xi_1 \mapsto p_{\xi'}(\xi_1) := p(\xi_1 ,\xi')$ is invertible on a neighborhood of the support of \(\Delta_{N}\phi(\xi_{1})\) since \(\partial_{\xi_{1}}p(\xi_{1},\xi')\) is non-vanishing and thus does not change sign. Let us therefore enact the change variables $\theta=p_{\xi^\prime}(\xi_1)$ to obtain
+\begin{align*}
+I_{x_{1}}^{+}= \int_\R \int_{\R^{d-1}}\bigg|\int_{p_{\xi'}([N/2,2N])} \hspace{-3em} &e^{i(x_1 p_{\xi'}^{-1}(\theta)-t\theta) }
+\widehat{P_N f}(p_{\xi'}^{-1}(\theta),\xi')
+\\ & \times \Delta_{N}\phi\big(p_{\xi'}^{-1}(\theta) \big)
+\frac{d}{d \theta}(p_{\xi' }^{-1} (\theta)) d\theta \bigg|^2 d\xi' dt.
+\end{align*}
+Then, from Plancherel identity in the variable \(t\) it follows that
+$$
+I_{x_{1}}^{+}\approx \int_{p_{\xi'}([N/2,2N])} \int_{\R^{d-1}} \left|  e^{ix_1 p_{\xi^\prime}^{-1}(\theta)  }  \widehat{P_N f}(p_{\xi'}^{-1}(\theta),\xi')  \Delta_{N}\phi\big(p_{\xi'}^{-1}(\theta) \big) 
+\frac{d}{d \theta}\big(p_{\xi^\prime }^{-1} (\theta)\big) \right|^2  d\xi' d\theta. $$
+We now returning to the original variable \(\xi_{1}\) with \(\theta=p_{\xi'}(\xi_{1})\) and we use that \(|\frac{\partial}{\partial \theta}(p_{\xi^\prime }^{-1} (\theta)) | = \frac{1}{|\frac{d}{d \xi_1}(p_{\xi'}(\xi_{1})) |}\) to obtain that
+\begin{equation*}
+I_{x_{1}}^{+}\lesssim\int_{N/2}^{2N}\int_{\R^{d-1}}\Big| \widehat{P_N f}(\xi_{1},\xi')  \Delta_{N}\phi(\xi_{1}) \Big|^{2}\frac{1}{|\frac{d}{d \xi_1}(p_{\xi'}(\xi_{1})) |}d\xi'd\xi_{1}.
+\end{equation*}
+By \eqref{aonth} we have that  $| \frac{1}{|\frac{d}{d \xi_1}(p_{\xi'}(\xi_{1})) |} \lesssim \frac{1}{|\xi_1|^{s-1}}$ when $\xi_1 \approx N \gg 1$. We thus find that
+\begin{align*}
+I_{x_{1}}\lesssim&\int_{\R}\int_{\R^{d-1}}\Big| \widehat{P_N f}(\xi_{1},\xi')  \Delta_{N}\phi(\xi_{1}) \Big|^{2} \frac{1}{N^{(s-1)}}d\xi'd\xi_{1}.
+\\ &=\frac{1}{N^{s-1}}\|P_{N}P_{N,e_{1}}f\|_{L^{2}(\R^{d})}\leq \frac{1}{N^{s-1}}\|P_{N}f\|_{L^{2}(\R^{d})}.
+\end{align*}
+This concludes the proof of \eqref{IK3}.
+\end{proof}
+
+Next, we show bounds that are obained by interpolating the inequalities \eqref{IK1} and \eqref{IK3} with the Strichartz estimates \eqref{strichartze1}.
+
+\begin{lem}
+\label{lemmaIK}
+Fix $I\subset \R$, $2\leq p,q\leq \infty$ such that $1= \frac{2}{p} +\frac{2}{q}$, $N\in 2^\Z$ and $l\in \{1,\ldots ,d\}$. Then,  for any $l\in \{1,\ldots, d\}$  we have:
+\begin{enumerate}
+\item If $q \geq p$, then for any  $f \in L^2(\R^d)$
+\begin{equation}
+\label{lemmaIKe1}
+\|e^{-it P} P_N f\|_{L_{e_l}^{p,q} (I \times \R^d )} \lesssim N^{\alpha (p,q)} \|P_N f\|_{L^2 (\R^d )} ,
+\end{equation}
+and for any $h \in L_{e_l}^{p^\prime ,q^\prime}(I\times \R^d )$
+\begin{equation}
+\label{lemmaIKe1bis}
+\left\|\int_I e^{is P} P_N h(s,\cdot) ds \right\|_{L^2_{x} (\R^d )} \lesssim N^{\alpha (p,q)} \|P_N h\|_{L_{e_l}^{p^\prime ,q^\prime} (I\times \R^d )},
+\end{equation}
+ with 
+$$\alpha (p,q)= \dfrac{d+s-2}{p}+\frac{1-s}{2}.$$
+\item If $q<p$, then for any  $f \in L^2(\R^d)$
+\begin{equation}
+\label{lemmaIKe2}
+\|e^{-it P} P_{N',e_{l}} P_N f\|_{L_{e_l}^{p,q} (I\times \R^d )} \lesssim N^{\beta (p,q)} \|P_N f\|_{L^2 (\R^d )} \qquad\forall N'\approx N,
+\end{equation}
+and for any $h \in L_{e_l}^{p^\prime ,q^\prime}(I\times \R^d )$
+\begin{equation}
+\label{lemmaIKe2bis}
+\left\| \int_I e^{is P} P_{N',e_l} P_N h(s, \cdot) ds\right \|_{L^2 (\R^d )} \lesssim N^{\beta (p,q)} \|P_N h\|_{L_{e_l}^{p^\prime ,q^\prime}(I\times \R^d )} \qquad\forall N'\approx N,
+\end{equation}
+with %$\beta_q=X_2 (4/q -1)+ (d-s)/p$.
+\begin{equation}
+\label{beta-lemmaIK}
+\beta (p,q)=\alpha (p,q)= \dfrac{d+s-2}{p}+\dfrac{1-s}{2}.
+\end{equation}
+%$$\alpha_{p,q}= (d-2)/p -1/2$$
+%$$\beta_{p,q}= d+1 - (3d +8)/q$$
+\end{enumerate}
+\end{lem}
+
+%If $P>4$, then If $1= \frac{P-2}{p} +2/q$, then
+%$$\|e^{-it (\Delta^2 -\mu \Delta)} P_N f\|_{L_e^{p,q} (\R^d \times I)} \leq N^{\tilde{\alpha}_q} \|f\|_{L^2 (\R^d )} ,$$
+%If $1= (P-2)/q +2 /p$, then
+%$$\|e^{-it (\Delta^2 -\mu \Delta)} P_{N,e} P_N f\|_{L_e^{p,q} (I\times \R^d )} \leq N^{\tilde{\beta}_q} \|f\|_{L^2 (\R^d )}, $$
+\begin{proof}
+Without loss of generality let us assume \(l=1\).
+First,  notice that \eqref{lemmaIKe1bis} and \eqref{lemmaIKe2bis} are respectively duals of \eqref{lemmaIKe1} and \eqref{lemmaIKe2}. We begin by proving \eqref{lemmaIKe2}. We set \(N'=N\), the modification of the proof to cover the case \(N'\approx N\) is straightforward.
+%We have from the maximal function estimate of Ionescu and Kenig,
+%\begin{equation}\label{IK1}
+%\| e^{-it P }  P_N f\|_{L_{e_l}^{2,\infty} (I\times \R^d)}\leq N^{X_1} \|f\|_{L_x^2 (\R^d )}
+%\end{equation}
+For any fixed \(x_{1}\in\R\) the logarithmic convexity of Lebesgue spaces implies that for any $q \in [2, 4]$  and for any $h\in L^2 (I\times\R^d)$ that 
+$$\|h(\cdot,x_{1},\cdot)\|_{L^q_{t}L^{q}_{x'} (I\times \R^{d-1})}\lesssim \|h(\cdot,x_{1},\cdot)\|_{L^2_{t}L^{2}_{x'} (I\times \R^{d-1})}^{\frac{4-q}{q}} \|h(\cdot,x_{1},\cdot)\|_{L^4_{t}L^{4}_{x'} (I\times \R^{d-1})}^{\frac{2(q-2)}{q}}.$$
+Given that $1= \frac{2}{p} +\frac{2}{q}$, if $p > q$ then \(q\in[2,4]\) so we can integrate the above inequality and to get 
+\begin{equation*}
+\begin{aligned}[t]
+& \big\|e^{-it P }  P_{N,e_{1} } P_N  f\big\|_{L^{p,q}_{e_{1}} (I\times\R^{d})}^{p}
+\\ & \lesssim
+\begin{aligned}[t]
+\int_{\R} \big\|e^{-it P } P_{N,e_{1} }& P_N  f(\cdot,x_{1},\cdot)\big\|_{L^{2}_{t}L^{2}_{x'} (I\times \R^{d-1})}^{p\frac{4-q}{q}}
+\\ & \times\big\|e^{-it P }  P_{N,e_{1} } P_N  f(\cdot,x_{1},\cdot)\big\|_{L^{4}_{t}L^{4}_{x'} (I \times \R^{d-1})}^{p\frac{2(q-2)}{q}} dx_1
+\end{aligned}
+\\ & \lesssim \|e^{-it P }   P_{N,e_{1} } P_N f\|_{L_{e_{1}}^{\infty, 2} (I\times \R^{d})}^{p\frac{4-q}{q}}
+ \|e^{-it P }  P_N f  \|_{L_{e_{1}}^{4,4}(I\times \R^d)}
+\end{aligned}
+\end{equation*}
+The bound on the first factor is provided by the anisotropic estimate \eqref{IK3}. The combination of Lemma \ref{bern}  with $(r_1, r_2) = (\frac{4d}{2d - s}, 4)$ with the Strichartz estimate \eqref{strichartze1} provides us with a band limited version of Strichartz estimates that can be used to control the second factor. We have
+\begin{equation}\label{IK2}
+\begin{aligned}
+\|e^{-it P }  P_N f  \|_{L_{e_{1}}^{4,4}(I\times \R^d)}  &= \|e^{-it P }  P_N f\|_{L_t^4 L_x^4 (I \times \R^d)}
+\\ & \lesssim   N^{\frac{d -s}{4}}\|e^{-it P }  P_N f\|_{L_t^4 L_x^{4d /(2d -s)} (I \times \R^d)}
+\\ &\lesssim   N^{\frac{d -s}{4}} \|P_N f\|_{L^2 (\R^d )}.
+\end{aligned}
+\end{equation}
+Combining the two estimates yields
+\begin{equation*}
+\big\|e^{-it P } P_{N,e_{1} } P_N  f\big\|_{L^{p,q}_{e_{1}} (I\times\R^{d})}^{p} \lesssim N^{X_2 \frac{(4-q)p}{q}+d -s}  \|P_N f\|_{L^2 (\R^d )}^p 
+\end{equation*}
+and \eqref{lemmaIKe2} follows. 
+
+Next, we prove  \eqref{lemmaIKe1}. This time, we interpolate between the frequency limited Strichartz estimate \eqref{IK2} and the anisotropic estimate \eqref{IK1}. Assuming that $q \geq p$, then it holds that $q \geq 4$ and for any $h\in L^\infty (\R^d )$ and any fixed \(x_{1}\) we have
+$$\|h (\cdot,x_{1},\cdot)\|_{L^q_{t}L^{q}_{x'} (I\times \R^{d-1})} \lesssim \|h(\cdot,x_{1},\cdot) \|_{L^\infty_{t}L^{\infty}_{x'} (I\times \R^{d-1} )}^{1-4/q} \|h(\cdot,x_{1},\cdot)\|_{L^4_{t}L^{4}_{x'} (I\times \R^{d-1} )}^{4/q}.$$
+Using this bound together with the Hölder inequality we get
+\begin{align*}
+& \big\|e^{-it P } P_N  f\big\|_{L^{p,q}_{e_{1}} (I\times\R^{d})}^{p}
+= \int_{\R} \big\|e^{-it P }  P_N f(\cdot,x_{1},\cdot) \big\|_{L^q_{t}L^{q}_{x'} (I \times \R^{d-1})}^p dx_1
+\\ &\qquad
+\begin{aligned}[t]
+\lesssim& \left(\int_\R \|e^{-it P }  P_N f(\cdot,x_{1},\cdot) \|_{L^\infty_{t}L^{\infty}_{x'} (I\times \R^{d-1})}^{(1- \frac{4}{q})p \beta'} dx_{1} \right)^{\frac{1}{\beta'}}
+\\ &\qquad \times \left(\int_{\R} \|e^{-it P }  P_N f(\cdot,x_{1},\cdot) \|_{L^4_{t}L^{4}_{x'} (I\times \R^{d-1})}^{\frac{4p \beta}{q}}) dx_{1} \right)^{\frac{1}{\beta}},
+\end{aligned}
+\end{align*}
+where we choose $\beta=\frac{q}{p}$ and $\beta' = \frac{q}{q-p}$ to satisfy \(\beta,\beta'\geq1\) and \(\frac{1}{\beta}+\frac{1}{\beta'}=1\). From the condition $1= \frac{2}{q} +\frac{2}{p}$ and the inequalities \eqref{IK1} and \eqref{IK2} we obtain
+\begin{align*}
+\int_\R \|e^{-it P}  P_N f(\cdot,x_{1},\cdot) \|_{L^q_{t}L^{q}_{x'} (I\times \R^{d-1})}^p dx_1 & \lesssim \|e^{-it P }  P_N f \|_{L^{2,\infty}_{e_{1}} (I\times \R^d )}^{2(1-\frac{p}{q})} \|e^{-it P }  P_N f \|_{L^4_{t}L^{4}_{x} (I\times \R^d)}^{4\frac{ p}{q}} \\
+&\lesssim N^{2X_1 (1-\frac{p}{q}) +(d-s) \frac{p}{q} } \|P_N f\|_{L^2 (\R^d)}^p ,
+\end{align*}
+which concludes the proof.
+\end{proof}
+
+
+\section{Linear estimates}\label{sec:lin}
+This section is devoted to the proof of linear Strichartz type estimates for solutions belonging to an `anisotropic Besov-type space' $X(I)$, $I\subset \R$ (see Proposition \ref{mainproplinearest}). 
+The norm of $X(I)$ is based on a decomposition of frequency space into dyadic anuli
+$$\|v\|_{X(I)}=\left(\sum_{N\in 2^{\Z}} \|P_N v\|^2_{X_N (I)}\right)^{\frac{1}{2}} \,,$$
+where the norm $X_N (I)$ is  defined as 
+$$\|P_N v\|_{X_N (I)}= N^\alpha\Big( \sum_{i=1}^{3} \|P_N v\|_{L_t^{q_i} L_x^{r_i} (I\times \R^d)} +N^{-\alpha(\tilde{p},\tilde{q}) } \sum_{l=1}^d \|P_N v \|_{L_{e_l}^{\tilde{p},\tilde{q} } (I\times \R^d)}\Big),$$
+where $(q_i ,r_i)$, $i=1,2,3$, are admissible pairs as in \eqref{defadmissible}, $1= \frac{2}{\tilde{p}} +\frac{2}{\tilde{q}}$ with $\alpha(\tilde{p},\tilde{q}) $ as in Lemma \ref{lemmaIK}, and $\alpha>0$ is a constant determined below. We  prove that if $v$ is a solution to
+$$\begin{cases}(i\partial_t - P)v =h, \ \textrm{on } \ I\times \R^d, \\ v(t_0)=0,   \end{cases}$$
+then
+$$\|P_N v\|_{X_N (I)} \lesssim \|P_N h\|_{G_N (I)}, $$
+where the norm $G_N (I)$ is given as 
+$$\|v\|_{G(I)}=\left(\sum_{N\in 2^{\Z}} \|P_N v\|^2_{G_N (I)}\right)^{\frac{1}{2}}.$$
+with
+$$\|P_N h\|_{G_N (I)} =\inf_{P_N h=h_N^{(1)} +h_N^{(2)}} 
+\Big\{N^\alpha \|h_N^{(1)} \|_{L_t^{1} L_x^{2} (I\times \R^d)} +\sum_{l=1}^d N^{\beta(A,B) +\alpha} \| h_N^{(2)}\|_{L_{e_l}^{A^\prime ,B^\prime} (I\times \R^d )} \Big\},
+$$
+where $1= \frac{2}{B} +\frac{2}{ A}$ and $\beta(A, B)$ is given by \eqref{beta-lemmaIK} from Lemma \ref{lemmaIK}. Notice that $(A', B') = (1,2)$ is a pair of exponents that is dual tothe pair of exponents $(A, B) = (\infty ,2)$, that satisfies the costraints of Lemma \ref{lemmaIK}.
+
+We begin with the following lemma.
+
+
+\begin{lem}
+\label{lemlinsecond}
+Fix $l \in \{1, \cdots, d\}$, $N\in 2^\Z$, and two time intervals $I,J \subset \R$. Then, for any andmissible pair $(q,r)$ in the sense of \eqref{defadmissible} and any $A,B$ 
+such that $1= \frac{2}{B} +\frac{2}{ A}$, and $h : I \cup J \times \R^d \to \R$ we have
+$$\left \|\int_J e^{-i(t-s) P} P_N h(s) ds\right\|_{L_t^q L_x^r (I\times \R^d )} \lesssim  \sum_{l=1}^d N^{\beta (A,B)} \|P_N h\|_{L_{e_l}^{A^\prime ,B^\prime} (J\times \R^d )} .$$
+Moreover, if $(\tilde{p},\tilde{q}) $ is such that $1= \frac{2}{\tilde{p}} +\frac{2}{\tilde{q}}$, then
+$$ \sum_{l=1}^d\left\|\int_J e^{-i(t-s) P} P_N h(s) ds \right\|_{L_{e_l}^{\tilde{p},\tilde{q}} (I\times \R^d)}\lesssim N^{\alpha(\tilde{p} ,\tilde{q})} \sum_{l=1}^d N^{\beta (A,B)} \|P_N h\|_{L_{e_l}^{A^\prime ,B^\prime} (J\times \R^d )}. $$
+\end{lem}
+
+
+\begin{proof}
+To simplify the notation, we do not indicate the dependence of $h$ on $x$. 
+By the Strichartz estimate \eqref{strichartze1}, if $(q,r)$ is admissible, then
+$$\left\|\int_J e^{-i(t-s) P} P_N h(s) ds\right\|_{L_t^q L_x^r (I\times \R^d)} \lesssim \left\|\int_J e^{is P } P_N h(s) ds\right\|_{L^2 (\R^d)} $$
+and the first assertion follows from \eqref{lemmaIKe1bis} if $A \geq B$.
+Next, by \eqref{e1}, we have
+\begin{align*}
+P_N 
+= P_{N}\Big( \prod_{l=1}^{d} \sum_{k=-d}^{d}P_{2^{k}N,e_{j}}\Big)\Big( \prod_{j=l+1}^{d} \big(1-\sum_{k' = -d}^{d} P_{2^{k'} N, e_j}\big)\Big)
+\end{align*}
+Since $P_{2^{k'}N,e_j}$ are bounded operators on $L^2_x (\R^d )$, we obtain that 
+$$\left\|\int_J e^{is P } P_N h(s) ds\right\|_{L^2 (\R^d )} \lesssim \sum_{k=-d}^{d}\sum^{d}_{l=1}\left\|\int_J e^{is P} P_{2^{k}N,e_l} P_N h(s) ds\right\|_{L^2 (\R^d )}.$$
+For consiceness, we drop the sum in \(k\) and assume \(k=0\). The modifications to address the other (finitely many) term are straightforward. Estimate \eqref{lemmaIKe2bis} implies that for $ A < B$, that 
+$$\sum_{l=1}^d  \left\|\int_J e^{is P} P_{N,e_l} P_N h(s) ds \right\|_{L^2 (\R^d )} \lesssim \sum_{l=1}^d N^{\beta (A,B)} \|P_N h\|_{L_{e_l}^{A^\prime ,B^\prime} (J\times \R^d )}$$
+and the first assertion follows. 
+
+
+To prove the second statement assume $1= \frac{2}{\tilde{p}} +\frac{2}{\tilde{q}}$ and $\tilde{q} < \tilde{p}$. Then, by 
+\eqref{lemmaIKe2}, it holds that 
+\begin{equation}
+\label{line1}
+\left\|\int_J e^{-i(t-s) P} P_N h(s) ds \right\|_{L_{e_l}^{\tilde p, \tilde q} (I\times \R^d)}\lesssim N^{\alpha ( \tilde{p},\tilde q)}  \left\|\int_J e^{is P } P_N h(s) ds \right \|_{L^2 (\R^d)} ,
+\end{equation}
+and we finish the estimate as above. Finally, if $1= \frac{2}{\tilde{p}} +\frac{2}{\tilde{q}}$ and $\tilde{q} \geq \tilde{p}$, then by \eqref{lemmaIKe1} and the fact that $(1-P_{N,e_l})$ is a bounded operator on $L^2_x (\R^d )$ we have 
+\begin{multline*}
+\left\|\int_J e^{-i(t-s) P} P_N h(s) ds \right\|_{L_{e_l}^{\tilde p, \tilde q} (I\times \R^d)} \\
+\begin{aligned}
+&=  \left\| \sum_{k = 1}^d P_{N, e_k} \prod_{j = 1}^{k-1} (I - P_{N, e_{j}}) \int_J e^{-i(t -s) P } P_N h(s) ds \right \|_{L_{e_l}^{\tilde p, \tilde q} (I\times \R^d)} \\
+&\lesssim N^{\alpha ( \tilde{p},\tilde q)} \sum_{k = 1}^d  \left\|  \prod_{j = 1}^{k-1} (I - P_{N, e_{j}}) \int_J e^{is P } P_N h(s) ds \right \|_{L^2 (\R^d)} \\
+&\lesssim N^{\alpha ( \tilde{p},\tilde q)} \sum_{k = 1}^d  \left\| \int_J e^{is P } P_N h(s) ds \right \|_{L^2 (\R^d)}
+\end{aligned}
+\end{multline*}
+and we conclude as above. 
+\end{proof}
+%Hence, to establish both asserted estimates, it suffices to estimate the right hand side of the above expression. 
+%So, $(p,q)$ is admissible and if $1= (d-2)/A +2 /B$, then
+%$$\|\int_J e^{-i(t-s) (\Delta^2 -\mu \Delta)} P_N h(s) ds\|_{L_t^q L_x^r} \leq  \sum_{l=1}^d N^{\beta_{B,A}} \|P_N h\|_{L_{e_l}^{B^\prime ,A^\prime}} $$
+
+
+
+%moreover, if $(\tilde{p},\tilde{q}) $ such that $1= \frac{d-2}{\tilde{p}} +2/\tilde{q}$, then
+%$$\|\int_J e^{-i(t-s) (\Delta^2 -\mu \Delta)} P_N h(s) ds \|_{L_e^{\tilde{p},\tilde{q}}}\leq N^{\alpha_{\tilde{p} ,\tilde{q}}} \sum_{l=1}^d N^{\beta_{B,A}} \|P_N h\|_{L_{e_l}^{B^\prime ,A^\prime}} $$
+
+
+
+\begin{lem}
+\label{lemlin}
+ Let $I\subset \R$ be a time interval such that $0=\inf I$ and fix $N\in 2^\Z$. Then, for any admissible $(p,q)$, see \eqref{defadmissible}, and any $(A, B)$ with $1= \frac{2}{B} +\frac{2}{A}$, we have
+$$\left\|\int_0^t e^{-i(t-s) P} P_N h(s) ds\right\|_{L_t^q L_x^r (I\times \R^d )} \lesssim  \sum_{l=1}^d N^{\alpha (A,B)} \left\|P_N h\right\|_{L_{e_l}^{A^\prime ,B^\prime} (I\times \R^d )} \,,$$
+where $\alpha(p, q)$ is as in Lemma \ref{lemmaIK}.
+Moreover, if $(\tilde{p},\tilde{q}) $ is such that $1= \frac{2}{\tilde{p}} +\frac{2}{\tilde{q}}$, with $\tilde{p} \leq \tilde{q}$, then
+$$ \sum_{l=1}^d\Big\|\int_0^t e^{-i(t-s) P} P_N h(s) ds \Big\|_{L_{e_l}^{\tilde{p},\tilde{q}} (I\times \R^d)}\lesssim 
+N^{\alpha(\tilde{p},\tilde{q}) + \alpha (A,B)} \sum_{l=1}^d  \|P_N h\|_{L_{e_l}^{A^\prime ,B^\prime} (I\times \R^d )}. $$
+\end{lem}
+\begin{rmq}
+
+\textnormal{
+The main difference between 
+ Lemma \ref{lemlin} and Lemma \ref{lemlinsecond} is the fact that the upper bound in the time integral in Lemma \ref{lemlin}   depends on $t$.
+}
+\end{rmq}
+
+
+\begin{proof}
+We only prove the second inequality  since the first one follows similarly.
+For simplicity, we write $(p, q)$ instead of $(\tilde{p}, \tilde{q})$. 
+For all $n\in \N$, there exists a partition $\{I_j^n\}_{j=1,\ldots ,2^n}$ of the interval $I$ into intervals
+with disjoint interiors such that $I_j^n = I_{2j - 1}^{n + 1} \cup I_{2j}^n$ and for any small $\varepsilon > 0$
+\begin{equation}
+\label{lemline1}
+\sum_{l=1}^d \|P_N h\|_{L_{e_l}^{p,q} (I_j^n \times \R^d)} \lesssim 2^{-(\frac{1}{2} + \varepsilon) n}\sum_{l=1}^d \|P_N h\|_{L_{e_l}^{p,q} (I \times \R^d) }.
+\end{equation}
+Note that $(I^n_j)_{j, n}$ is a dyadic-like partition of the interval. 
+
+Fix $t \in I$. Then, for almost every $t_1 \in [0, t]$, there exist a unique $n\in \N$ and $j\in \{1,\ldots ,2^n\}$ such that $t_1\in I_j^n$ and $t \in I_{j+1}^n$.
+Then, for $F := e^{i(t-s)P}P_N h$ and almost every $t$, we have
+$$\int_0^t F(s) ds = \sum_{n\in \N} \sum_{j=1}^{2^n} \mathbbm{1}_{I^n_{j+1}}(t) \int_{I_j^n} F(s) ds, $$
+where $\mathbbm{1}_{A}$ is a characteristic function of a set $A$. Consequently, since $(\sum f_j)^q = \sum f_j^q$ if 
+functions $f_j$ have disjoint supports,  the triangle inequality and  $p \leq q$ (implying that $z \mapsto z^{\frac{p}{q}}$ is sub-additive) yield that  % letting $1= \frac{2}{p} +\frac{2}{q}$ and $1= \frac{2}{B} +\frac{2}{A}$, we have
+\begin{multline*}
+\left \|\int_0^t F(s) ds \right\|_{L_{e_l}^{p,q}(I \times \R^d)} \leq \sum_{n\in \N} \Bigg \| \sum_{j=1}^{2^n} \mathbbm{1}_{I^n_{j+1}}(t) \int_{I^n_j} F(s) ds \Bigg\|_{L_{e_l}^{p,q}(I \times \R^d)} \\
+\begin{aligned}
+&= \sum_{n\in \N}\Bigg(\int_{\R} \Bigg(\sum_{j=1}^{2^n} \int_{I_{j+1}^n} \int_{\R^{d-1}} \left|\int_{I^n_j } F(s) ds \right|^q dx^\prime dt\Bigg)^{\frac{p}{q}}  dx_l \Bigg)^{\frac{1}{p}}\\
+&\lesssim \sum_{n\in \N} \Bigg(\sum_{j=1}^{2^n} \Bigg(\left\|\int_{I_j^n} F(s) ds \right\|_{L_{e_l}^{p,q} (I_{j+1}^n \times \R^d)} \Bigg)^p \Bigg)^{\frac{1}{p}}.
+\end{aligned}
+\end{multline*}
+We use Lemma \ref{lemlinsecond}, \eqref{lemline1}, and $p \geq 2$  to further estimate 
+\begin{multline*}
+\left\|\int_0^t e^{-i(t-s) P} P_N h(s) ds \right\|_{L_{e_l}^{p,q}(I \times \R^d)}\\
+\begin{aligned}
+&\lesssim  \sum_{l = 1}^d \sum_{n\in \N} 2^{\frac{n}{p}} 2^{-(\frac{1}{2} + \varepsilon ) n}  N^{\alpha (p,q)} N^{\beta (A,B)} \|P_N h\|_{L_{e_l}^{A^\prime ,B^\prime}(I\times \R^d )}  \\
+&\lesssim  \sum_{l = 1}^d N^{\alpha (p ,q)}  N^{\beta (A,B)} \|P_N h\|_{L_{e_l}^{A^\prime ,B^\prime} (I\times \R^d )}
+\end{aligned} 
+\end{multline*}
+as desired.
+\end{proof}
+
+
+
+
+
+We are now in position to prove the main result of this section.
+
+\begin{prop}
+\label{mainproplinearest}
+Let $I\subset \R$ be a  time interval with $t_0 \in I$ and fix admissible $(q_i, r_i)$, $i = 1, 2, 3$ and $(\tilde{p}, \tilde{q})$ with $1 = \frac{2}{\tilde{p}} + \frac{2}{\tilde{q}}$, and $\alpha > 0$
+to define the norm of $X_N(I)$. Also, fix $(A, B)$ with $1 = \frac{2}{A} + \frac{2}{B}$ to define the norm of $G_N(I)$.
+For $v_0 \in \dot{H}^\alpha (\R^d)$, assume that $v:I \times \R^d \rightarrow \mathbb{C}$ is a solution to
+$$\begin{cases}(i\partial_t - P)v =h \ on\ I\times \R^d \\ v(t_0)=v_0   \end{cases}$$
+Then, for all admissible $(q,r)$ we have
+$$N^\alpha \| P_N v\|_{L_t^q L_x^r (I\times \R^d)}+ \| P_N v\|_{X_N (I)} \lesssim N^\alpha \|P_N v_0 \|_{L_x^2 (\R^d )} + \|P_N h\|_{G_N (I)}\,.$$
+%where the constant can depend on $|I|$. 
+%$(p,q)$ admissible, $1= (d-2)/\tilde{q} +2/\tilde{p}$, $(P,Q)$ admissible
+%$$N^\alpha \|\int_0^t e^{-i(t-s) (\Delta^2 -\mu \Delta)} P_N h(s) ds \|_{L_t^q L_x^r (I\times \R^d )} + N^{\alpha-\alpha_{\tilde{q}} } \sum_{l=1}^d \|\int_0^t e^{-i(t-s) (\Delta^2 -\mu \Delta)} P_N v_0 ds \|_{L_{e_l}^{\tilde{p} ,\tilde{q}}(I\times \R^d) } \leq N^\alpha \|P_N h\|_{L_t^{Q^\prime} L_x^{P^\prime} (I\times \R^d )} $$
+%If $(p,q)$ is admissible and if $1= (d-2)/A +2 /B$, $1= \frac{d-2}{\tilde{p}} +2/\tilde{q}$, then
+%$$N^\alpha \|\int_J e^{-i(t-s) (\Delta^2 -\mu \Delta)} P_N h(s) ds\|_{L_t^q L_x^r} + \sum_{l=1^d} N^{\alpha-\alpha_{\tilde{q}}} |\int_J e^{-i(t-s) (\Delta^2 -\mu \Delta)} P_N h(s) ds \|_{L_e^{\tilde{p},\tilde{q}}} \leq  \sum_{l=1}^d N^{\beta_{B,A} +\alpha} \|P_N h\|_{L_{e_l}^{B^\prime ,A^\prime}} $$
+In particular,
+$$ \| v \|_{L_t^q W_x^{\alpha ,r} (I\times \R^d)}+\|v\|_{X(I)}\lesssim \|v_0\|_{\dot{H}^\alpha (\R^d)} +\|h\|_{G(I)}.$$
+\end{prop}
+
+
+\begin{proof}
+We assume without loss of generality that $t_0 = 0=\inf I$ and all spacial norms are on $\R^d$ and space-time norms are on $I \times \R^d$. By Duhamel's formula,
+$$P_N v(t)= e^{-it P}P_N v_0 - i \int_0^t e^{-i(t-s) P} P_N h(s) ds. $$
+From Lemma \ref{strichartz} and \ref{lemmaIK}, and definition of $X_N(I)$ follows
+$$N^\alpha \|e^{-it P} P_N v_0 \|_{L_t^q L_x^r } + \|e^{-it P} P_N v_0 \|_{X_N (I)} \lesssim N^\alpha \|P_N v_0\|_{L_x^2}.$$
+Next, let $(q, r)$ be  admissible and let $1= \frac{2}{\tilde{p}} +\frac{2}{\tilde{q}}$. 
+
+
+By Lemma \ref{strichartz} and \eqref{line1}, we find that 
+\begin{align*}
+N^\alpha  \left\|\int_0^t e^{-i(t-s) P} P_N h(s) ds\right\|_{L_t^q L_x^r } 
+ &\leq N^\alpha  \left\|\int_I \|e^{- i t P} P_N h(s)\|_{L_x^r} ds\right\|_{L_t^q} 
+ \\
+ &\leq N^\alpha  
+\int_I \|e^{- i t P} P_N h(s)\|_{L_t^qL_x^r} ds
+\\
+& \lesssim N^\alpha \int_I \|P_N h(s)\|_{L^2_x} ds \\
+&= \|P_N h\|_{L^1_tL^2_x}.
+\end{align*}
+Analogously, by using \eqref{lemmaIKe1}, we get
+\begin{align*}
+ \sum_{l=1}^d N^{\alpha -\alpha (\tilde{p},\tilde q)} \left\|\int_0^t e^{-i(t-s) P} P_N h(s) ds\right\|_{L_{e_l}^{\tilde{p},\tilde q}  }
+& \lesssim 
+ \sum_{l=1}^d N^{\alpha -\alpha (\tilde{p},\tilde q)} \int_I \left\| e^{-it P} P_N h(s) \right\|_{L_{e_l}^{\tilde{p},\tilde q}  } ds \\
+ &\lesssim \|P_N h\|_{L^1_tL^2_x}.
+\end{align*}
+Using Lemma \ref{lemlin}, we also obtain for $1= \frac{2}{B} +\frac{2}{A}$ that
+\begin{multline*}
+N^\alpha  \left\|\int_0^t e^{-i(t-s) P} P_N h(s) ds\right\|_{L_t^q L_x^r} + \sum_{l=1}^d N^{\alpha -\alpha (\tilde{p},\tilde q )}   
+\left\|\int_0^t e^{-i(t-s) P} P_N h(s) ds\right\|_{L_{e_l}^{\tilde{p},\tilde q}  }\\
+ \lesssim N^{\alpha +\beta (A,B)}  \|P_N h\|_{L_{e_l}^{A^\prime ,B^\prime} } .
+\end{multline*}
+Since $(q, r)$ was an arbitrary admissible pair, we can repeat the same reasoning with $(q, r) = (q_i, r_i)$, $i = 1, 2, 3$ and obtain the desired result.
+\end{proof}
+
+We also need to define another norm $Y(I)$ which is used to control parts of the nonlinearity. As for the norm on $X(I)$ and $G(I)$, the definition relies on a dyadic decomposition
+$$\|f\|_{Y(I)} = (\sum_{N\in 2^{\Z}}  \|P_N f\|_{Y_N(I)}^2)^{\frac{1}{2}},$$
+with
+\begin{align*}
+\|P_N f\|_{Y_N(I)}&= \langle N\rangle^C \left(\|P_N f\|_{L_t^{\frac{2(s+d)}{d}} L_x^{\frac{2(s+d)}{s}} (I\times \R^d)} +\|P_N f\|_{L_t^{\frac{2(s+d)}{s}} L_x^{\frac{2(s+d)}{s}}(I\times \R^d) } \right)\\
+&+\langle N\rangle^A \sum_{l=1}^d \|P_{N,e_l} P_N f \|_{L^{\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}}_{e_l}(I\times \R^d) } +N^{-B} \sum_{l=1}^d \|P_N f\|_{L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (I\times \R^d) },  
+\end{align*}
+for some positive constants $A,B$, and $C$ fixed below.
+
+
+
+Finally, we conclude this section by stating a continuity property for the norms $X(I)$ and $Y(I)$ with respect to the interval which follows from the dominated convergence theorem.
+
+\begin{lem}
+\label{lemcontt}
+%\begin{itemize}
+%\item
+ Let $I\subset \R$ be a closed interval. Assume that $\|v\|_{X(I)}<\infty $  and $\|F\|_{Y(I)}<\infty$. Then the mappings
+$$t\in I \rightarrow \|v\|_{X([\inf I,t])},\qquad t\in I \rightarrow \|F\|_{Y([\inf I,t])}$$
+and
+$$t\in I \rightarrow \|v\|_{X([t,\sup I])},\qquad t\in I \rightarrow \|F\|_{Y([t,\sup I])}$$
+are continuous. We can also allow half-open and open intervals $I$.
+%\item NOT NECESSARY Let $I\subset \R$ be an interval and let $v\in X(I)$, $F\in Y(I)$. For any partition of the interval $I$ into consecutive intervals $I_j,\ j=1,%\ldots ,J$, with disjoint interiors it holds that, for any $p>2$,
+%$$\| \{\|v\|_{X(I_j)} \}_{j=1}^J\|_{l_j^p}\leq \|v\|_{X(I)},\ \| \{\|F\|_{Y(I_j)} \}_{j=1}^J\|_{l_j^p}\leq \|F\|_{Y(I)}$$
+%\end{itemize}
+\end{lem}
+
+\section{Nonlinear estimates}\label{sec:nonlin}
+Our goal in this section is to estimate the $G (I)$ norm of $|F+v|^2 (F+v)$, where $v$ is a fixed function 
+with finite $X(I)$ norm and $F$ is a lower regularity forcing term with finite $Y(I)$ norm. According to the definition of the norm $G(I)$, it suffices to prove one of two types of estimates. First, when $v$ appears at the 
+highest frequency, we  use the $L^1_t L^2_x$ part of $G_N$ and the proof uses a combination of H\" older and Strichartz estimates. Second, when $F$ appears at the highest frequency, 
+we  use the $L_{e_l}^{A^\prime,B^\prime}$ part of $G_N$ for $A^\prime\approx 1+$ and $B^\prime\approx 2-$. For such choice of $(A', B')$, 
+$\beta (A,B)=\beta (\infty- , 2+)= \dfrac{1-s}{2}-$ which allows us to  gain some derivatives. In the argument we bound the highest frequency term $F$ in the $L^{\infty- ,2+}$ component of the $Y_N$ norm 
+gaining once more $ \dfrac{1-s}{2}-$ derivatives with the help of \eqref{IK3}. We control the remaining terms by using Strichartz and maximal function type $L_{e_l}^{2+,\infty-}$ estimates. 
+%Let us remark that our restrictions on $S$ in Theorem \ref{mainthm} originate from the $|F|^2 F$ term. 
+In the following proposition, we need the specific form of $X_N$ and $Y_N$:
+\begin{align*}
+\|P_N v\|_{X_N (I)}
+&= N^{\frac{d-s}{2}} \bigg( \|P_N v\|_{L_t^{2} L_x^{\frac{2d}{d-s}} (I\times \R^d)} +\|P_N v\|_{L_t^{2\frac{s+d}{d}} L_x^{2\frac{s+d}{d}} (I\times \R^d)} \\
+& \pushright{ + \|P_N v\|_{L_t^{2\frac{s+d}{s}} L_x^{\frac{2(s+d)d}{(s+d)d-s^2}} (I\times \R^d)}     \bigg)}
+ \\
+&\qquad+N^{\frac{d-s}{2}-\alpha(\frac{4}{2-\varepsilon}, \frac{4}{\varepsilon})  } \sum_{l=1}^d \|P_N v \|_{L_{e_l}^{\frac{4}{2-\varepsilon}, \frac{4}{\varepsilon}} (I\times \R^d)},
+\end{align*}
+and
+\begin{align*}
+\|P_N f\|_{Y_N(I)}&= \langle N\rangle^C \left(\|P_N f\|_{L_t^{\frac{2(s+d)}{d}} L_x^{\frac{2(s+d)}{s}} (I\times \R^d)} +\|P_N f\|_{L_t^{\frac{2(s+d)}{s}} L_x^{\frac{2(s+d)}{s}}(I\times \R^d) } \right)\\
+&+\langle N\rangle^A \sum_{l=1}^d \|P_{N,e_l} P_N f \|_{L^{\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}}_{e_l}(I\times \R^d) } +N^{-B} \sum_{l=1}^d \|P_N f\|_{L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (I\times \R^d) },  
+\end{align*}
+where $A, B, C \geq 0$, and $\varepsilon \in (0, 2)$ are chosen such that the following holds true
+\begin{equation}\label{recc}
+C \geq \frac{s(d-s)}{4(s+d)},
+\end{equation} 
+\begin{gather}
+\label{relAB}
+A\geq \frac{d+1}{2} -s +\varepsilon \dfrac{d+s-2}{4} +2B  \\
+\label{relAB1}
+A\theta_1 +C (1-\theta_1)>\beta \left( \frac{4}{\varepsilon}, \frac{4}{2-\varepsilon}\right)+\frac{d-s}{2},\qquad \theta_1=\frac{d-s - \alpha (\frac{4}{2-\varepsilon},\frac{4}{\varepsilon})}{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon})}, \\
+\label{relAB2}
+A\theta_2 +C(1-\theta_2 )> \beta \left(\frac{4}{\varepsilon}, \frac{4}{2-\varepsilon}\right) +\frac{d-s}{2} +B,\qquad \theta_2= \frac{d-s}{2\alpha  (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) }. 
+\end{gather}
+Notice that \eqref{relAB} and \eqref{relAB1} after observing that $\theta_2 = (\theta_1 + 1)/2$, imply  \eqref{relAB2}, thus it can be neglected. 
+Below, we check that such choice of $A, B, C \geq 0$, and $\varepsilon \in (0, 2)$ is indeed possible.
+
+\begin{prop}
+\label{mainpropnonlinear}
+Let $N \lesssim N_1 $ and $N_1 \geq N_2 \geq N_3$ be dyadic integers $2^{\Z}$. Let $I \subset \R$ be an interval. Assume that $\varepsilon < 2\frac{s-1}{d+s-2}$ and $\varepsilon>2 \frac{2s-d-1}{d+s-2}$ if $s>\frac{d+1}{2}$. Then, for any $e\in \{e_1, \cdots , e_d\}$, and already fixed constants in $X_N(I)$ and $Y_N(I)$ norms we have the following estimates:
+
+\noindent
+Term (1):
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1 P_{N_2} v_2 P_{N_3}v_3)\|_{L^1_t L_x^2}\\
+\lesssim \left(\dfrac{N}{N_1}\right)^{\alpha} \left(\dfrac{N_3}{N_2}\right)^{\alpha_1} \|P_{N_1}v_1\|_{X_{N_1}}\|P_{N_2}v_2\|_{X_{N_2}} \|P_{N_3}v_3\|_{X_{N_3}}. 
+\end{multline*}
+\noindent
+Term (2):
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1 P_{N_2} F_2 P_{N_3}v_3)\|_{L^1_t L_x^2}\\
+\lesssim \left(\dfrac{N}{N_1}\right)^{\alpha} \left(\frac{N_3}{N_2} \right)^{\frac{(d-s)s}{4(d+s)}}  \|P_{N_1}v_1\|_{X_{N_1}}\|P_{N_2}F_2\|_{Y_{N_2}} \|P_{N_3}v_3\|_{X_{N_3}}. 
+\end{multline*}
+\noindent
+Term (3):
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1 P_{N_2} F_2 P_{N_3}F_3)\|_{L^1_t L_x^2}\\
+\lesssim \left(\dfrac{N}{N_1}\right)^{\alpha} \left(\dfrac{N_3}{N_2}\right)^{C} \|P_{N_1}v_1\|_{X_{N_1}}\|P_{N_2}F_2\|_{Y_{N_2}} \|P_{N_3}F_3\|_{Y_{N_3}}. 
+\end{multline*}
+\noindent
+Term (4):
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1 P_{N_2} v_2 P_{N_3}F_3)\|_{L^1_t L_x^2}\\
+\lesssim \left(\dfrac{N}{N_1}\right)^{\alpha} \left(\dfrac{N_3}{N_2}\right)^{\frac{ds}{2(s+d)}} \|P_{N_1}v_1\|_{X_{N_1}}\|P_{N_2}v_2\|_{X_{N_2}} \|P_{N_3}F_3\|_{Y_{N_3}}. 
+\end{multline*}
+\noindent
+Term (5):
+\begin{multline*}
+N^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}) +\alpha} \|P_N (P_{N_1} F_1 P_{N_2} F_2 P_{N_3} F_3) \|_{L_e^{\frac{4}{4-\varepsilon} , \frac{4}{2+\varepsilon}} }\\
+ \lesssim \left(\dfrac{N}{N_1}\right)^{\beta  (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon})+ \alpha} \left(\dfrac{N_2}{N_1}\right)^B \left(\dfrac{N_3}{N_1}\right)^{B} 
+ \|P_{N_1}F_1\|_{Y_{N_1}}\|P_{N_2}F_2\|_{Y_{N_2}} \|P_{N_3}F_3\|_{Y_{N_3}}.  
+\end{multline*}
+\noindent
+Term (6):
+\begin{multline*}
+N^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}) +\alpha} \|P_N (P_{N_1} F_1 P_{N_2} v_2 P_{N_3} v_3) \|_{L_e^{\frac{4}{4-\varepsilon} , \frac{4}{2+\varepsilon}} }\\
+ \lesssim \left(\dfrac{N}{N_1}\right)^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon})+\alpha} \left(\dfrac{N_3}{N_2}\right)^{\alpha  (\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}) -\alpha} \|P_{N_1}F_1\|_{Y_{N_1}}\|P_{N_2}v_2\|_{X_{N_2}} \|P_{N_3}v_3\|_{X_{N_3}}.  
+\end{multline*}
+\noindent
+Term (7):
+\begin{multline*}
+N^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}) +\alpha} \|P_N (P_{N_1} F_1 P_{N_2} F_2 P_{N_3} v_3) \|_{L_e^{\frac{4}{4-\varepsilon} , \frac{4}{2+\varepsilon}} }\\
+ \lesssim \left(\dfrac{N}{N_1}\right)^{\beta  (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon})+\alpha} \left(\dfrac{N_2}{N_1}\right)^{B} \|P_{N_1}F_1\|_{Y_{N_1}}\|P_{N_2}F_2\|_{Y_{N_2}} \|P_{N_3}v_3\|_{X_{N_3}}.  
+\end{multline*}
+\noindent
+Term (8):
+\begin{multline*}
+N^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}) +\alpha} \|P_N (P_{N_1} F_1 P_{N_2} v_2 P_{N_3} F_3) \|_{L_e^{\frac{4}{4-\varepsilon} , \frac{4}{2+\varepsilon}} }\\
+ \lesssim \left(\dfrac{N}{N_1}\right)^{\beta  (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon})+\alpha} \left(\dfrac{N_3}{N_1}\right)^{B} \|P_{N_1}F_1\|_{Y_{N_1}}\|P_{N_2}v_2\|_{X_{N_2}} \|P_{N_3}F_3\|_{Y_{N_3}}.  
+\end{multline*}
+Here, all the norms are taken over $I\times \R^d$, $\alpha = \dfrac{d-s}{2}$ is as in the definition of $X_N$, and $\alpha_1>0$
+is a number determined by other parameters, but independent of $N$. 
+% and $\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}) = \dfrac{1-s}{2}+\varepsilon \dfrac{d+s-2}{4}$. 
+\end{prop}
+
+\begin{cor}\label{cor:wis}
+Assume the assumptions of Proposition \ref{mainpropnonlinear}, and set $(A', B') = (\frac{4}{4 - \varepsilon}, \frac{4}{2 + \varepsilon})$, that is, $(A, B) = (\frac{4}{\varepsilon}, \frac{4}{2 - \varepsilon})$ 
+in the definition of $G(I)$. Then, 
+for any $F\in Y(I)$, and any $v,v_1,v_2\in X(I)$, we have
+$$\||F+v|^2 (F+v)\|_{G(I)}\lesssim \|F\|_{Y(I)}^3 +\|v\|_{X(I)}^3,$$
+and
+\begin{multline*}
+\||F+v_1|^2 (F+v_1) - |F+v_2|^2 (F+v_2) \|_{G(I)} \\
+\lesssim \|v_1 - v_2\|_{X(I)} (\|F\|^2_{Y(I)} +\|v_1\|_{X(I)}^2 +\|v_2\|_{X(I)}^2).
+\end{multline*}
+\end{cor}
+
+\begin{proof}
+After standard algebraic manipulations and a use of triangle inequality, we have to estimate terms of the form $\|g_1 g_2g_3\|_{G(I)}$, where $g_i$ stands for either $F$, $v$, or their conjugates
+in the first claim and for $F$, $v_i$, $v_1 - v_2$, or their conjugates in the second claim. By the definition of $G(I)$, for each $N \in 2^\Z$ it suffices  to estimate $P_N(g_1 g_2g_3)$, which equals
+$$
+P_N(g_1 g_2g_3) = \sum_{\sigma} \sum_{N_1, N_2, N_3 \in 2^\Z} P_N(P_{N_1}g_{\sigma(1)} P_{N_2}g_{\sigma(2)} P_{N_3} g_{\sigma(3)})  \,,
+$$
+where the first sum is over all permutations $\sigma$ of the set $\{1, 2, 3\}$.
+After relabeling, we can without loss of generality assume $N_1 \geq N_2 \geq N_3$. Since $P_{N_i} g_i$ is supported in the Fourier space around $\approx N_i$ and Fourier transform 
+maps products to convolutions, we obtain that $P_N(P_{N_1}g_1 P_{N_2}g_2 P_{N_3} g_3) \equiv 0$ if $N \gtrsim N_1+ N_2 + N_3$, and in particular for $N \gtrsim N_1$. 
+Hence, by the triangle inequality is suffices to estimate  $P_N(P_{N_1}g_1 P_{N_2}g_2 P_{N_3} g_3)$ in either in $L^1_tL^2_x$ or $L^{A', B'}_{e_l}$ norm for any $N_3 \leq N_2 \leq N_1$ and $N \lesssim N_1$, 
+where the norm on $g_i$ is either $X(I)$ or $Y(I)$ and $g_i$ is respectively $v_j$ (or the difference of some $v$) or $F$.
+
+For an illustration, we estimate the term $P_N(P_{N_1} v P_{N_2} F P_{N_3} F)$, in $L^1_tL^2_x$, all other terms follow similarly. By Proposition \ref{mainpropnonlinear}, term (3) 
+and $N_3 \leq N_2$ we have
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v P_{N_2} F P_{N_3}F)\|_{L^1_t L_x^2} \\
+\lesssim \left(\dfrac{N}{N_1}\right)^{\zeta}   \left(\dfrac{N}{N_1}\right)^{\eta}  \|P_{N_1}v\|_{X_{N_1}}\|P_{N_2}F\|_{Y_{N_2}} \|P_{N_3}F\|_{Y_{N_3}}
+\end{multline*} 
+for some $\zeta, \eta > 0$. 
+Then, by the definition of $G_N$, we get
+\begin{align*}
+\|P_N(vF^2)\|_{G_N(I)}  \lesssim  \sum_{\substack{N_1, N_2, N_3 \in 2^\Z\\ N_1 \geq N_2 \geq N_3}}  \left(\dfrac{N}{N_1}\right)^{\zeta} \left(\dfrac{N_3}{N_2}\right)^{\eta} \|P_{N_1}v\|_{X_{N_1}}\|P_{N_2}F\|_{Y_{N_2}} \|P_{N_3}F\|_{Y_{N_3}}\,,
+\end{align*}
+and consequently by dropping the restriction $N_2 \leq N_1$
+\begin{align*}
+\|vF^2\|_{G(I)}^2  \lesssim \sum_{N \in 2^\Z}  \Bigg(\sum_{\substack{N_1, N_2, N_3 \in 2^\Z\\ N_1 \geq N_2 \geq N_3\\ N \lesssim N_1}} 
+ \left(\dfrac{N}{N_1}\right)^{\zeta}  \left(\dfrac{N_3}{N_2}\right)^{\eta}  \|P_{N_1}v\|_{X_{N_1}}\|P_{N_2}F\|_{Y_{N_2}} \|P_{N_3}F\|_{Y_{N_3}} \Bigg)^2 \\
+ \lesssim \sum_{N \in 2^\Z}  \Bigg(\sum_{\substack{N_1 \in 2^\Z \\N \lesssim N_1}} \left(\dfrac{N}{N_1}\right)^{\zeta}  \|P_{N_1}v\|_{X_{N_1}}\Bigg)^2 
+\Bigg( \sum_{\substack{N_2, N_3 \in 2^\Z \\ N_2 \geq  N_3}} \left(\dfrac{N_3}{N_2}\right)^{\eta}  \|P_{N_2}F\|_{Y_{N_2}} \|P_{N_3}F\|_{Y_{N_3}} \Bigg)^2 \\
+\end{align*}
+Next, using discrete convolution inequality and summability of $\left(\frac{N}{N_1}\right)^{\zeta}$ in $N \lesssim N_1$, we obtain
+\begin{align*}
+ \sum_{N \in 2^\Z}  \Bigg(\sum_{\substack{N_1 \in 2^\Z \\ N \lesssim N_1}} \left(\dfrac{N}{N_1}\right)^{\zeta}  \|P_{N_1}v\|_{X_{N_1}}\Bigg)^2  \lesssim  \sum_{N_1 \in 2^\Z} \|P_{N_1}v\|_{X_{N_1}}^2 = \|v\|_{X}^2 \,.
+\end{align*}
+Also, using Cauchy inequality and discrete convolution inequality, we have 
+\begin{multline*}
+\Bigg( \sum_{\substack{N_2, N_3 \in 2^\Z \\ N_2 \geq  N_3}} \left(\dfrac{N_3}{N_2}\right)^{\eta}  \|P_{N_2}F\|_{Y_{N_2}} \|P_{N_3}F\|_{Y_{N_3}} \Bigg)^2  \\ 
+\begin{aligned}
+&=\Bigg(\sum_{N_2\in 2^\Z} \|P_{N_2}F\|_{Y_{N_2}}  \sum_{\substack{ N_3 \in 2^\Z \\ N_2 \geq  N_3}} \left(\dfrac{N_3}{N_2}\right)^{\eta}  \|P_{N_3}F\|_{Y_{N_3}} \Bigg)^2 \\
+&\leq \sum_{N_2\in 2^\Z} \|P_{N_2}F\|_{Y_{N_2}}^2 \sum_{N_2\in 2^\Z} \Bigg(\sum_{\substack{N_3 \in 2^\Z \\ N_2 \geq  N_3}} \left(\dfrac{N_3}{N_2}\right)^{\eta}  \|P_{N_3}F\|_{Y_{N_3}} \Bigg)^2 \\
+&\lesssim \|F\|_Y^2 \sum_{N_3\in 2^\Z}\|P_{N_3}F\|_{Y_{N_3}} ^2 \\
+&= \|F\|_Y^4 ,
+\end{aligned}
+\end{multline*}
+as desired. 
+\end{proof}
+
+
+\begin{proof}[Proof of Proposition \ref{mainpropnonlinear}]
+We begin by proving the first four estimates. We use repeatly H\" older's inequality and Bernstein estimates (see Lemma \ref{bern}). To simplify our notation, for fixed $\varepsilon$, we
+ denote 
+$$
+\beta := \alpha \left( \frac{4}{\varepsilon}, \frac{4}{2-\varepsilon}\right) =  \beta \left(\frac{4}{\varepsilon}, \frac{4}{2-\varepsilon}\right) = \dfrac{1-s}{2}+\varepsilon \dfrac{d+s-2}{4}
+$$
+and 
+\begin{align*}
+(q_1, q_2, q_3) &= \left(2, \frac{2(s+d)}{d}, \frac{2(s+d)}{s}\right), \\
+ (r_1, r_2, r_3) &= \left(\frac{2d}{d-s}, \frac{2(s+d)}{d}, \frac{2(s+d)d}{(s+d)d - s^2}\right) \,.
+\end{align*}
+Let us recall that
+$$\|P_N v\|_{X_N (I)}= N^\alpha \sum_{i=1}^{3} \|P_N v\|_{L_t^{q_i} L_x^{r_i} (I\times \R^d)} +N^{\alpha-\alpha(\tilde{p},\tilde{q}) } \sum_{l=1}^d \|P_N v \|_{L_{e_l}^{\tilde{p},\tilde{q} } (I\times \R^d)},$$
+where $(q_i ,r_i)$, $i=1,2,3$, are admissible couples, $1= \frac{2}{\tilde{p}} +\frac{2}{\tilde{q}}$ and $\alpha>0$ fixed above. Note that the choice of $q_i$ implies 
+\begin{equation}\label{soq}
+\sum_{i=1}^3 \dfrac{1}{q_i}=1. 
+\end{equation}
+%\ \text{and} \sum_{i=1}^3 \dfrac{1}{r_i}=\dfrac{1}{2}.$$
+%
+%We also want the couple $(q_2,q_2)$ to be admissible namely $q_2=r_2=2\dfrac{s+d}{d} $. Then, we choose $q_1=2$ which implies that $r_1=\frac{2d}{d-s} $, $q_3=2\frac{s+d}{s}$ and $r_3=\frac{2(2s+d)d}{(2s+d)d - 2s^2}$. We will also deduce that it is necessary to take $\alpha = \dfrac{d-s}{2}$. To resume that we said, $X_N(I)$ has the following form
+%\begin{align*}
+%&\|P_N v\|_{X_N (I)}\\
+%&= N^{\frac{d-s}{2}} \left( \|P_N v\|_{L_t^{2} L_x^{\frac{2d}{d-s}} (I\times \R^d)} +\|P_N v\|_{L_t^{2\frac{s+d}{d}} L_x^{2\frac{s+d}{d}} (I\times \R^d)}+\|P_N v\|_{L_t^{2\frac{s+d}{s}} L_x^{\frac{2(2s+d)d}{(2s+d)-2s^2}} (I\times \R^d)}     \right) \\
+%&+N^{\frac{d-s}{2}-\alpha(\tilde{p},\tilde{q}) } \sum_{l=1}^d \|P_N v \|_{L_{e_l}^{\tilde{p},\tilde{q} } (I\times \R^d)}.
+%\end{align*}
+%Concerning the $Y_N$ norm, we will need to have $C=\dfrac{s(d-s)}{2(s+d)}$. Let us point out that the regularity of the initial data of \eqref{eqintro} is directly linked with the value of $A,B$ and $C$.
+
+
+
+\textbf{Term (1)}: $v_1 v_2 v_3$. 
+Fix $p_i$, $i = 1, 2, 3$ such that $\frac{1}{2}=\frac{1}{p_1}+\frac{1}{p_2} +\frac{1}{p_3} $, with $p_1=r_1$, $p_2 \geq r_2$ and $p_3 > \max\{p_3, \frac{2(d + s)}{s} \}$. 
+%Then,  Sobolev's embedding yield
+%$W^{\frac{d q_i -2s}{2 q_i}-\frac{d}{p_i} , \frac{2d q_i}{d q_i -2s} } \hookrightarrow L^{p_i}$. 
+Then, since $P_N$ is bounded on $L^2$, H\" older
+inequality,  Lemma \ref{bern} with $(r_1, r_2) = (r_i, p_i)$ and the definition of $X_N$ imply
+%Let $1/q^\prime = 1 - 1/q = 1/q_1 +1/q_2 +1/q_3$, $p= 2dq/(dq -8) $, $1/p^\prime = 1- \frac{dq -8}{2dq}= 1/p_1 +1/p_2 +1/p_3$. 
+\begin{align*}
+N^\alpha \|P_N (P_{N_1} v_1  P_{N_2} v_2 P_{N_3} v_3) \|_{L_t^{1} L_x^{2}} &\lesssim N^\alpha \prod_{i=1}^3 \|P_{N_i} v_i \|_{L_t^{q_i}L_x^{p_i}} \\
+&\lesssim N^\alpha \prod_{i=1}^3 N_i^{\frac{d}{r_i}- \frac{d}{p_i}} \|P_{N_i} v_i \|_{L_t^{q_i}L_x^{r_i}} \\
+&\lesssim N^\alpha \prod_{i=1}^3 N_i^{\frac{d}{r_i}- \frac{d}{p_i} -\alpha } \|P_{N_i} v_i\|_{X_{N_i}}  .
+\end{align*}
+Using \eqref{soq}, $\frac{1}{2} = \frac{1}{r_1} + \frac{1}{r_2} + \frac{1}{r_3}$, $(q_1,p_1) = (q_1, r_1)$ is admissible, and $\alpha =\frac{d-s}{2}$, we have
+$$\alpha_1 :=  \frac{d}{ r_3} - \frac{d}{p_3} -\alpha = -\left(\frac{d}{ r_2}- \frac{d}{p_2} -\alpha\right) > 0 \,,$$
+where the last inequality holds for any $p_3 > \frac{2(d + s)}{s}$, as  assumed. 
+Hence,
+$$N^\alpha \|P_N (P_{N_1} v_1  P_{N_2} v_2 P_{N_3} v_3) \|_{L_t^{1} L_x^{2}} \lesssim \left(\frac{N}{N_1}\right)^\alpha \left(\frac{N_3}{N_2}\right)^{\alpha_1} \prod_{i=1}^3 \|P_{N_i} v_i \|_{X_{N_i}} \,,$$
+as desired.
+
+
+\textbf{Term (2)}: $v_1 F_2 v_3$. By the definition of $(q_i, r_i)$, H\" older inequality, 
+and Lemma \ref{bern} with $(r_1, r_2) = (r_2, \frac{2d (s+d)}{s^2})$, we have
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1  P_{N_2} F_2 P_{N_3} v_3) \|_{L_t^{1} L_x^{2}} \\
+\begin{aligned}
+& \lesssim  N^\alpha \|P_{N_1} v_1\|_{L_t^{q_1}L_x^{r_1}} \|P_{N_2} F_2\|_{L_t^{q_3 } L_x^{q_3}} \|P_{N_3} v_3\|_{L_t^{q_2} L_x^{\frac{2d (s+d)}{s^2}}}\\
+& \lesssim \left(\frac{N}{N_1}\right)^\alpha \|P_{N_1} v_1\|_{X_{N_1}} \langle N_2 \rangle^{-C} \|P_{N_2} F_2\|_{Y_{N_2}}  N_3^{\frac{d-s}{2} } \|P_{N_3} v_3\|_{L_t^{q_2} L_x^{r_2}}  \\
+&\lesssim  \left(\frac{N}{N_1}\right)^\alpha \langle N_2 \rangle^{-C}  \|P_{N_1} v_1\|_{X_{N_1}} \|P_{N_2} F_2\|_{Y_{N_2}} \|P_{N_3} v_3\|_{X_{N_3}} \,.
+\end{aligned}
+\end{multline*}
+Similarly, by H\" older inequality, 
+and Lemma \ref{bern} with $(r_1, r_2) = (r_3, \frac{2d (s+d)}{s^2})$, we have
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1  P_{N_2} F_2 P_{N_3} v_3) \|_{L_t^{1} L_x^{2}} \\
+\begin{aligned}
+& \lesssim  N^\alpha \|P_{N_1} v_1\|_{L_t^{q_1}L_x^{r_1}} \|P_{N_2} F_2\|_{L_t^{q_2 } L_x^{q_3}} \|P_{N_3} v_3\|_{L_t^{q_3} L_x^{\frac{2d (s+d)}{s^2}}}\\
+%& \lesssim \left(\frac{N}{N_1}\right)^\alpha \|P_{N_1} v_1\|_{X_{N_1}} \langle N_2 \rangle^{-C} \|P_{N_2} F_2\|_{Y_{N_2}}  N_3^{\frac{d-s}{2} } \|P_{N_3} v_3\|_{L_t^{q_3} L_x^{r_3}}  \\
+&\lesssim  \left(\frac{N}{N_1}\right)^\alpha  \|P_{N_1} v_1\|_{X_{N_1}} \langle N_2 \rangle^{-C}  \|P_{N_2} F_2\|_{Y_{N_2}} N_3^{\frac{(d-s)s}{2(d+s)}} \|P_{N_3} v_3\|_{X_{N_3}} \,.
+\end{aligned}
+\end{multline*}
+Using the geometric mean of the obtained estimates, 
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1  P_{N_2} F_2 P_{N_3} v_3) \|_{L_t^{1} L_x^{2}} \\
+\begin{aligned}
+%& \lesssim  N^\alpha \|P_{N_1} v_1\|_{L_t^{q_1}L_x^{r_1}} \|P_{N_2} F_2\|_{L_t^{q_2 } L_x^{q_3}} \|P_{N_3} v_3\|_{L_t^{q_3} L_x^{\frac{2d (s+d)}{s^2}}}\\
+%& \lesssim \left(\frac{N}{N_1}\right)^\alpha \|P_{N_1} v_1\|_{X_{N_1}} \langle N_2 \rangle^{-C} \|P_{N_2} F_2\|_{Y_{N_2}}  N_3^{\frac{d-s}{2} } \|P_{N_3} v_3\|_{L_t^{q_3} L_x^{r_3}}  \\
+&\lesssim  \left(\frac{N}{N_1}\right)^\alpha  \|P_{N_1} v_1\|_{X_{N_1}} \langle N_2 \rangle^{-C} N_3^{\frac{(d-s)s}{4(d+s)}} \|P_{N_2} F_2\|_{Y_{N_2}}  \|P_{N_3} v_3\|_{X_{N_3}} 
+\end{aligned}
+\end{multline*}
+and the desired estimate follows from \eqref{recc}.
+
+\textbf{Term (3)}: $v_1 F_2 F_3$.
+ By the definition of $(q_i, r_i)$, H\" older inequality,  Lemma \ref{bern} with $(r_1, r_2) = (q_3, \frac{2d(s+d)}{s^2})$, and $C > \frac{s(d-s)}{4(d + s)}$ we have
+\begin{multline*}
+ N^\alpha \|P_N (P_{N_1} v_1  P_{N_2} F_2 P_{N_3} F_3) \|_{L_t^{1} L_x^{2}}\\
+\begin{aligned}
+& \lesssim  N^\alpha \|P_{N_1} v_1\|_{L^{q_1}_tL^{r_1}_x} \|P_{N_2} F_2\|_{L_t^{q_2 } L_x^{q_3} } \|P_{N_3} F_3\|_{L_t^{q_3} L_x^{\frac{2d(s+d)}{s^2}}}\\
+& \lesssim \left(\frac{N}{N_1}\right)^\alpha \|P_{N_1} v_1\|_{X_{N_1}} \langle N_2\rangle^{-C} \|P_{N_2} F_2\|_{Y_{N_2} }   N_3^{\frac{s(d-s)}{2(d + s)}} \|P_{N_3} F_3\|_{L_t^{q_3}L_x^{q_3}}  \\
+&\lesssim  \left(\frac{N}{N_1}\right)^\alpha \langle N_2\rangle^{-C} \|P_{N_1} v_1\|_{X_{N_1}} N_3^{\frac{s(d-s)}{2(d + s)}} \langle N_3\rangle^{-C}\|P_{N_2} F_2\|_{Y_{N_2}} \|P_{N_3} F_3\|_{Y_{N_3}} \,.
+\end{aligned}
+\end{multline*}
+However, by \eqref{recc}
+$$
+\langle N_2\rangle^{-C} N_3^{\frac{s(d-s)}{2(d + s)}} \langle N_3\rangle^{-C} \leq \langle N_2\rangle^{-C} N_3^{\frac{s(d-s)}{4(d + s)}} \leq  \left(\frac{N_3}{N_2}\right)^{\frac{s(d-s)}{4(d + s)}}
+$$
+and the desired bound is proved. 
+
+
+\textbf{Term (4)}:  $v_1 v_2 F_3$.
+ By the definition of $(q_i, r_i)$, H\" older inequality,  Lemma \ref{bern} with $(r_1, r_2) = (r_2, \frac{2d}{s})$ and $(r_1, r_2) = (r_3, \infty)$, and $1 \leq \langle N\rangle^C $ we have
+\begin{multline*}
+N^\alpha \|P_N (P_{N_1} v_1  P_{N_2} v_2 P_{N_3} F_3) \|_{L_t^{1} L_x^{2}}\\
+\begin{aligned}
+& \lesssim \left(\frac{N}{N_1}\right)^\alpha \|P_{N_1} v_1\|_{X_{N_1}} \|P_{N_2} v_2\|_{L_t^{q_2} L_x^{\frac{2d}{s} }} \|P_{N_3} F_3\|_{L_t^{q_3} L_x^{\infty}}\\
+& \lesssim \left(\frac{N}{N_1}\right)^\alpha \|P_{N_1} v_1\|_{X_{N_1}}   N_2^{-\frac{sd}{2(s+d)}} \|P_{N_2} v_2\|_{X_{N_2}} N_3^{\frac{ds}{2(s+d)}}\|P_{N_3} F_3\|_{ L_t^{q_3 } L_x^{q_3} }  \\
+&\lesssim  \left(\frac{N}{N_1}\right)^\alpha \left(\frac{N_3}{N_2}\right)^{\frac{ds}{2(s+d)}} \|P_{N_1} v_1\|_{X_{N_1}}  \|P_{N_2} v_2\|_{X_{N_2}} \|P_{N_3} F_3\|_{Y_{N_3}}.
+\end{aligned}
+\end{multline*}
+
+Next, we focus on last four terms involving the anisotropic norm $L_{e_l}^{p,q}$. 
+%To simplify notation, we denote $\beta=\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}) $.
+%This will fix the parameter $\tilde{q}$ and will impose some conditions on the last two parameters $A,B$. We take $\tilde{q}= \frac{4}{2-\varepsilon}$ so $\tilde{p}= \frac{4}{\varepsilon}$. 
+Note that $\beta +\alpha>0$ holds if $s<\frac{d+1}{2}$ or $s>\frac{d+1}{2}$ and $\varepsilon> 2\frac{2s-d-1}{d+s-2}$ as assumed.
+
+
+\textbf{Term (5)}: $F_1 F_2 F_3$. 
+Fix $l \in \{1, \cdots, d\}$ and let $e := e_l$.
+Since $P_N$ is induced by the convolution with globally $L^1_x$ function, it is bounded on any $L^p$ space, and  then H\"older inequality implies
+%$\beta_A= \dfrac{1-s}{2} + \varepsilon (\dfrac{d+s-2}{4})$, $\alpha_q = \dfrac{d-1}{2} - \varepsilon (\dfrac{d+s-2}{4})$
+\begin{multline*}
+N^{\beta +\alpha} \|P_N (P_{N_1} F_1 P_{N_2} F_2 P_{N_3} F_3) \|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e}\\
+ \lesssim N^{\beta +\alpha} \|P_{N_1} F_1\|_{L_e^{\frac{4}{\varepsilon} ,\frac{4}{2-\varepsilon}}} \|P_{N_2} F_2\|_{L_e^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}} \|P_{N_3} F_3\|_{L_e^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}}.
+\end{multline*}
+Next, by \eqref{e1}
+\begin{align*}
+P_{N_1}&= P_{N_1} \sum_{k = 1}^d P_{N_1 ,e_k} \prod_{j = 1}^{k - 1} (I - P_{N_1, e_j})
+\,.
+\end{align*}
+Let $\tilde{P}_N$ be a Littlewood-Paley projection with the symbol  $\varphi(8\xi/N) - \varphi(\xi/8N)$, where $\varphi$ is as in the definition of $P_N$ in \eqref{LPproj}. 
+Then, $P_{N_1} = P_{N_1}\tilde{P}_N$,
+and since for any $k \in \{1, \cdots, d\}$ the operator $\prod_{j = 1}^{k - 1} (I - P_{N_1, e_j}) \tilde{P}_{N_1}$ has a kernel uniformly bounded in $L_x^1$, we have
+\begin{multline*}
+N^{\beta +\alpha} \|P_N (P_{N_1} F_1 P_{N_2} F_2 P_{N_3} F_3) \|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e}\\
+\begin{aligned}
+& \lesssim N^{\beta +\alpha}\sum_{l=1}^d \|P_{N_1,e_l} P_{N_1} F_1\|_{L_e^{\frac{4}{\varepsilon} ,\frac{4}{2-\varepsilon}}} \|P_{N_2} F_2\|_{L_e^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}} \|P_{N_3} F_3\|_{L_e^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}}\\
+&\lesssim N^{\beta +\alpha} \langle N_1\rangle^{-A}  \| P_{N_1} F_1\|_{Y_{N_1}} N_2^B \|P_{N_2} F_2\|_{Y_{N_2}} N_3^B \|P_{N_3} F_3\|_{Y_{N_3}}.
+\end{aligned}
+\end{multline*}
+By \eqref{relAB}
+$$
+\alpha+\beta= \frac{d+1}{2} -s +\varepsilon \dfrac{d+s-2}{4} = A - 2B \,,
+$$
+and after a rearrangement, 
+we obtain the desired conclusion. 
+
+%, it is necessary that
+%Let the second part of $Y_N$ be $\|f\|_{Y_N} = <N>^A \| P_{N,e} P_N f  \|_{L^{4/\varepsilon ,4/(2-\varepsilon)}} +N^{-B} \|P_N f \|_{L^{4/(2-\varepsilon) , 4/\varepsilon}}$, with $A,B>0$.
+%$$N^{\beta_A +\alpha} \|P_N (P_{N_1} F_1 P_{N_2} F_2 P_{N_3} F_3) \|_{L^{B^\prime ,A^\prime}} \leq N^{\beta_A +\alpha} \|P_{N_1} F_1\|_{L^{\tilde{q} ,\tilde{p}}} \|P_{N_2} F_2\|_{L^{\tilde{p} ,\tilde{q}}} \|P_{N_3} F_3\|_{L^{\tilde{p} ,\tilde{q}}}$$
+%we need
+%$$A=(d+1)/2 -s +\varepsilon \dfrac{d+s-2}{4} +2B. $$
+
+\textbf{Term (6)}: $F_1 v_2 v_3$.
+By H\"older's inequality for any $k \in \{1, \cdots, d\}$
+$$
+\|\|G_1 G_2\|_{L^{\frac{4}{2+\varepsilon}}_{x',t}}\|_{L^{\frac{4}{4-\varepsilon}}_{x_k}} \leq \| \|G_1\|_{L^2_{x',t}} \|G_2\|_{L^{\frac{4}{\varepsilon}}_{x',t}} \|_{L^{\frac{4}{4-\varepsilon}}_{x_k}}
+\leq \|G_1\|_{L^2_{x, t}} \|G_1\|_{L^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}_{e_k}}
+$$
+and similarly for $e = e_k$
+$$N^{\beta +\alpha} \|P_{N_1}F_1 P_{N_2} v_2 P_{N_3} v_3\|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e} \lesssim  
+N^{\beta +\alpha} \|P_{N_1}F_1 P_{N_2} v_2\|_{L^{2,2}_e}  \|P_{N_3} v_3\|_{L^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}_e}. $$
+Since $L_e^{2,2}=L_t^2 L_x^2$, then H\"older's inequality  implies
+$$
+ \|P_{N_1}F_1 P_{N_2} v_2\|_{L_t^2 L_x^2} \leq  \|P_{N_2} v_2\|_{L_t^{q_2} L_x^{q_2}} \|P_{N_1}F_1 \|_{L_t^{q_3} L_x^{q_3}}
+$$
+and the same decomposition of $P_{N_1}$ as in the estimate of term (5) yields
+$$
+ \|P_{N_1}F_1 P_{N_2} v_2\|_{L_t^2 L_x^2} \lesssim \sum_{l=1}^d \|P_{N_1 ,e_l}P_{N_1} F_1\|_{L_{e_l}^{\frac{4}{\varepsilon} ,\frac{4}{2-\varepsilon}}}  \sum_{l=1}^d\|P_{N_2}v_2\|_{L_{e_l}^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}}
+$$
+Thus, for $\theta_1$ as in  \eqref{relAB1} (see below that $\theta_1 \in (0, 1)$), we have 
+\begin{align*}
+ \|P_{N_1}F_1 P_{N_2} v_2\|_{L_t^2 L_x^2} &\lesssim 
+ \left(\sum_{l=1}^d \|P_{N_1 ,e_l}P_{N_1} F_1\|_{L_{e_l}^{\frac{4}{\varepsilon} ,\frac{4}{2-\varepsilon}}}  \sum_{l=1}^d\|P_{N_2}v_2\|_{L_{e_l}^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}} \right)^{\theta_1} \\
+& \qquad \times \left( \|P_{N_1}F_1 \|_{L_t^{q_3} L_x^{q_3}} \|P_{N_2} v_2\|_{L_t^{q_2} L_x^{q_2}} \right)^{1-\theta_1} \,.
+\end{align*}
+Then, 
+\begin{multline*}
+N^{\beta +\alpha}  \|P_{N_1}F_1 P_{N_2} v_2 P_{N_3} v_3\|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e} \\
+\begin{aligned}
+&\lesssim  N^{\beta +\alpha}  \left
+(\sum_{l=1}^d \|P_{N_1 ,e_l}P_{N_1} F_1\|_{L_{e_l}^{\frac{4}{\varepsilon} ,\frac{4}{2-\varepsilon}}}  \sum_{l=1}^d\|P_{N_2}v_2\|_{L_{e_l}^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}} \right)^{\theta_1} \\
+&\qquad \times ( \| P_{N_1} F_1 \|_{L_t^{q_3} L_x^{q_3}} \|P_{N_2} v_2\|_{L_t^{q_2} L_x^{q_2}})^{1-\theta_1}  \|P_{N_3} v_3\|_{L^{\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}}_e}\\
+&\lesssim  N^{\beta +\alpha} (\langle N_1\rangle^{-A} \|P_{N_1} F_1\|_{Y_{N_1}} N_2^{ \alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) - \alpha } \|P_{N_2}v_2\|_{X_{N_2}} )^{\theta_1} \\
+&\qquad \times  (\langle N_1 \rangle^{-C}\|P_{N_1} F_1\|_{Y_{N_1}} N_2^{-\alpha} \|P_{N_2} v_2 \|_{X_{N_2}} )^{1-\theta_1}  N_3^{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) -\alpha}\|P_{N_3} v_3\|_{X_{N_3}}.% \\
+%&\lesssim (\frac{N}{N_1})^{\beta +\alpha} (\frac{N_3} {N_2})^{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) -\alpha}   \|P_{N_1}F_1\|_{Y_N}  \|P_{N_2}v_2\|_{X_N}   \|P_{N_3}v_3\|_{X_N} 
+\end{aligned}
+\end{multline*}
+Notice that $\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) - \alpha= \frac{s-1}{2}-\varepsilon \frac{d+s-2}{4}>0 $, since we assumed 
+$\varepsilon < 2\frac{s-1}{d+s-2}$. 
+Also, $2\alpha - \alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon})= \frac{d+1-2s}{2}+ \varepsilon \frac{d+s-2}{4}>0$ holds true, since it is valid for $s\leq \frac{d+1}{2}$ 
+and for $s> \frac{d+1}{2}$ it follows from the assumption $\varepsilon > 2\frac{2s-d-1}{d+s-2}$. 
+Let us check that $\theta_1 \in (0, 1)$. Indeed, $\theta_1 > 0$ is equivalent to 
+$$
+\alpha \left(\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}\right) < d - s = 2 \alpha
+$$
+and $\theta_1 < 1$ is equivalent to 
+$$
+2\alpha = d - s < 2 \alpha \left(\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}\right) \,,
+$$
+which we just verified. 
+%
+%Then, we take $\theta= \frac{2\alpha - \alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon})}{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon})} \in (0,1)$, i.e.
+%$$\theta= \dfrac{ d-s}{\frac{d-1}{2} -\varepsilon \dfrac{d+s-2}{4}  }-1.$$% \approx 2 (d-s)/(d-1)-1 \in (0,1)$ if $s<(d+1)/2$
+By \eqref{relAB1}, $A$ and $C$ satisfy
+$$A\theta_1 +C (1-\theta_1)>\beta +\alpha,$$
+and since $\gamma \mapsto \langle N \rangle^\gamma$ on $(0, \infty)$ is monotone, from the definition of $\theta_1$ we conclude that
+\begin{align*}
+&N^{\beta +\alpha}  \|P_{N_1}F_1 P_{N_2} v_2 P_{N_3} v_3\|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e} \\
+&\lesssim \left(\frac{N}{N_1}\right)^{\beta +\alpha} \left(\frac{N_3} {N_2}\right)^{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) -\alpha}   \|P_{N_1}F_1\|_{Y_{N_1}}  \|P_{N_2}v_2\|_{X_{N_2}}   
+\|P_{N_3}v_3\|_{X_{N_3}} .
+\end{align*}
+%$$(d+1)/2 -s \geq ( 2 (d-s)/(d-1)-1)A +  s \dfrac{d-s}{s+d}(1- (d-s)/(d-1))    $$
+
+\textbf{Term (7)}: $F_1 F_2 v_3$.
+Proceeding as in Term (6), with $(P_{N_2}v_2, P_{N_3}v_3)$ replaced by $(P_{N_3}v_3, P_{N_2}F_2)$ and $\theta_1$ by $\theta_2$ we have
+\begin{multline*}
+N^{\beta +\alpha} \|P_{N_1}F_1  P_{N_2} F_2 P_{N_3} v_3\|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e}\\
+\begin{aligned}
+ & \lesssim  N^{\beta +\alpha} \left(\sum_{l=1}^d \|P_{N_1 ,e_l}P_{N_1} F_1\|_{L_{e_l}^{\frac{4}{\varepsilon} ,\frac{4}{2-\varepsilon} }}  \|P_{N_3} v_3\|_{L_{e_l}^{\frac{4}{2-\varepsilon}, \frac{4}{\varepsilon}}} 
+ \right)^{\theta_2}  \\
+& \qquad \times (\|P_{N_1}F_1\|_{L_t^{q_3}L_x^{ q_3 }} \|P_{N_3}v_3 \|_{L_t^{q_2 }L_x^{q_2} } )^{1-\theta_2}  \|P_{N_2}F_2\|_{L_{e}^{\frac{4}{2-\varepsilon} ,\frac{ 4}{\varepsilon}}} \\
+&\lesssim  N^{\beta +\alpha} (\langle N_1 \rangle^{-A} \| P_{N_1}F_1\|_{Y_{N_1}} N_3^{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) -\alpha} \|P_{N_3}v_3\|_{X_{N_3}} )^{\theta_2} \\ 
+&\qquad \times (\langle N_1\rangle^{-C}\|P_{N_1} F_1\|_{Y_{N_1}}N_3^{-\alpha} \|P_{N_3}v_3 \|_{X_{N_3}} )^{1-\theta_2}  N_2^{B}\|P_{N_2} F_2\|_{Y_{N_2}} \,,%\\
+%&\lesssim (\frac{N}{N_1})^{\beta +\alpha}(\frac{N_2 }{N_1})^{B } (\frac{N_3}{ N_1})^{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) \theta -\alpha}   \|P_{N_1}F_1\|_{Y_N}  \|P_{N_2}F_2\|_{Y_N}   \|P_{N_3}v_3\|_{X_N}\,,
+\end{aligned}
+\end{multline*}
+where we used $\theta_2 \in (0, 1)$, (see \eqref{relAB2} for the definition of $\theta_2$).
+Since $\theta_2 = \alpha/\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon})$,
+$$A\theta_2 +C(1-\theta_2 )> \beta +\alpha +B,$$
+and monotonicity of $\gamma \mapsto \langle N \rangle^{\gamma}$ on $(0, \infty)$ yields
+\begin{align*}
+&N^{\beta +\alpha} \|P_{N_1}F_1  P_{N_2} F_2 P_{N_3} v_3\|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e}\\
+&\qquad \lesssim \left(\frac{N}{N_1}\right)^{\beta +\alpha} \left(\frac{N_2 }{N_1}\right)^{B }% (\frac{N_3}{ N_1})^{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) \theta_1 -\alpha}  
+ \|P_{N_1}F_1\|_{Y_{N_1}}  \|P_{N_2}F_2\|_{Y_{N_2}}   \|P_{N_3}v_3\|_{X_{N_3}}. 
+\end{align*}
+
+
+
+
+
+%We want
+%$$\beta_A +\alpha +B+\alpha_q \theta -\alpha \geq A \theta +(1-\theta)C, \alpha_q \theta -\alpha >0$$
+
+
+
+\textbf{Term (8)}:  $F_1 v_2 F_3$. 
+Proceeding as in Term (7), with $(P_{N_3}v_3, P_{N_2}F_2)$ replaced by $(P_{N_2}v_2, P_{N_3} F_3)$  we have
+\begin{multline*}
+ N^{\beta +\alpha} \|P_{N_1}F_1  P_{N_2} v_2 P_{N_3} F_3\|_{L^{\frac{4}{4-\varepsilon} ,\frac{4}{2+\varepsilon}}_e} \\
+\begin{aligned}
+& \lesssim N^{\beta +\alpha} \left( \sum_{l=1}^d\|P_{N_1 ,e_l}P_{N_1} F_1\|_{L_{e_l}^{\frac{4}{\varepsilon} ,\frac{4}{2-\varepsilon} }}  \|P_{N_2} v_2\|_{L_{e_l}^{\frac{4}{2-\varepsilon}, \frac{4}{\varepsilon}}} \right)^{\theta_2} \\
+&\qquad \times (\|P_{N_1}F_1\|_{L^{q_3}_t L_x^{ q_3 }} \|P_{N_2} v_2 \|_{L_t^{q_2 }L_x^{q_2} } )^{1-\theta_2}  \|P_{N_3} F_3\|_{L_e^{\frac{4}{2-\varepsilon} , \frac{4}{\varepsilon}}} \\
+&\lesssim  N^{\beta +\alpha} (\langle N_1 \rangle^{-A} \|P_{N_1}F_1\|_{Y_{N_1}} N_2^{\alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) -\alpha} \|P_{N_2} v_2\|_{X_{N_2}} )^{\theta_2} \\
+& \qquad \times (\langle N_1\rangle^{-C}\|P_{N_1}F_1\|_{Y_{N_1}}N_2^{-\alpha} \|P_{N_2}v_2 \|_{X_{N_2}} )^{1-\theta_2}  N_3^{B}\|F_3\|_{Y_{N_3}} \\
+&\lesssim \left(\frac{N}{N_1}\right)^{\beta +\alpha}
+% \left(\frac{N_3 }{N_2}\right)^{\alpha -\theta_2 \alpha (\frac{4}{2-\varepsilon} ,\frac{4}{\varepsilon}) } 
+\left(\frac{N_3 }{N_1}\right)^{ B}   \|P_{N_1}F_1\|_{Y_{N_1}}  \|P_{N_3 }F_3\|_{Y_{N_3}}   \|P_{N_2} v_2\|_{X_{N_2}},
+\end{aligned}
+\end{multline*}
+where in the last step we used \eqref{relAB2}. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%Recap
+
+
+%$$Y_N= N^{\beta_C +\alpha +2B} L^{C\tilde{p} /(\tilde{p} -2C), (d-2) C \tilde{q} /(\tilde{q} ((d-1)C-2) -2(d-2)C )}+N^{-B} L^{\tilde{q} (d-2) /(\tilde{q} -2), \tilde{q}}$$
+%$$\alpha_1=\alpha_2\ equiv\ to\ 1=1/C - 1/\tilde{q},\ \alpha_1 = \tilde{q} (d-2)/(\tilde{q} (d-3) +d)$$
+
+%$$1/C - \frac{\tilde{q} -2}{\tilde{q} (d-2)}= \dfrac{(d-1)C+2-d}{(d-2)C} - 1/ \tilde{q} equiv \alpha_1=\alpha_2$$
+%WRONG
+%$$1/\tilde{q} = 1 -1/C$$
+%so
+% $$1/\alpha_1= 1 - 1/\tilde{q} - \frac{\tilde{q} -2}{\tilde{q} (d-2)}  $$
+
+
+%$$1/\alpha_1= 1/q_2 +1/q_3 =1/p_2 +1/p_{3,2}$$
+%$$1/2 < \alpha / \alpha_{\tilde{q}} <1$$
+
+%$$B =\frac{ (1-\alpha /\alpha_{\tilde{q}})(\beta_A +d/2 - 4/q_2 - d /p_{2,2} ) }{2\alpha /\alpha_{\tilde{q} } -1} $$
+%we need $\beta_A +d/2 - 4/q_2 - d /p_{2,2} >0$.
+%$$D=\frac{d/2 - 4/q_2 - d/p_{2,2} -\alpha +B  + \beta_A}{\beta_A +\alpha +2B +d/2 - 4/q_2 - d/p_{2,2} -\alpha -\alpha_{\tilde{q}}}$$
+
+
+
+
+
+
+
+
+
+
+
+%\begin{align*}
+%Y_N& =<N>^{\beta_C +\alpha_{\tilde{q} } -\alpha } \|P_{N} f\|_{L_t^{q_3} L_x^{p_{3,2}}}  + < N>^{2 -\frac{4}{ q_3}-d/p_{3,1}  } \|P_{N} f\|%_{L_t^{q_2} L_x^{p_{2,1}}}\\
+%& +<N^{\beta_{C} +2\alpha_{\tilde{q}} - (d-4)/2}> L^{\tilde{q},2 \tilde{q} /(\tilde{q} -2) }+N^{(d-4)/2 - \tilde{\alpha}_q} L^{2\tilde{q}  /(\tilde{q} -2), \tilde{q}}
+%\end{align*}
+
+%$$\alpha_1=\alpha_2 \rightarrow \frac{d-1}{2}+\frac{1}{d-2}= \frac{d}{\tilde{q} (d-2)} +\frac{d}{2C}$$
+
+
+%$$\tilde{q} =d/(d-1),\ C=d/(d-3)$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%$$1-1/C =1/\tilde{q},\ \frac{\tilde{q} (d-3) -d}{\tilde{q} (d-2)}=1/q_2 +1/q_3 = 1/p_2 +1/p_{3,2}, 1/2 <\alpha /\alpha_{\tilde{q}}<1$$
+
+%$$- (d-4)/2 < (d-4)/2 - \alpha_{\tilde{q}}<0$$
+
+%$$\beta_C= \frac{d-1}{2} -\frac{5d +8}{2(d-2)}  (1+2/\tilde{q})$$
+
+%$$\frac{2d^2 - 2 d -16}{-d^2 +10d -22}<??\tilde{q}<??\frac{d^2 - d -8}{2d -7},\ 1/2< \alpha /\alpha_{\tilde{q}}<1 $$
+
+
+%$$\tilde{p} = \tilde{q} (d-2)/(\tilde{q} -2),\ C=\tilde{q} /(1+\tilde{q})$$
+
+%$$p_1=C\tilde{p} /(\tilde{p} -2C)=\frac{\tilde{q} C (d-2)}{\tilde{q} (d-2) -2C (\tilde{q} -2)}$$%\frac{\tilde{q} (d-2)}{\tilde{q} (d-4) +d+2}$$
+%$$ q_1=(d-2) C \tilde{q} /(\tilde{q} ((d-1)C-2) -2(d-2)C ) = \frac{(d-2) \tilde{q}}{\tilde{q} (d-3) -2d +2}$$
+%$$q_1= \frac{2C \tilde{q}}{\tilde{q} (C(d-1) +2 -d)-4C }$$
+%$$C\tilde{p} /(\tilde{p} -2C)= \frac{(\tilde{q}+1) (d-2)}{\tilde{q} (d-2) -2(\tilde{q} -1 - 2/\tilde{q})}$$
+
+%$$1=(d-2)/q_1 +2/p_1equiv(whateverthe value of C) \tilde{q}=\frac{d^2 - 4d -4}{d^2 -4d} $$
+
+\section{Almost sure local existence of \eqref{intro} : proof of Theorem \ref{mainthm}}\label{sec:random}
+This section is devoted to the proof of Theorem \ref{mainthm}, that is, to the local almost sure well-posedness of the cubic NLS. Before proceeding, 
+we first recall some probabilistic facts, that help us establish an almost sure bound on the 
+$Y(\R)$ norm of the free evolution of the random data which, in turn, allows us to prove the local existence result.
+
+\subsection{Probabilistic preliminaries}   
+First, we recall a large deviation estimate whose proof can be found in \cite[Lemma 3.1]{MR2425133}. We let $\|F\|_{L^p_\omega}$ denote $(\mathbb{E} |F|^{p})^{1/p}$.
+
+\begin{lem}
+\label{lemproba1}
+Let $\{g_n\}_{n=1}^\infty$ be a sequence of real valued, independent, zero mean, random variables associated with the distributions $\{\mu_n\}_{n=1}^\infty$ on a probability space $(\Omega , \mathcal{A} ,\mathbb{P})$. Assume that there exists $c>0$ such that
+$$\left|\int_{-\infty}^\infty e^{\gamma x} d\mu_n (x)\right| \leq e^{c\gamma^2},\ \forall \gamma\in \R \ and\ n\in \N. $$
+ Then, there exists $\alpha>0$ such that for any $\lambda >0$ and any sequence $\{c_n\}_{n=1}^\infty \in l^2 (\N ; \mathbb{C})$,
+$$\mathbb{P} \Big(\Big\{ \omega : \Big|\sum_{n=1}^\infty c_n g_n (\omega )\Big| >\lambda \Big\} \Big) \leq 2 e^{-\alpha \frac{\lambda^2}{\sum_n |c_n|^2}}.$$
+Hence,  there exists $C>0$ such that for $2\leq p<\infty$ and every $\{ c_n\}_{n=1}^\infty \in l^2 (\N ; \mathbb{C} )$
+$$\Big\|\sum_{n=1}^\infty c_n g_n (\omega)\Big\|_{L_\omega^p (\Omega)} \leq C \sqrt{p} \bigg(\sum_{n=1}^\infty |c_n|^2\bigg)^{1/2}.$$
+\end{lem}
+
+
+The  proof of the next lemma is a slight modification of the proof in  \cite[Lemma 4.5]{tzvetkov}. 
+
+\begin{lem}
+\label{lemproba2}
+Let $F$ be a real valued measurable function on a probability space $(\Omega ,\mathcal{A} ,\mathbb{P})$. Suppose that there exists $C_0>0$, $K>0$, and $p_0 \geq 1$ such that for any $p\geq p_0$ we have
+$$\|F\|_{L_\omega^p (\Omega)} \leq \sqrt{p} C_0 K.$$
+Then, there exist $c>0$ and $C_1>0$ depending on $C_0$ and $p_0$, but independent of $K$, such that for every $\lambda>0$,
+$$\mathbb{P} (\{ \omega \in \Omega : |F (\omega)|>\lambda \} ) \leq C_1 e^{- c\lambda^2 /K^2}.$$
+ In particular, we have
+$$\mathbb{P} (\{ \omega \in \Omega : |F(\omega)|<\infty \}) =1.$$
+\end{lem}
+
+\subsection{Almost sure bounds for the $Y(\R)$ norm}
+
+Our aim in this subsection is to establish an almost sure bound for the $Y(\R)$ norm of the free evolution of the random data. The proof is based on 
+a maximal function estimate for unit-scale frequency localized data, which is analogous to  \eqref{IK1}. Recall that the projection $Q_n$ was defined in \eqref{proj1}.
+
+\begin{lem}
+\label{lemIO}
+Let \(P\) satsify the conditions \eqref{aonth} and \eqref{hots}. Then for all $n\in \Z^d$ large enough and for any $l=1,\ldots ,d$ we have 
+\begin{equation*}
+\|e^{-it P } Q_n f\|_{L_{e_l}^{2,\infty} (\R \times \R^d)}\lesssim |n|^{\frac{s-1}{2}} \|Q_n f\|_{L_x^2 (\R^d )}.
+\end{equation*}
+\end{lem}
+\begin{rmq}
+Notice that the exponent of \(n\) in the above bound depends only on the degree of the operator \(P\) and not on the dimension, unlike in the case of bounds for the Littlewood-Paley projections of Lemma \ref{1lemIK}.
+\end{rmq}
+
+\begin{proof}
+Let us assume that \(l=1\). Fix two smooth cut-off function $\chi\in C^{\infty}_{c}(B_{1})$ and $\eta\in C^{\infty}_{c}(B_{1}^{d-1})$ such that 
+$$\psi (\xi)= \psi (\xi) \chi (\xi_1) \eta (\xi') ,\qquad \xi= (\xi_1 ,\xi') \in \R^d \,,$$
+where $\psi$ is as in the definition of $Q_n$. For any $n \in \Z^d$ we use the notation
+\begin{equation*}
+\eta_{n} (\xi') = \eta (\xi^\prime - n'),\qquad \chi_n (\xi_1) = \chi(\xi_1 - n_{1})
+\end{equation*}
+with \(n=(n_{1},n')\in\Z\times\Z^{d}\) so that
+$$\psi (\xi -n)= \psi (\xi -n) \chi_n (\xi_1) \eta_n (\xi^\prime) ,\qquad \xi= (\xi_1 ,\xi^\prime) \in \R^d .$$
+Note that the size of the support and the bounds on derivatives of $\eta_n$ and $\varphi_n$ do not depend on $n$. Denote 
+$$
+K_n(x_1, x', t) := \int_{\R_{\xi_1} }  \int_{\R_{\xi'}^{d-1} }e^{i (x_1 \xi_1 +x' \xi'-t p(\xi_1 , \xi')  )} \chi_n (\xi_1) \eta_n (\xi' ) d\xi' d \xi_1.
+$$
+By a $TT^\ast$-argument similar to that of  Lemma \ref{1lemIK}, it sufficies to  show the estimate estimate $\left\|K_n\right\|_{L_{x_1}^1 L_{t,x^\prime}^\infty}\lesssim|n|^{s-1}$. Similarly as in the proof of \eqref{IK1}, we have for any $|n| \gtrsim 1$ that
+$$\sup_{x \in \R^{d} ,t\in \R} |K_n (x_1, x', t)| \lesssim \min \{1, |t|^{-\frac{d}{s}}\}. $$
+Note that $N^d$ is replaced by $1$ because the estimate is at a fixed scale in Fourierspace and $n$ represents just a translation. This follows by uniform boundedness and support considerations on the integrand defining \(K_{h}\). In addition, as in  the proof of \eqref{IK1}, for any $|n| \gtrsim 1$ and any $|x_1| \gtrsim|t|$ we have that
+\begin{align*}
+K_n(x_1 ,x' ,t)
+% &=\int_{\R \times \R^{d-1}} \frac{x_1 - tp_{\xi_1}(\xi_1, \xi')}{x_1 - tp_{\xi_1}(\xi_1, \xi')} e^{i(x_1 \xi_1 +x' . \xi')} e^{-it p (\xi_1, \xi') } \chi_n\left(\xi_1\right) \eta_n\left(|\xi'|\right)d\xi_1 d\xi' \\
+%&= -\int_{\R \times \R^{d-1}}  e^{i(x_1 \xi_1 +x' \xi')} e^{-it p (\xi_1, \xi') } \partial_{\xi_1}\left[\frac{h_N\left(\xi_1\right) h_N\left(|\xi'|\right)}{x_1 - tp_{\xi_1}(\xi_1, \xi')} \right] d\xi_1 d\xi' \\
+&= \int_{\R \times \R^{d-1}}  e^{i\big(x_1 \xi_1 +x' \xi'-t p (\xi_1, \xi') \big)} 
+\\
+&\qquad \times
+\frac{d}{d\xi_{1}}\left[ \frac{1}{x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')} 
+\frac{d}{d\xi_{1}}\Big[\frac{\chi_n(\xi_1) \eta_n (\xi')}{x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')} \Big]\right] d\xi_1 d\xi'
+\end{align*}
+The integrand above vanishes unless \(|\xi_{1}-n_{1}|+|\xi'-n|\lesssim1\) and in particular we assume that \(|(\xi_{1},\xi')|\approx|(n_{1},n')|=|n|\gtrsim1\).
+Since by \eqref{aonth} we have that  $|\partial_{\xi_{1}}p(\xi_{1},\xi')| \lesssim \big|(\xi_{1},\xi')\big|^{s-1}\approx \big|(n_{1},n')\big|^{s-1}$ we have that \(|\partial_{\xi_{1}}p(\xi_{1},\xi')|\lesssim|n|^{s-1}\). To be able to control the denominator we restrict to the regime \(|x_{1}|\gtrsim|n|^{s-1}|t|\) so that
+\begin{equation*}
+\frac{1}{\big|x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')\big|}\lesssim\frac{1}{|x_{1}|}
+\end{equation*}
+Furthermore, from \eqref{aonth} and from the assumption that $|n| \gtrsim 1$ it follows that
+\begin{equation*}
+\left| \partial_{\xi_1} \Big( \frac{1}{x_1 - t\partial_{\xi_{1}}p(\xi_1+n_1, \xi' + n)} \Big) \right| =
+\left| \frac{t\partial_{\xi_{1},\xi_{1}}^{2}p(\xi_1, \xi')}{(x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi'))^2} \right|
+\lesssim \frac{|t||n|^{s-2}}{|x_1|^{2}}
+ \lesssim \frac{1}{|x_1|}
+\end{equation*}
+and similarly that
+$$
+\left| \partial^2_{\xi_1\xi_1}p \Big( \frac{1}{x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')} \Big) \right|
+ \lesssim \frac{1}{|x_1|^2} \,.
+$$
+Since $|\partial_{\xi_1} \chi_n(\xi_1)| \lesssim 1$ and it is supported in \(B_{1}(n_{1})\) we obtain that
+$$|K_n(x_1 ,x^\prime ,t)|\lesssim    (1+ |x_1| )^{-2}.$$
+Combining the estimates above we get that 
+\begin{align*}
+\sup_{t\in \R , x^\prime \in \R^{d-1}} |K_n (x_1, x^\prime ,t)|& \lesssim \frac{1}{(1+ |x_1|)^{2}}  +\min (1 , 1_{\{|x_1| \lesssim |n|^{s - 1} |t|\} }  |t|^{-\frac{d}{s}})\\
+& \lesssim \frac{1}{(1+ |x_1|)^{2}}  + \min \left(1 ,  \left(\frac{|n|^{s - 1}}{|x_1|}\right)^{\frac{d}{s} } \right)\\
+&\lesssim \frac{1}{(1+ |x_1|)^{2}}  +\frac{1}{\Big(1+|n|^{1-s}|x_1|\Big)^{d/s}}
+.% \\
+%&\lesssim N^{\frac{d(s-1)}{k}} |x_1|^{-\frac{d(s-1)}{s}} 1_{[N^{1- \frac{s}{s-1}} ,\infty )} (|x_1 |).
+\end{align*}
+Then, the integration in $x_1$, yields the desired result.
+\end{proof}
+
+
+We are now in position to estimate almost surely the $Y(\R)$ norm of our randomized initial data. Recall that $Y(I )$, for $I\subset \R$ is of the form
+$$\|f\|_{Y(I)} = \left(\sum_{N\in 2^{\Z}}  \|P_N f\|_{Y_N(I)}^2\right)^{\frac{1}{2}},$$
+with
+\begin{align*}
+\|P_N f\|_{Y_N(I)}&= \langle N\rangle^C \left(\|P_N f\|_{L_t^{\frac{2(s+d)}{d}} L_x^{\frac{2(s+d)}{s}} (I\times \R^d)} +\|P_N f\|_{L_t^{\frac{2(s+d)}{s}} L_x^{\frac{2(s+d)}{s}}(I\times \R^d) } \right)\\
+&+\langle N\rangle^A \sum_{l=1}^d \|P_{N,e_l} P_N f \|_{L^{\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}}_{e_l}(I\times \R^d) } +N^{-B} \sum_{l=1}^d \|P_N f\|_{L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (I\times \R^d) },  
+\end{align*}
+for some positive constants $A,B$, and $C$. Although we imposed restrictions on $A$, $B$, $C$ above, they are not important in the following result which treats linear evolution. 
+
+
+\begin{prop}
+\label{estY}
+Let $S= \max\{C, A+\beta (\frac{4}{\varepsilon} , \frac{4}{2-\varepsilon}), -B+\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4} \}$ and $\varepsilon \in (0, 1)$. Let $f\in H_x^S (\R^d)$ and denote by $f^\omega$ the randomization of $f$. Then, there exist constants $C>0$ and $c>0$ such that for any $\lambda >0$, there holds
+$$\mathbb{P} \left(\{ \omega \in \Omega : \| e^{-it P} f^\omega \|_{Y(\R)} >\lambda \} \right) \leq C e^{-\frac{c \lambda^2}{ \|f\|_{H_x^s (\R^d )}^{2}} }.$$
+In particular, almost surely we have
+$$\| e^{-it P} f^\omega \|_{Y(\R)} <\infty. $$
+\end{prop}
+
+\begin{proof}
+First, for any function $F$ and any $p \geq 2$ we have by Minkowski's inequality 
+\begin{align*}
+\|\|F \|_{Y(I)} \|_{L_\omega^p} &=  \left(\mathbb{E}\left(\sum_{N \in 2^\Z} \|P_N F\|_{Y_N(I)}^2 \right)^{\frac{p}{2}}\right)^{\frac{1}{p}} = 
+\left( \left\|\sum_{N \in 2^\Z} \|P_N F\|_{Y_N(I)}^2 \right\|_{L_\omega^{p/2 }} \right)^{\frac{1}{2}} \\
+&\leq 
+\left(\sum_{N \in 2^\Z} \left\| \|P_NF\|_{Y_N(I)} \right\|_{L_\omega^{p }}^2 \right)^{\frac{1}{2}} \,.
+\end{align*}
+%From, Lemma \ref{lemproba1}, Plancherel theorem, and $\sum_{k \in \Z^d} \psi^2(\xi - k) \leq C$ follows
+%\begin{equation}\label{str}
+%\begin{aligned}
+%\|\|f^\omega \|_{L^2_x} \|_{L_\omega^p} &\lesssim  \Big\| \Big\|\sum_{k \in \Z^d} Q_k f g_k(\omega)\Big\|_{L^p_\omega} \Big\|_{L^2_x} \lesssim 
+% \sqrt{p} \Big\| \Big( \sum_{k \in \Z^d} |Q_k f|^2 \Big)^{\frac{1}{2}} \Big\|_{L^2_x} \\
+%&=
+%\sqrt{p}\Bigg(\sum_{k \in \Z^d}  \int_{\R^d} |Q_k f|^2 dx \Bigg)^{\frac{1}{2}} \\
+%&=
+%\sqrt{p}\Bigg( \int_{\R^d} \sum_{k \in \Z^d} \psi^2(\xi - k) |\hat{f}|^2 d\xi \Bigg)^{\frac{1}{2}}   \\
+%&\lesssim  \sqrt{p} \|f\|_{L^2_x}
+% \,.
+%\end{aligned}
+%\end{equation}
+%Note that, the same calculation holds true with $f^\omega$ replaced by $P_N f^\omega$ or the norm of $L^2_x$ is replaced by $L^2_t$ or $L^{2}_x L^{2}_t$.
+%Note that such inequality holds true with $Y(I)$ replaced by any other norm. 
+Let us estimate the three terms in $Y_N(\R)$ independently. We begin with the terms multiplied by $\langle N \rangle^C$. To simplify the notation,  set $q_2=\frac{2(s+d)}{d}$ and $q_3=\frac{2(s+d)}{s}$
+and assume that the norm of an intersection of spaces is the sum of norms.  Using Lemma \ref{lemproba1},
+Minkowski inequality, \eqref{usbe} with $(r_1, r_2) = (\frac{2dq_3 }{dq_3 -2s}, q_3)$ and $(r_1, r_2) = (q_2, q_3)$, the Strichartz estimate \eqref{strichartze1}, we obtain for any $p \geq q_i > 2$, $i = 2, 3$
+\begin{multline*}
+\left\|\|P_{N}e^{-it P} f^\omega \|_{L_t^{q_2} L_x^{q_3} \cap L_t^{q_3} L_x^{q_3} (\R \times \R^d) }  \right\|_{L_\omega^p}\\
+\begin{aligned}
+&\leq \Big\|  \Big\| \sum_{k \in \Z^d} g_k (\omega) e^{-it P}  Q_k P_N f \Big\|_{L_\omega^p} \Big\|_{L_t^{q_2} L_x^{q_3} \cap L_t^{q_3} L_x^{q_3} (\R \times \R^d) } \\
+&\lesssim \sqrt{p} \Big\| \Big( \sum_{k \in \Z^d}  |e^{-it P}  Q_k  P_N f|^2 \Big)^{\frac{1}{2}}  \Big\|_{L_t^{q_2} L_x^{q_3} \cap L_t^{q_3} L_x^{q_3} (\R\times \R^d) } \\
+&\lesssim  \sqrt{p} \Big( \sum_{k \in \Z^d} \| e^{-it P}  Q_k P_N f  \|^2_{L_t^{q_2} L_x^{q_2} \cap L_t^{q_3} L_x^{\frac{2dq_3 }{dq_3 -2s}} (\R \times \R^d)}  \Big)^{1/2}\\
+&\lesssim   \sqrt{p} \Big( \sum_{k \in \Z^d} \|  Q_k P_N f  \|^2_{L_x^2 (\R^d) } \Big)^{1/2}\\
+&\lesssim \sqrt{p} \|P_N f\|_{L_x^2 (\R^d)} \,.
+\end{aligned}
+\end{multline*}
+Next, we estimate the second component of $Y_N (\R)$.  As above, Lemma \ref{lemmaIK} yields for any $p \geq \max\{\frac{4}{\varepsilon}, \frac{4}{2 - \varepsilon}\}$
+\begin{align*}
+\bigg\|\sum_{l=1}^d \|e^{-it P} P_{N,e_l} P_N f^\omega \|_{L^{\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}}_{e_l} (\R\times \R^d)} \bigg\|_{L_\omega^p} 
+%&\lesssim \sum_{l=1}^d  \left\|\|e^{-it P} P_{N,e_l} P_N f^\omega \|_{L_\omega^p} \right\|_{L^{\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}}_{e_l} (\R\times \R^d)} \\
+%&\lesssim \sqrt{p} \sum_{l=1}^d  \left( \sum_{k \in \Z^d} \left\| e^{-it P} P_{N,e_l} P_N Q_k f^\omega \right\|_{L^{\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}}_{e_l} (\R\times \R^d)} 
+%\right)^{\frac{1}{2}} \\
+ &\lesssim \sqrt{p} \bigg( \sum_{l = 1}^d \sum_{k \in \Z^d} \|P_{N,e_l} P_N Q_k f \|^2_{L^{\frac{4}{\varepsilon},\frac{4}{2-\varepsilon}}_{e_l} (\R\times \R^d)} \bigg)^{\frac{1}{2}} \\
+% &\lesssim  N^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon} ) } \left\| \|P_N f^\omega \|_{L_x^2 (\R^d)} \right\|_{L_\omega^p} \\
+%&\lesssim N^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon})} \sqrt{p} \left(\sum_{k\in \Z^d}  \|Q_k P_N f\|^2_{L_x^2 (\R^d )}\right)^{1/2}\\
+& \lesssim \sqrt{p}N^{\beta (\frac{4}{\varepsilon},\frac{4}{2-\varepsilon})} \|P_N f\|_{L_x^2 (\R^d )}.
+\end{align*}
+Finally, we estimate the last component of $Y_N (\R)$. We consider two cases depending on the size of $N$ and we first  assume that $N$ is large. Then,
+from triangle inequality, interpolation,  Lemma \ref{lemIO}, and Lemma \ref{lemmaIK} follows for any $p \geq \max (\frac{4}{2-\varepsilon},\frac{4}{\varepsilon})$
+\begin{align*}
+\bigg\|\sum_{l=1}^d\|e^{-it P}  &P_N f^\omega \|_{ L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (\R\times \R^d)} \bigg\|_{L^p_\omega}
+\lesssim \sqrt{p} \bigg(\sum_{l=1}^d \sum_{k \in Z^d} \| e^{-it P}  P_N Q_k f \|^2_{L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (\R\times \R^d)}\bigg)^{\frac{1}{2}}\\
+%&\lesssim \sum_{l=1}^d \Big\| \Big\| \sum_{k \in \Z^d} e^{-it P}  P_N Q_kf^\omega\Big\|_{L^p_\omega} \Big\|_{L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (\R\times \R^d)}\\
+%&\lesssim  \sum_{l=1}^d  \left(\sum_{k \in \Z^d} \Big\| e^{-it P}  P_N Q_kf^\omega \Big\|^2_{L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (\R\times \R^d)} \right)^{\frac{1}{2}}\\
+&\lesssim  \sqrt{p} \bigg(\sum_{l=1}^d \sum_{k \in Z^d} \|e^{-it P}  P_N Q_k f\|_{L^{2,\infty}_{e_l} (\R \times \R^d)}^{2(1-\varepsilon)} \|e^{-it P}  P_N Q_k f\|_{L^{4,4}_{e_l}(\R \times \R^d) }^{2\varepsilon} 
+\bigg)^{\frac{1}{2}}\\
+&\lesssim\sqrt{p} \bigg( \sum_{k \in Z^d} |k|^{(s-1)(1-\varepsilon)} N^{\varepsilon \frac{d -s}{2} } \|P_N Q_k f^\omega\|^2_{L_x^2 (\R^d)} \bigg)^{\frac{1}{2}}.
+\end{align*}
+Since the multiplier of $P_N$ and $Q_k$ is respectively non-zero only if $\frac{\xi}{N} \approx 1$ and $|\xi - k| \approx 1$, then for large $N$, one has $|k|\approx N$, and therefore 
+for large $N$
+\begin{align*}
+&\left\|\sum_{l=1}^d \|e^{-it P}  P_N f^\omega \|_{  L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (\R\times \R^d)} \right\|_{L_\omega^p}
+%&\leq  N^{X_1 (1-4/q)} N^{(4 /q) (d -s)/4 }  \|\|P_N f^\omega\|_{L_x^2 (\R^d)} \|_{L_\omega^p} \\
+\lesssim \sqrt{p}\langle N\rangle^{\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4}} \|P_N f\|_{L_2^2 (\R^d )}.
+\end{align*}
+Finally, we assume $N \lesssim 1$. Similarly as above, by using Lemma \ref{lemmaIK} and noticing that $\alpha (\frac{4}{2-\varepsilon},\frac{4}{\varepsilon} )= \frac{d-1}{2}- \varepsilon \frac{d+s -2}{4}>0$ if 
+$\epsilon < 1$ and $\frac{4}{2 - \epsilon} < \frac{4}{\epsilon}$
+\begin{align*}
+\Big\|\sum_{l=1}^d \|e^{-it P}  P_N f^\omega \|_{ L^{\frac{4}{2-\varepsilon},\frac{4}{\varepsilon}}_{e_l} (\R\times \R^d)} \Big\|_{L^p_\omega} 
+&\lesssim  N^{\alpha (\frac{4}{2-\varepsilon},\frac{4}{\varepsilon} ) } \sqrt{p} \|P_N f\|_{L_2^2 (\R^d )}  \\
+&\lesssim \sqrt{p} \|P_N f\|_{L_2^2 (\R^d )} \,,
+\end{align*}
+where in the last step we used $N \lesssim 1$.
+A combination of previous estimates and the definition of $H^S$ space, give us
+$$\| \|e^{itP}f^\omega \|_{Y(\R)} \|_{L^p_\omega} \lesssim \sqrt{p} \|f\|_{H_x^S (\R^d )}, $$
+for 
+$$S=\max \left\{C, A+\beta \left(\frac{4}{\varepsilon} , \frac{4}{2-\varepsilon}\right), -B+\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4}  \right\}.$$
+and we conclude by using Lemma \ref{lemproba2}.
+\end{proof}
+
+Next, we find the minimal $S$ from Proposition \ref{estY} for various choices of $s$ and $d$. 
+
+\begin{lem}
+\label{lastmainlem}
+Let $A, B, C, \varepsilon \geq 0$ satisfy the assumptions of Proposition \ref{mainpropnonlinear} and Proposition \ref{estY}. Then, Proposition \ref{estY} holds for any $S > S_{\min}$, where
+\begin{equation}
+S_{\min} = (d - s)\times
+\begin{cases}
+ \frac{(d - 2s + 1)}{2(d - 1)}  & s \leq \frac{d + 2}{3} \,, \\
+\frac{1}{6} & \frac{d + 2}{3} <  s \leq \frac{d + 1}{2} \,, \\
+ \frac{3s - d - 2}{2(d + s - 2)}  & s  >  \frac{d + 1}{2} \,. 
+\end{cases}
+\end{equation}
+\end{lem}
+
+\begin{proof}
+To simplify the notation, we change the variables and denote $\gamma := \beta \left(\frac{4}{\varepsilon} , \frac{4}{2-\varepsilon}\right)$.
+Note that the restriction $\varepsilon \leq 1$ in Proposition \ref{estY} follows from $\varepsilon < 2\frac{s - 1}{d + s - 2}$ assumed in  Proposition \ref{mainpropnonlinear}. 
+Also, the condition $\varepsilon < 2\frac{s - 1}{d + s - 2}$ translates to new variables as $\gamma < 0$. 
+The other condition on $\varepsilon$ in Proposition \ref{mainpropnonlinear} given by $\varepsilon > 2\frac{2s - d -1}{d+ s - 2}$ if $s > \frac{d + 1}{2}$ translates 
+as $\gamma > \frac{s - d}{2}$ if $s > \frac{d + 1}{2}$.
+
+Also, the last term in the definition of $S$ in Proposition \ref{estY} translates to new variable $\gamma$ as 
+$$
+-B+\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4} = -B + (s - 1)(1 - \varepsilon) + \gamma \,.
+$$
+Since $d$, $s$ are fixed, we need to choose $A, B, C > 0$ and $\gamma$ satisfying \eqref{recc},  \eqref{relAB}, and \eqref{relAB1} such that 
+$$S=\max \left\{C, A + \gamma, -B+ (s - 1)(1 - \varepsilon) + \gamma \right\}$$
+is minimal. Let us define $B$ by \eqref{relAB}, that is, 
+$$
+B = \frac{1}{2}\left(A - \gamma - \frac{d-s}{2} \right)\,.
+$$
+Note that by increasing $C$ or $A$, we are not going to destroy validity of $A, B, C \geq 0$ or validity of \eqref{relAB1}. Thus, we can without loss of generality assume that $C = A + \gamma$, otherwise 
+increase the smaller quantity, which does not increase the value of $S$. Since $C \geq \frac{s(d - s)}{4(d + s)}$, we have $A \geq \frac{s(d - s)}{4(d + s)}- \gamma > 0$.  
+In addition, for $C = A + \gamma$, \eqref{relAB1} is equivalent to 
+$$
+A  > \theta_1 \gamma + \frac{d - s}{2} \,,
+$$
+which implies that
+$$
+B= A - \theta_1\gamma - \frac{d - s}{2} - (1 - \theta_1)\gamma \geq 0 \,,
+$$
+where the last inequality follows from $\gamma \leq 0$. Finally, we claim that 
+$$
+A + \gamma \geq -B+ (s - 1)(1 - \varepsilon) + \gamma \,.
+$$
+Indeed, otherwise we increase $A$, which increases $B$, keeping $A, B, C \geq 0$, and $\eqref{relAB1}$ and not increasing $S$. Substituting for $B$, we have 
+$$
+A  \geq  \frac{d - s}{6} + \frac{\gamma}{3} + \frac{2}{3}(s - 1)(1 - \varepsilon) \,.
+$$
+Overall, we showed that $S$ is minimal if $A + \gamma$ is minimal over $\gamma$ with restriction 
+\begin{equation}\label{opm}
+S = A + \gamma \geq \max \left\{\frac{s(d - s)}{4(d + s)},  (\theta_1 + 1) \gamma + \frac{d - s}{2},  \frac{d - s}{6} + \frac{4\gamma}{3} + \frac{2}{3}(s - 1)(1 - \varepsilon)  \right\} \,,
+\end{equation}
+where $\varepsilon = (\gamma + \frac{s - 1}{2}) \frac{4}{d + s - 2}$, $\theta_1 = \frac{(d - s)/2 + \gamma}{(d - s)/2 - \gamma}$ and we can take minimum of right hand sides with respect to $\gamma \in (\frac{1-s}{2}, 0)$ and 
+$\gamma \in ( \frac{s - d}{2}, 0)$ if $s > \frac{d + 1}{2}$. Since $s \geq 2$ and $d \geq 3$, it is easy to check that the all terms in the maximum in \eqref{opm} are increasing in $\gamma$. Thus, the infimum 
+is attained at $\gamma = \frac{1-s}{2}$ if $s \leq \frac{d + 1}{2}$ and at $\gamma =  \frac{s - d}{2}$ if $s > \frac{d + 1}{2}$. A substitution and assumption $d > s$ yield
+\begin{equation}\label{sft}
+S > \max \left\{\frac{s(d - s)}{4(d + s)},  \frac{(d - s)(d - 2s + 1)}{2(d - 1)}, \frac{d - s}{6}  \right\} \,,  \qquad s \leq \frac{d + 1}{2}\,.
+\end{equation}
+and 
+\begin{equation}\label{sft2}
+S > \max\left\{\frac{s(d - s)}{4(d + s)},  (d - s)\frac{3s - d - 2}{2(d + s - 2)}\right\}\,,   \qquad s  >  \frac{d + 1}{2}\,.
+\end{equation}
+Note that since $d > s$, we have $\frac{s(d - s)}{4(d + s)} < \frac{d - s}{6}$, and the first term in the maximum in \eqref{sft} can be removed. We claim that $\frac{s(d - s)}{4(d + s)}$
+can be removed in \eqref{sft2} as well. Indeed, since $s > \frac{d+1}{2}$, and $d \geq 3$, 
+\begin{align*}
+\frac{3s - d - 2}{2(d + s - 2)} &> \frac{3s - d - 2}{2(d + s )} = \frac{s + 5s - 2d - 4}{4(d + s )} > \frac{s + \frac{5}{2}(d + 1) - 2d - 4}{4(d + s )} \\
+&= \frac{s + \frac{1}{2}d  - \frac{3}{2}}{4(d + s )} \geq \frac{s}{4(d + s )} 
+\end{align*}
+The assertion follows after the maximum (of last two terms) in \eqref{sft} is identified.
+%
+%, and $\epsilon$ are fixed, which defines $C$ and $\theta_1$ (see \eqref{relAB1}). Thus it remains to determine $B$, which 
+%specifies $A$ by \eqref{relAB}. Since by \eqref{relAB},  $A$ is an increasing function of $B$, we have that the second term of 
+%$$S=\max \left\{C, A+\beta \left(\frac{4}{\varepsilon} , \frac{4}{2-\varepsilon}\right), -B+\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4}  \right\}.$$
+%is increasing, whereas the last one is decreasing in $B$. Thus, the minimal value is attained if these two terms are equal. Combined with \eqref{relAB} 
+%we obtain the following system 
+%$$\begin{cases}A+\beta (\frac{4}{\varepsilon} , \frac{4}{2-\varepsilon})=-B+\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4} ,\\ A= \frac{d+1}{2}-s+ \varepsilon \frac{d+s-2}{4}+2B, \end{cases} \,.$$
+%The solution is $B= \frac{4s-d-3}{6}+\frac{\varepsilon}{12}(6-d-5s)$, $A=\frac{d+2s-3}{6}+\frac{\varepsilon}{12}(d-7s +6)$ and the common value iin the definition of $S$ is  
+%$$ -B+\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4}= (d-s)\frac{1+2\varepsilon}{6}. $$
+%Since $B \geq 0$, then necessarily 
+%$s>\frac{d+3}{4}$ and $\varepsilon<2\frac{4s-d-3}{d+5s-6}$. If also $s < \frac{d+1}{2}$, then Proposition \ref{mainpropnonlinear} does not impose additional restriction on $\epsilon$, 
+%and to make the value of $S$ minimal, we choose $\epsilon > 0$ as small as possible, denoted $\epsilon := 0^+$. Let us verify, that this choice of $A, B$, and $\epsilon$ satisfies \ref{relAB1}. 
+%Indeed, then 
+%
+%
+%We have $B= \frac{4s-d-3}{6}+\frac{\varepsilon}{12}(6-d-5s)$, $A=\frac{d+8s-6}{6}+\frac{\varepsilon}{12}(d-7s +6)$ and
+%$$ -B+\frac{s-1}{2} + \varepsilon  \frac{d -3s+2}{4}= (d-s)\frac{1+2\varepsilon}{6}. $$
+%So, if $\frac{d+3}{4}<s<\frac{d+1}{2}$, then $S=\max\{C ,\frac{d-s}{6}+\}$. If moreover, $d\leq 2s$, then $S=\frac{d-s}{6}+$.
+% If $s\leq \frac{d+3}{4} $, then we choose $B=0$. This implies that $A=\frac{d-2s+1}{2}$. So 
+%$S=\max\{C, \frac{s-1}{2}+ \}$. Finally, if $s\geq \frac{d+1}{2}$, then we choose $\varepsilon= 2 \dfrac{2s-d-1}{d+s-2}$ which implies that $\alpha +\beta =0$. Therefore, we take $B= \frac{d-1}{6}+ \varepsilon \frac{d-3s+2}{12}$ if $B>0$ and if not $B=0$. So we find
+%$$S=\max \{C, - B_+ + \frac{s-1}{2}+ \dfrac{2s-d-1}{d+s-2} \frac{d-3s +2}{2}  \}. $$
+%
+%CHECK THAT \eqref{relAB1} HOLDS AND THAT THE MAX IS NOT C.
+%
+\end{proof}
+
+\subsection{Proof of Theorem \ref{mainthm}}
+In this subsection, we  prove Theorem \ref{mainthm}, which is an immediate consequence of the local well-posedness for a forced cubic equation and the bound on $\|e^{-itP}f^\omega\|_{Y(\R)}$,
+ established in Proposition \ref{estY}. Specifically, we consider the problem
+\begin{equation}
+\label{finaleq}
+\begin{cases} (i\partial_t -P) v = \pm |F+v|^2 (F+v),\\ v(t_0)=v_0 \in \dot{H}_x^\alpha (\R^d) \end{cases}
+\end{equation}
+for some $F:\R \times \R^d \rightarrow \mathbb{C}$ such that $\|F\|_{Y(\R)} <\infty$. Recall that $\alpha = \frac{d-s}{2}$. We have the following local well-posedness result.
+
+\begin{prop}
+\label{exlocforced}
+Let $t_0 \in \R$ and let $I$ be an open time interval containing $t_0$. Let $F \in Y(\R)$ and $v_0 \in \dot{H}_x^\alpha (\R^d)$. There exists $0<\delta <<1$ such that if
+$$\|e^{-i(t-t_0) P} v_0\|_{X(I)}+\|F\|_{Y(I)}\leq \delta,$$
+then there exists a unique solution
+$$v\in C(I; \dot{H}_x^\alpha (\R^d)) \cap X(I)$$
+to \eqref{finaleq} on $I\times \R^d$. 
+\end{prop}
+
+\begin{proof}
+We assume without loss of generality that $t_0=0$ and let $\delta>0$. We use a fixed point argument to construct our solution. We define
+$$\mathcal{B} = \{v\in X(I) : \|v\|_{X(I) } \leq 2\delta\}$$
+and the map
+$$\Phi (v)(t) = e^{-itP}v_0 \mp \int_0^t e^{-i(t-s)P} |F+v|^2 (F+v)(s) ds, $$
+which, by Duhamel's formula, is a solution of the linear Schr\" odinger with the right hand side $ |F+v|^2 (F+v)$ and zero initial condition. 
+Next,  Proposition \ref{mainproplinearest} and Corollary \ref{mainpropnonlinear}, imply for $v\in \mathcal{B}$,
+\begin{align*}
+\|\Phi (v)\|_{X(I)}& \leq  C \||F+v|^2 (F+v)\|_{G(I)} \leq C (\|v\|_{X(I)}^3 +\|F\|_{Y(I)}^3) \leq 2\delta,
+\end{align*}
+provided that $\delta$ is small enough. In addition,  fo any $v_1 ,v_2 \in \mathcal{B}$,
+\begin{align*}
+\|\Phi (v_1) - \Phi (v_2)\|_{X(I)}&\leq C \||F+v_1|^2 (F+v_1) - |F+v_2|^2 (F+v_2)\|_{G(I)}\\
+&\leq C \|v_1 - v_2\|_{X(I)} (\|v_1\|^2_{X(I)} \|v_2\|_{X(I)}^2 +\|F\|_{Y(I)}^2)\\
+&\leq \dfrac{\|v_1 - v_2\|_{X(I)}}{2} .
+\end{align*}
+So $\Phi : \mathcal{B} \rightarrow \mathcal{B}$ is a contraction with respect to the $X(I)$ norm. Thus there exists a unique solution to \eqref{finaleq}.
+\end{proof}
+
+We are now in position to prove Theorem \ref{mainthm}.
+
+
+\begin{proof}[Proof of Theorem \ref{mainthm}]
+We are looking for a solution to \eqref{eqintro} of the form
+$$u(t)=e^{-itP} f^\omega +v(t) \,,$$
+where $v$ is a solution to
+\begin{equation}
+\label{eqf2}
+\begin{cases}(i\partial_t - P)v = \pm |e^{itP } f^\omega +v|^2 (e^{-itP}f^\omega +v)\qquad \textrm{on}\ I\times \R^d ,\\ v(0)=0.\end{cases}
+\end{equation}
+Since by  Proposition \ref{estY} one has $\|e^{itP}f^\omega\|_{Y(\R)}<\infty$, for a.e. $\omega \in \Omega$, then by Lemma \ref{lemcontt}, we can find an interval $I^\omega \subset \R$
+with $0 \in I^\omega$ such that $\|e^{-itP}f^\omega\|_{Y(I^\omega )}\leq \delta$, where $0<\delta \ll1$ is the constant given in Proposition \ref{exlocforced}, and consequently 
+there exists a unique solution $v\in C(I^\omega ; \dot{H}_x^\alpha (\R^d)) \cap X(I^\omega)$ to \eqref{eqf2} for a.e. $\omega \in \Omega$.
+To show global uniqueness, assume that $w$ is a solution of \eqref{eqf2} belonging to $C(I^\omega ; \dot{H}_x^\alpha (\R^d)) \cap X(I^\omega)$. 
+Then, from the continuity and $w(0) = 0$ follows that $w$ is small for short times, and therefore by the uniqueness of small solutions, $w = v$. Iterating this procedure, we obtain uniqueness on $I^\omega$. 
+\end{proof}
+
+
+
+%\begin{appendices}
+
+%\section{Appendix}
+%$TT^\ast$ argument
+
+
+%\end{appendices}
+\bibliographystyle{alpha}
+\bibliography{biblo}
+
+
+\end{document}
+
+$$S= \max\{\frac{s(d-s)}{2(s+d)},(1-s)/2+A , -B +(s-1)/2 \},\ A= (d+1)/2 -s +2B$$
+
+
+
+
+
+$$s=\max\{C,\beta (q,p)+A , -B +X_1 (1-4/q) +(d-s)/q\}$$
+
+We would like to choose want $(\beta (q,p)+A , -B +3/2 +(d-10)/q) $ as small as possible under the constraint $\beta (q,p) +\alpha +2B =A$
+
+
+
+
+$$\ A= \dfrac{-d^2 +5d -2}{2(d+2)} +(d-2)/p,\ A+B= -2+8/p$$
+
+
+
+$$A=\beta_A (2\alpha /\alpha_q -1)+\alpha,\ C=2\alpha \beta_A /\alpha_q +\alpha ,\ B= \beta_A (\alpha /\alpha_q -1)$$
+$$C=-B+3/2 +(d-10)/q$$
+
+
+At the end, we have, if
+\begin{align*}
+Y_N& =<N>^{-(2 -\frac{4}{ q_2}-d/p_{2,2} ) } \|P_{N} f\|_{L_t^{q_3} L_x^{p_{3,2}}}  + < N>^{2 -\frac{4}{ q_3}-d/p_{3,1}  } \|P_{N} f\|_{L_t^{q_2} L_x^{p_{2,1}}}\\
+& +<N^{\beta_{C} +\alpha +2B}> L^{\tilde{q},2 \tilde{q} /(\tilde{q} -2) }+N^{-B} L^{2\tilde{q}  /(\tilde{q} -2), \tilde{q}}
+\end{align*}
+
+\begin{align*}
+&\|\|e^{-it (\Delta^2 -\mu \Delta )} f^\omega \|_{Y} \|_{L_\omega^p} \leq \sqrt{p} \|P_N f\|_{L^2}\\
+&\times ( <N>^{-(2 -\frac{4}{ q_2}-d/p_{2,2} ) } + < N>^{2 -\frac{4}{ q_3}-d/p_{3,1}  }  +<N^{2\beta_{C} +\alpha +2B}> +N^{-B +1/2})
+\end{align*}
+
+$$s=\max \{-(2 -\frac{4}{ q_2}-d/p_{2,2} )  ,2 -\frac{4}{ q_3}-d/p_{3,1} , 2\beta_{C} +\alpha +2B ,-B +1/2 \}$$
+
+
+\newpage
+
+
+\begin{lem}
+We have
+$$\|<x>^{-1/2 -\delta} e^{-it (\Delta^2 -\beta \Delta)} f\|_{L_t^2 L_x^2 (\R \times \R^d)} \leq \| |\nabla |^{-1/2} f \|_{L^2 (\R^d )} .$$
+By scaling, we have
+$$\sup_{R>0} R^{-1/2} \| e^{-it (\Delta^2 -\beta \Delta)} f\|_{L_t^2 L_x^2 (\R \times \{|x|\leq R\})} \leq \| |\nabla |^{-1/2} f \|_{L^2 (\R^d)}  $$
+\end{lem}
+
+\begin{proof}
+Let $u$ be the solution of $i\partial_t u+\Delta^2 u - \beta \Delta u=0 $, $u(x,0)=f(x)$. So
+$$u(x,t)= \int_{\R^d} \hat{f} (\xi) e^{it (|\xi|^4 +\beta |\xi|^2) +ix\xi} d\xi. $$
+\begin{lem}
+Let $g \in L^2 (S^{d-1})$. Then, for $a>1$, we have
+$$\int_{\R^d} |\int_{S^{d-1} } g(\xi) e^{ix\xi} d\mu (\xi)|^2 \dfrac{dx}{(1+|x|^a)}  \leq C \int_{S^{d-1} }  |g|^2 d\mu.$$
+\end{lem}
+Using polar coordinate, we have
+$$u(x,t)=\frac{1}{2} \int_0^\infty e^{it (s^2 +\beta s^2) } s^{d-1} \int_{S^{d-1}} \hat{f} (\sigma s) e^{i\sigma sx} d\mu(\sigma) ds $$
+So
+\begin{align*}
+&\int_{\R^d} \int_{-\infty}^\infty |\dfrac{\partial^\alpha}{\partial t^\alpha} u(x,t)|^2 dt \dfrac{dx}{(1+|x|^a)} \\
+&\leq \int_{\R^d} \int_0^\infty |s^{d-1} (1+s^4 )^\alpha  \int_{S^{d-1}} \hat{f} (\sigma s) e^{i\sigma sx} d\mu (\sigma )|^2 \dfrac{dx}{(1+|x|^a)}  ds\\
+& \leq \int_0^\infty (1+s)^{a +8\alpha +d -2}  \int_{\R^d}  | \int_{S^{d-1}} \hat{f} (\sigma s) e^{i\sigma x} d\mu (\sigma )|^2 \dfrac{dx}{(1+|x|^a)}  ds\\
+&\leq \int_0^\infty (1+s)^{a+8\alpha +d-2} \int_{S^{d-1}} |\hat{f} (\sigma s)|^2 d\mu(\sigma) ds\\
+&\leq \|f\|_{H^{a/2 +4\alpha -  1} (\R^d)}^2
+\end{align*}
+\end{proof}
+
+
+
+\begin{lem}
+For any $\delta>0$, there exists $C_\delta >0$ such that for all radially symmetric $f\in \R^d \rightarrow \mathbb{C}$ we have
+$$\||x|^{(d-1)/2} (\sum_{k\in \Z^d} |P_k f|^2)^{1/2} \|_{L_x^\infty (\R^d)}\leq C_\delta \|f\|_{H_x^\delta (\R^d )}.$$
+\end{lem}
+
+\begin{proof}
+We consider the case where $|k|>>1$. Fix $x\in \R^d$. We assume that $|x|>>1$ and
+$$x=(0,\ldots , |x|)= |x|e_d.$$
+Then, we have
+$$P_k f(x)= \int_{\R^d} e^{ix \xi} \psi_k (\xi ) \hat{f} (\xi) d\xi=\int_0^\infty (\int_0^\pi \int_{\mathbb{S}^{d-2}} e^{i|x|\rho \cos (\theta)} \sin^{d-2} (\theta) \psi_k (\xi (\rho , \theta ,\omega)  d\omega d\theta)  \hat{f} (\rho) \rho^{d-1} d\rho, $$
+where we used spherical coordinates
+$$0\leq \rho <\infty ,\ 0\leq \theta \leq \pi,\ \omega \in \mathbb{S}^{d-2} \rightarrow \R^{d-1},$$
+such that
+$$\xi= (\rho \omega \sin (\theta), \rho \cos (\theta)).$$
+Integrating by parts in $\theta$, we find
+
+
+\end{proof}
+
+
+
+\begin{lem}
+Let $2\leq r\leq \infty$ and $\delta >0$. There exists $C_\delta >0$ such that for all radially symmetric functions $f:\R^d \rightarrow \mathbb{C}$ and all dyadic integers $N\geq 1$ that
+$$\||x|^{\frac{d-1}{2} (1-2/r)} (\sum_{k\in \Z^d} |P_k f_N|^2)^{1/2} \|_{L_x^r (\R^d )}\leq C_\delta N^\delta \|f_N\|_{L_x^2 (\R^d)}.$$
+\end{lem}
+
+
+\begin{proof}
+We interpolate between the radialish Sobolev estimate and the trivial one
+$$ \| (\sum_{k\in \Z^d} |P_k f_N|^2)^{1/2} \|_{L_x^2 (\R^d )}\leq \|f_N \|_{L_x^2 (\R^d )}. $$
+
+\end{proof}
+
+\begin{lem}
+For $0\leq \alpha \leq 1$ and $d<r<\infty$,
+$$\|<x>^\alpha u\|_{L_x^\infty (\R^d )}\leq \|<x>^\alpha P_{\leq 1} u\|_{L_x^r (\R^d)} + \sum_{N\geq 2} N^{d/r} \|<x>^\alpha P_N u\|_{L_x^r (\R^d)}$$
+\end{lem}
+
+
+\begin{lem}
+Let $2\leq r\leq \infty$. For any $k\in \Z^d$, any integers $j,l>0$ with $l>j+5$ and any integer $M>0$, there holds
+$$\|\chi_j P_k \chi_l\|_{L_x^2 (\R^d) \rightarrow L_x^r (\R^d)}\leq C_M 2^{-Ml}.$$
+\end{lem}
+
+
+\begin{lem}
+Let $2\leq r\leq \infty$. For any $k,m,l\in \Z^d$, any integers $l\geq 0$ with $|k-m|\geq 100$ and any integer $M>0$, there holds
+$$\| P_k \chi_l P_m\|_{L_x^2 (\R^d) \rightarrow L_x^r (\R^d)}\leq C_M 2^{-Ml} |k-m|^{-M}.$$
+\end{lem}
+
+
+
+For $d<r<\infty$,
+\begin{align*}
+&\|<x>^\alpha \nabla^l e^{-it (\Delta^2 -\beta \Delta) } f^\omega\|_{L_\omega^p L_t^2 L_x^\infty} \leq\\
+& \|<x>^\alpha \nabla^l e^{-it (\Delta^2 -\beta \Delta) } P_{\leq 1} f^\omega\|_{L_\omega^p L_t^2 L_x^r}+ \sum_{N\geq 2} N^{d/r} \|<x>^\alpha \nabla^l e^{-it (\Delta^2 -\beta \Delta) }P_N f^\omega\|_{L_\omega^p L_t^2 L_x^r}
+\end{align*}
+
+\begin{align*}
+&\|<x>^\alpha \nabla^l e^{-it (\Delta^2 -\beta \Delta) }P_N f^\omega\|_{L_\omega^p L_t^2 L_x^r} \\
+&\leq \sum_{j\geq 0} 2^{\alpha j} \|\chi_j \nabla^l e^{-it (\Delta^2 -\beta \Delta) }P_N f^\omega\|_{L_\omega^p L_t^2 L_x^r} \\
+&\leq \sqrt{p} \sum_{j\geq 0} 2^{\alpha j} \| (\sum_{|k|\approx N} |\chi_j P_k \chi_{\leq j+5} \nabla^l e^{-it (\Delta^2 -\beta \Delta)} f_N |^2 )^{1/2} \|_{L_t^2 L_x^r}\\
+&+\sqrt{p} \sum_{j\geq 0} 2^{\alpha j} \| (\sum_{|k|\approx N} |\chi_j P_k \chi_{> j+5} \nabla^l e^{-it (\Delta^2 -\beta \Delta)} f_N |^2 )^{1/2} \|_{L_t^2 L_x^r}\\
+&= \sqrt{p} (I+II)
+\end{align*}
+Using the unit-scale Bernstein estimate and the local smoothing estimate, we get
+$$ \| (\sum_{|k|\approx N} |\chi_0 P_k \chi_{\leq 5} \nabla^l e^{-it (\Delta^2 -\beta \Delta)} f_N |^2 )^{1/2} \|_{L_t^2 L_x^r}\leq \||\nabla|^{l-1/2} f_N \|_{L_x^2}.$$
+
+
+If $\alpha + (d-1)/r \leq (d-2)/2$, we have
+\begin{align*}
+&\sum_{j\geq 1}  2^{\alpha j} \| (\sum_{|k|\approx N} |\chi_j P_k \chi_{\leq j+5} \nabla^l e^{-it (\Delta^2 -\beta \Delta)} f_N |^2 )^{1/2} \|_{L_t^2 L_x^r}\\
+&\leq \sum_{j\geq 1} 2^{\alpha j} 2^{-\frac{d-1}{2} (1-2/r) j} \||x|^{\frac{d-1}{2} (1-2/r)}   (\sum_{|k|\approx N} |\chi_j P_k \chi_{\leq j+5} \nabla^l e^{-it (\Delta^2 -\beta \Delta)} f_N |^2 )^{1/2} \|_{L_t^2 L_x^r}\\
+&\leq \sum_{j\geq 1} 2^{\alpha j}  2^{-\frac{d-1}{2} (1-2/r) j} N^\delta 2^{j/2} \||\nabla|^{l-1/2} f_N \|_{L_x^2}\\
+&\leq N^\delta  \||\nabla|^{l-1/2} f_N \|_{L_x^2}
+\end{align*}
+
+
+Let $g_N =\nabla^l e^{-it (\Delta^2 -\beta \Delta)} f_N$.
+\begin{align*}
+&II
+\leq \sum_{j\geq 0} 2^{\alpha j} (\sum_{|k|\approx N } (\sum_{l>j+5} \sum_{|m-k|\leq 100} \|\chi_j P_k \chi_l P_m \tilde{\chi}_l g_N \|_{L_t^2 L_x^r} )^2)^{1/2}\\
+&+\sum_{j\geq 0} 2^{\alpha j} (\sum_{|k|\approx N } (\sum_{l>j+5} \sum_{|m-k| > 100} \|\chi_j P_k \chi_l P_m \tilde{\chi}_l g_N \|_{L_t^2 L_x^r} )^2)^{1/2}\\
+&= IIA +IIB
+\end{align*}
+
+$$IIA +IIB\leq \||\nabla|^{l-1/2} f_N \|_{L_x^2}$$
+
+\begin{align*}
+&\|<x>^\alpha \nabla^l e^{-it (\Delta^2 -\beta \Delta) } f^\omega\|_{L_\omega^p L_t^2 L_x^\infty} \leq\\
+\sqrt{p}  \||\nabla|^{l-1/2} P_{\leq 1} f^\omega\|_{ L_x^2}+ \sqrt{p}\sum_{N\geq 2} N^{d/r+\delta} \| |\nabla|^{l-1/2} P_N f^\omega\|_{ L_x^2}\\
+&\leq \sqrt{p} \|f\|_{H_x^s (\R^d)}
+\end{align*}
+if $\alpha +(d-1)/r \leq (d-2)/2$ and $d/r +\alpha <\varepsilon$ i.e. $r$ sufficiently large. So, for $s>l-1/2$ and $0\leq \alpha <1$, we have, for almost every $\omega \in \Omega$ that
+$$\|<x>^\alpha \nabla^l e^{-it (\Delta^2 -\beta \Delta)} f^\omega \|_{L_t^2 L_x^\infty} <\infty$$ 
+if $f\in H^s (\R^d )$.
+
+
+
+$$\|\nabla^l e^{-it(\Delta^2 -\beta \Delta} f^\omega\|_{L_\omega^p L_t^2 L_x^4}\leq \|<x>^{-3/4} \nabla^l  e^{-it(\Delta^2 -\beta \Delta} f^\omega \|^{1/2}_{L_\omega^p L_t^2 L_x^2}  \|<x>^{3/4} \nabla^l  e^{-it(\Delta^2 -\beta \Delta} f^\omega \|^{1/2}_{L_\omega^p L_t^2 L_x^\infty} $$
+$$ \|<x>^{-3/4} \nabla^l  e^{-it(\Delta^2 -\beta \Delta} f^\omega \|^{1/2}_{L_\omega^p L_t^2 L_x^2} \leq \sqrt{p} \|f\|_{H^s_x} $$
+if $s> l- 1/2$. So, if $s>l-1/2$
+$$\|\nabla^l e^{-it(\Delta^2 -\beta \Delta} f^\omega\|_{ L_t^2 L_x^4}<\infty . $$
+
+
+
+
+
+
+\end{document}
+
+
+$$\|h\|_{L^q}\leq \|h\|_{L^2}^{-1+4/q} \|h\|_{L^4}^{2-4/q}$$
+$$\frac{1}{p}+\frac{1}{q}=\frac{1}{2}$$
+$$\|h \|_{L_{e_l}^{\infty ,2}} \leq N^{-1/2} \|h\|_{L^2},\ \|h\|_{L_{e_l}^{4,4}} \leq N^{1/2}\|h\|_{L^2} $$
+
+$$\int \|h\|_{L^q}^p \leq \|h \|_{L_{e_l}^{\infty ,2}}^{(4/q -1) p} \|h\|_{L_{e_l}^{4,4}}^4 \leq N^{-\frac{1}{2} (1-4/p) p +2}\leq N^{4-p/2}$$
+
+
+
+$$\|h\|_{L^q}\leq \|h\|_{L^\infty}^{1-4/q} \| h\|_{L^4}^{4/q}$$
+$$\int \|h \|^p_{L^q} \leq (\int \|h\|_{L^\infty}^{(1-4/q)pP})^{1/P} (\int \| h\|_{L^4}^{4pQ/q})^{1/Q} $$
+$$Q= q/p,\ P= Q/(Q-1)= q/(q-p)$$
+$$p(1-4/q)P=2$$
+$$\|h \|_{L_{e_l}^{2,\infty}} \leq N^{3/2} \|h\|_{L^2}$$
+$$\int \|h \|^p_{L^q} \leq (\int \|h\|_{L^\infty}^{2})^{1- p/q} (\int \| h\|_{L^4}^{4})^{p/q}\leq \|h\|_{L_e^{2,\infty}}^{2-2p/q} \|h\|_{L_e^{4,4}}^{4p/q}\leq N^{3-P/q}\|h\|_{L^2}\leq N^{4-p/2}  $$
+
+
+Ionescu-Kenig. If $d\geq 3$ and $e\in \mathbb{S}^{d-1}$
+$$\|\mathcal{F}^{-1} (f)\|_{L_e^{2,\infty}} \leq C 2^{(d-1)k/2} \|f\|_{Z_k}$$
+If $k\in \Z$, $e\in \mathbb{S}^{d-1}$, $l\in [-1 ,40] \cap \Z$, then
+$$\|\mathcal{F}^{-1}[f \eta_1^+ (\xi e /2^{k-l} ] \|_{L_e^{\infty ,2}}\leq C 2^{-k/2} \|f\|_{Z_k}$$

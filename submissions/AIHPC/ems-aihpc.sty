@@ -1,0 +1,953 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ems-aihpc}[2021/11/29 v1.7 EMS package, layout aihpc]
+
+\RequirePackage{pdf14}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[l2tabu, orthodox]{nag}
+
+%%% patch commands
+\RequirePackage{xpatch}
+\newcommand*\ems@warnpatch[1]{\PackageWarning{ems}{Failed to patch #1.}}
+
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{ family = ems, prefix = @ems@ }
+\DeclareBoolOption{index}
+\DeclareBoolOption{openaccess}
+\newcommand*\ems@cclicense{%
+	This work is licensed under a\space
+	\href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0}\space
+	license%
+}
+\DeclareStringOption{paper}
+\DeclareStringOption[numeric]{cite}
+\DeclareStringOption[british]{lang}
+%%% \DeclareStringOption{layout}
+\gdef\@ems@layout{aihpc}
+\DeclareStringOption[submission]{mode}
+\RequirePackage{pdftexcmds}
+\newcommand*\ems@check[2]{%
+	\ifnum\pdf@strcmp{\@nameuse{@ems@#1}}{\unexpanded{#2}}=0 %
+		\expandafter\@firstoftwo
+	\else
+		\expandafter\@secondoftwo
+	\fi
+}
+\ProcessKeyvalOptions*
+
+%%% online first pseudo-mode
+\newif\ifems@onlinefirst
+\ems@check{mode}{onlinefirst}{\ems@onlinefirsttrue \xdef\@ems@mode{online}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% begin type area and font size
+
+\RequirePackage{geometry}
+\geometry{ includehead, paperheight = 240mm, paperwidth = 170mm, twoside }
+\ems@check{mode}{online}{\geometry{ hmarginratio = {1:1}, asymmetric }}{\geometry{ inner = 20mm }}
+\ems@check{mode}{work}{\geometry{ showframe } \overfullrule 1em\relax}{}
+
+%% In big.def the following block comes *after* the font size definition.
+%% It makes a difference!
+\geometry{
+	heightrounded,
+	headsep = 16.3pt, % \ems@grid + 0.3*11
+	marginparwidth = 16mm,
+	textheight = 548pt,
+	textwidth = 357pt,
+	top = 13mm
+}
+
+%%% text fonts
+\ems@check{mode}{submission}{
+	%%% TeX Gyre Termes and Heros
+	\RequirePackage[helvratio = 0.88, tighter]{newtxtext}
+}{
+	\RequirePackage{textcomp}
+	%%% Adobe Times Roman (or equivalent)
+	\renewcommand*\rmdefault{ptm}
+	\renewcommand*\bfdefault{b}
+	%%% Helvetica (or equivalent)
+	%%% \RequirePackage[scaled = 0.88]{helvet}
+    \usepackage[scale=.93]{sourcesanspro}
+	%%% Latin Modern Mono
+	\renewcommand*\ttdefault{lmtt}
+}
+\DeclareTextCommandDefault{\textellipsis}%
+	{.\kern\fontdimen3\font.\kern\fontdimen3\font.}
+
+%%% font size
+\newdimen\ems@grid
+\global\ems@grid 13\p@
+\renewcommand\normalsize{%
+    \@setfontsize\normalsize{10}\ems@grid
+    \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+    \abovedisplayshortskip \z@ \@plus3\p@
+    \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+    \belowdisplayskip \abovedisplayskip
+    \let\@listi\@listI
+}
+\normalsize
+\DeclareRobustCommand\small{%
+    \@setfontsize\small{9}{11.5}%
+    \abovedisplayskip 8.5\p@ \@plus3\p@ \@minus4\p@
+    \abovedisplayshortskip \z@ \@plus2\p@
+    \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+    \belowdisplayskip \abovedisplayskip
+}
+
+\DeclareRobustCommand\footnotesize{%
+    \@setfontsize\small{8.4}{10}%  %% equals \scriptsize in big style!
+    \abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
+    \abovedisplayshortskip \z@ \@plus\p@
+    \belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
+    \belowdisplayskip \abovedisplayskip
+}
+
+\settoheight\topskip{\^{A}}
+\settoheight\headheight{{\small\strut}}
+
+
+\AtEndOfPackage{
+	\ems@check{mode}{submission}{}{
+		%%% just two optical sizes for MTPro2
+		\DeclareFontShape{LMP1}{mtt}{m}{it}{<-8> mt2mis <8-> mt2mit}{}
+		\DeclareFontShape{LMP1}{mtt}{b}{it}{<-8> mt2bmis <8-> mt2bmit}{}
+		\DeclareFontShape{LMP2}{mtt}{m}{n}{<-8> mt2sys <8-> mt2syt}%
+			{\skewchar\font32}
+		\DeclareFontShape{LMP2}{mtt}{b}{n}{<-8> mt2bsys <8-> mt2bsyt}%
+			{\skewchar\font32}
+		\DeclareFontShape{LMP2}{mtt}{eb}{n}{<-8> mt2hsys <8-> mt2hsyt}%
+			{\skewchar\font32}
+		\DeclareFontShape{U}{mtt}{b}{n}{<-8> mt2mbs <8-> mt2mbt}{}
+		\DeclareFontShape{U}{mt2sya}{m}{n}{<-8> mt2syas <8-> mt2syat}{}
+		\DeclareFontShape{U}{mt2sya}{b}{n}{<-8> mt2bsyas <8-> mt2bsyat}{}
+		\DeclareFontShape{U}{mt2sya}{eb}{n}{<-8> mt2hsyas <8-> mt2hsyat}{}
+	}
+}
+
+\newcommand*\ems@titlehead[2]{\footnotesize
+	\hb@xt@\textwidth{%
+		\vbox to \headheight{\halign{##\hfil\cr #1}\vss}\hfill
+		\vbox to \headheight{\halign{\hfil##\cr #2}\vss}%
+	}%
+}
+%%% end type area and font size
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{caption}
+
+%%% section
+\renewcommand*\@seccntformat[1]{\csuse{the#1}.\enskip}
+
+%%% heading
+\newcommand*\ems@head[2]{\small \strut \smash{#1\qquad#2}}
+\renewcommand*\ps@headings{%
+	\let\@evenfoot\@empty \let\@oddfoot\@empty
+	\ems@check{mode}{online}%
+		{\def\@evenhead{\hfil\ems@head{\leftmark}{\thepage}}}%
+		{\def\@evenhead{\ems@head{\thepage}{\leftmark}\hfil}}%
+	\def\@oddhead{\hfil\ems@head{\rightmark}{\thepage}}%
+}
+\pagestyle{headings}
+
+%%% title page
+\newbox\ems@box@abstract
+\renewenvironment{abstract}{%
+	\global\setbox\ems@box@abstract\color@vbox
+		\normalcolor \small
+		\noindent\strut\textbf{\abstractname.}\enskip\ignorespaces
+}{\strut\par\color@endbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% begin specific layout
+
+\newcommand*\ps@titlepage{%
+	\let\@oddfoot\@empty
+	\let\@evenfoot\@empty
+	\def\@oddhead{%
+		\ems@titlehead{%
+			\vrule \@width\z@ \@height\headheight
+            Ann.~Inst.~Henri~Poincaré,\cr
+            Anal.~Non~Linéaire\space
+			\ems@check{mode}{submission}{(submitted)}{%
+				\ems@check{mode}{proof}{\textcolor{emsred}{(Galley proof)}}{%
+					\ifems@onlinefirst (Online first)\else
+						\ems@volume\space(\ems@volumeyear)\if@ems@index\else,\space
+						\ems@FirstPage--\zref@extract{LastPage}{page}\fi%
+					\fi
+				}\cr
+				\if@ems@index\else DOI \ems@doi\fi
+			}\cr
+		}{%
+			\vrule \@width\z@ \@height\headheight \@depth\dp\strutbox
+			\textcopyright\,\ems@copyrightyear\space
+			Association Publications de l'Institut Henri Poincaré\cr
+			Published by EMS Press\cr
+			\if@ems@openaccess\ems@cclicense\cr\fi
+		}%
+	}%
+	\let\@evenhead\@oddhead
+}
+%
+%%% end specific layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand*\classificationname{2020 Mathematics Subject Classification}
+\renewcommand*\maketitle{%
+	%%% header
+	\thispagestyle{titlepage}%
+	\begingroup
+		\global\@topnum \z@
+		\vspace*{\tw@\ems@grid}%
+		\begingroup
+			\centering
+			%%% title block
+			\vrule \@width\z@ \@height8mm\relax
+			{\Large\bfseries\boldmath \@title\par}%
+			\vrule \@width\z@ \@height8mm\relax
+			%\ems@check{mode}{print}{}{%
+			%	\hypersetup{ pdftitle = \@title }%
+			%} v.1.3
+			%%% author block
+			\ifx\ems@authlist\@empty\else
+				{\large\strut\ems@authlist\strut\par}%
+				%\ems@check{mode}{print}{}{%
+				%	\hypersetup{ pdfauthor = \ems@authlist }%
+				%}% v.1.3
+			\fi
+			\ifx\@appendixauthor\@undefined\else
+                (with an appendix by \@appendixauthor)\strut\par
+			\fi
+		\endgroup
+		\vskip5mm
+		%%% heading
+		\markboth{%
+			\ifx\@authormark\@undefined
+				\ifx\ems@authlist@abbr\@empty\else\ems@authlist@abbr\fi
+			\else
+				\@authormark
+			\fi
+		}{%
+			\ifx\@titlemark\@undefined
+				{\def\\{\space\ignorespaces}\@title}%
+			\else
+				\@titlemark
+			\fi
+		}%
+		%%% classification and keywords
+		\begingroup
+			\let\footnotelayout\raggedright
+			\let\@makefnmark\strut
+			\footnotemargin \z@
+			\ifx\ems@classification\@undefined\else
+				\footnotetext%
+					{\textit{\classificationname.}\enskip\ems@classification.}%
+			\fi
+			\ifx\ems@keywords\@undefined\else
+				\footnotetext{\textit{\keywordsname.}\enskip\ems@keywords.}%
+				%\ems@check{mode}{print}{}{%
+				%	\hypersetup{ pdfkeywords = \ems@keywords }%
+				%}% v.1.3
+			\fi
+		\endgroup
+		%%% abstract
+		\ifvoid\ems@box@abstract\else
+			\noindent\unvbox\ems@box@abstract\par
+		\fi
+		%%% dedication
+		\ifx\ems@dedication\@undefined\else
+			\addvspace\ems@grid
+			{\centering\itshape\ems@dedication\par}%
+		\fi
+	\endgroup
+	\vskip\tw@\ems@grid
+	\@afterheading \@afterindentfalse
+}
+%%% last page
+\newcommand*\ems@affilnameformat[1]{%
+	\par \vskip.5\ems@grid
+	{\bfseries\csuse{ems@affil#1name}}\par\nobreak
+}
+%%% add semicolon in front of e-mail
+\AtEndOfPackage{
+	\let\ems@email\email
+	\xpatchcmd\emsaffil%
+		{\newaffiltrue}%
+		{\newaffiltrue\renewcommand*\email[1]{\unskip;\enskip\ems@email{#1}}}%
+		{}{\ems@warnpatch{email}}
+}
+\newcommand*\breakemail[1]{\unskip;\linebreak\ems@email{#1}}
+%
+\AtEndDocument{%
+	\par \addvspace{1.5\ems@grid}%
+	\begingroup
+		\small \raggedright
+		\ifx\ems@communicated\@undefined\else
+			Communicated by \ems@communicated
+            \par \vskip.5\ems@grid
+		\fi
+		\ifx\ems@received\@undefined\else
+			Received \ems@received
+    		\ifx\ems@revised\@undefined\else; revised \ems@revised\fi
+            \ifx\ems@accepted\@undefined\else; accepted \ems@accepted\fi.\space
+            \par \vskip.5\ems@grid
+		\fi
+		\ifx\ems@affillist\@empty\else\ems@affillist\fi
+        \ifx\@appendixaffil\@undefined\else
+		  \par \vskip.5\ems@grid
+		  {\bfseries\@appendixauthor}\par\nobreak\@appendixaffil
+        \fi
+		\ems@lastpage
+		\par
+	\endgroup
+	%%% force even page number
+	\ems@check{mode}{print}{%
+		\clearpage
+		\ifodd\c@page\else\null\thispagestyle{empty}\clearpage\fi
+	}
+}
+
+%%% appendix
+\newcommand*\appendixauthor[2]{%
+	\gdef\@appendixauthor{#1}%
+	\gdef\@appendixauthor@abbr{#2}%
+}
+\newcommand*\appendixaffil[1]{\gdef\@appendixaffil{#1}}
+\newcommand*\appendixauthorsection[2][(by \@appendixauthor)]{\section[#2 #1]{#2 \textmd{#1}}}
+
+%%% bibliography
+%%% break if it does not fit
+\RequirePackage{tabto}
+\newcommand*\ems@bibinfo[3]{%
+	\tabto\CurrentLineWidth
+	\setbox\@tempboxa\hbox{#1~\href{https://#2}{#3}}%
+	\ifdim\TabPrevPos >\z@
+		\ifdim\dimexpr\linewidth-\TabPrevPos-.5em\relax <\wd\@tempboxa
+			\newline
+		\else
+			\enskip
+		\fi
+	\fi
+	\unhbox\@tempboxa
+}
+\newcommand*\MR[1]{%
+	\ems@bibinfo{MR}{mathscinet.ams.org/mathscinet-getitem?mr=#1}{#1}%
+}
+\newcommand*\Zbl[1]{%
+	\ems@bibinfo{Zbl}{zbmath.org/?q=an:#1&format=complete}{#1}%
+}
+\newcommand*\arxiv[1]{arXiv:\href{https://arxiv.org/abs/#1}{#1}}
+\let\arXiv\arxiv
+%
+\newcommand*\JFM[1]{%
+	\ems@bibinfo{JFM}{www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=20&type=html&an=#1&format=complete}{#1}%
+}
+\newcommand*\IEEE[1]{%
+    \ems@bibinfo{IEEEXplore}{ieeexplore.ieee.org/document/#1}{#1}%
+}
+
+\newcommand*\DOI[1]{DOI~\href{https://doi.org/#1}{#1}}
+
+%%% table of contents (ToC)
+\renewcommand*\@pnumwidth{2em}
+\renewcommand*\@dotsep{3}
+
+\newcounter{savetocdepth}
+\AtBeginDocument{\setcounter{savetocdepth}{\value{tocdepth}}}
+\renewcommand*\@pnumwidth{2em}
+\renewcommand*\@dotsep{3}
+\setcounter{tocdepth}{1} %default tocdepth
+\renewcommand*\tableofcontents{%
+	%%% skip entry 'Contents' in TOC
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+    \section*{Contents}
+	\@starttoc{toc}%
+	\addtocontents{toc}{\protect\small}%
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{\value{savetocdepth}}}
+    \AtEndDocument{\addtocontents{toc}{\normalsize}}%
+}
+%%% important dot after section number
+\xpatchcmd\@sect%
+	{\numberline{\csname the#1\endcsname}}%
+	{\numberline{\csuse{the#1}.}}%
+	{}{\ems@warnpatch{@sect}}
+\renewcommand*\l@part{\@dottedtocline{0}{\z@}{1.5em}}
+\renewcommand*\l@section{\@dottedtocline{1}{\z@}{1.5em}}
+
+%%% common settings
+\smallskipamount .25\ems@grid\relax
+\medskipamount .5\ems@grid\relax
+\bigskipamount \ems@grid\relax
+
+\parindent 1.5em\relax
+
+%%% page layout
+\raggedbottom
+\footskip \z@
+\ems@check{paper}{a4}{
+	\geometry{
+		a4paper,
+		layouthoffset = \z@,
+		layoutvoffset = 10mm,
+		marginparwidth = 32mm,
+		asymmetric
+	}
+}{}
+
+%%% language
+\RequirePackage[
+	american, british,
+	french,
+	%german, ngerman,
+	%swissgerman, nswissgerman,
+	main = \@ems@lang,
+	shorthands = off
+]{babel}
+\lefthyphenmin \tw@
+\righthyphenmin \thr@@
+\renewcommand*\americanhyphenmins{33}
+\renewcommand*\britishhyphenmins{33}
+\renewcommand*\frenchhyphenmins{23}
+\ifFB@mainlanguage@FR
+	\frenchsetup{
+		StandardLayout = true,
+		SmallCapsFigTabCaptions = false
+	}
+\fi
+%\renewcommand*\germanhyphenmins{23}
+%\renewcommand*\ngermanhyphenmins{23}
+%\renewcommand*\swissgermanhyphenmins{23}
+%\renewcommand*\nswissgermanhyphenmins{23}
+
+\clubpenalty \@M
+\widowpenalty \@M
+
+\doublehyphendemerits 100000000\relax
+
+%%% math
+\thickmuskip5mu \@plus\@ne mu \@minus\tw@ mu\relax
+\medmuskip4mu \@plus\@ne mu \@minus\@ne mu\relax
+\thinmuskip\thr@@ mu \@plus\@ne mu \@minus\@ne mu\relax
+\RequirePackage[tbtags]{amsmath}
+\robustify\nobreakdash
+
+%%% redefine horizontal spacing after the cases bracket
+\def\env@cases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrace
+  \def\arraystretch{1.2}%
+  \array{@{\,}l@{\quad}l@{}}% instead if \array{@{}l@{\quad}l@{}}%
+}
+
+\RequirePackage{amsthm}
+%%% overwrite default theorem styles
+\newtheoremstyle{plain}
+	{.5\ems@grid}{.5\ems@grid}
+	{\itshape}{}{\bfseries}
+	{\ifx\thmnote\@gobble\else\normalfont\fi.}
+	{.5em}{}
+\newtheoremstyle{definition}
+	{.5\ems@grid}{.5\ems@grid}
+	{\normalfont}{}{\bfseries}
+	{\ifx\thmnote\@gobble\else\normalfont\fi.}
+	{.5em}{}
+%%% qed symbol
+\newbox\ems@qedbox
+\AtBeginDocument{%
+	\setbox\@tempboxa\hbox{x}%
+	\setbox\ems@qedbox\hbox{%
+		\vrule\@width\ht\@tempboxa \@height\ht\@tempboxa \@depth\z@
+	}%
+}
+\renewcommand*\qedsymbol{\relax
+	\ifmmode\copy\ems@qedbox\else\unhcopy\ems@qedbox\fi
+}
+%%% math font
+\ems@check{mode}{submission}{
+	\RequirePackage[varvw]{newtxmath}
+}{
+	\RequirePackage[
+		mtphrb, mtpfrak, mtpcal,
+		straightbraces, subscriptcorrection
+	]{mtpro2}[2009/1/30]
+	\robustify\widetilde
+	%%% active character in math mode?
+	%%% identify "S" in \mathcal with \altS. Same with "I".
+	\appto\MTPsetupScript{%
+		\begingroup\lccode`~=`S\lowercase{\endgroup\def~{\MTP@S}}%
+        \begingroup\lccode`~=`I\lowercase{\endgroup\def~{\MTP@I}}%
+		\mathcode`S="8000%
+        \mathcode`I="8000%
+	}{}{}
+	\RequirePackage[mathscr]{eucal}
+	\AtBeginDocument{
+		\@ifpackageloaded{mathtools}{
+			\let\overbrace\LaTeXoverbrace
+			\let\underbrace\LaTeXunderbrace
+		}{}
+	}
+}
+
+%%% cleardoublepage with empty page
+\newcommand*\ems@addnewpage{\null\thispagestyle{empty}\newpage}
+\renewcommand*\cleardoublepage{%
+	\clearpage
+	\ifodd\c@page\else
+		\ems@addnewpage
+		\if@twocolumn\ems@addnewpage\fi
+	\fi
+}
+
+%%% heading
+\newcommand*\authormark[1]{\gdef\@authormark{#1}}
+\newcommand*\titlemark[1]{\gdef\@titlemark{#1}}
+
+%%% author
+%%% (variant of authblk.sty)
+\providecommand*\Authsep{, }
+\providecommand*\Authand{ and }
+\providecommand*\Authands{, and }
+\providerobustcmd*\ems@corresplabel{\space\textmd{(corresponding author)}}
+\newcounter{authors}
+\newif\ifnewaffil \newaffiltrue
+\@namedef{@sep1}{}
+\@namedef{@sep2}{\Authand}
+\newcommand*\ems@authlist{}
+\newcommand*\ems@authors{}
+\newtoks\@temptokenb
+\newcommand*\ems@authlist@abbr{}
+\newcommand*\ems@authors@abbr{}
+\newcommand*\emsauthor{\@ifstar\@emsauthor\@@emsauthor}
+\newcommand*\@emsauthor{\let\ems@correspcheck\relax\@@@emsauthor}
+\newcommand*\@@emsauthor{\let\ems@correspcheck\@undefined\@@@emsauthor}
+\newcommand*\@@@emsauthor[3]{%
+	\csxdef{ems@affil#1name}{#2\ifx\ems@correspcheck\relax\ems@corresplabel\fi}%
+	\ifnum\c@authors >\@ne
+		\@namedef{@sep\number\c@authors}{\Authsep}%
+	\fi
+	\refstepcounter{authors}%
+	\begingroup
+		\let\protect\@unexpandable@protect
+		\@temptokena=\expandafter{\ems@authors}%
+		\@temptokenb=\expandafter{\ems@authors@abbr}%
+		{%
+			\xdef\ems@author{#2}%
+			\xdef\ems@author@abbr{#3}%
+			\ifnewaffil
+				\global\let\ems@las\@empty
+				\gdef\ems@lasx{\protect\Authand}%
+				\global\let\ems@as\@empty
+				\xdef\ems@authors{\the\@temptokena}%
+				\xdef\ems@authors@abbr{\the\@temptokenb}%
+			\else
+				\xdef\ems@authors{\the\@temptokena\ems@as\ems@au@str}%
+				\xdef\ems@authors@abbr{\the\@temptokenb\ems@as\ems@au@str@abbr}%
+				\global\let\ems@las\ems@lasx
+				\gdef\ems@lasx{\protect\Authands}%
+				\gdef\ems@as{\Authsep}%
+			\fi
+			\gdef\ems@au@str{#2}%
+			\gdef\ems@au@str@abbr{#3}%
+		}%
+		\@temptokena=\expandafter{\ems@authlist}%
+		\xdef\ems@authlist{%
+			\the\@temptokena
+			\protect\@nameuse{@sep\number\c@authors}#2%
+		}%
+		\@temptokenb=\expandafter{\ems@authlist@abbr}%
+		\xdef\ems@authlist@abbr{%
+			\the\@temptokenb
+			\protect\@nameuse{@sep\number\c@authors}#3%
+		}%
+	\endgroup
+	\ifnum\c@authors >\tw@
+		\@namedef{@sep\number\c@authors}{\Authands}%
+	\fi
+	\newaffilfalse
+}
+%%% affiliation
+\newcommand*\ems@affillist{}
+\DeclareRobustCommand\ems@affilcr{%
+	\let\reserved@e\vadjust \let\reserved@f\nobreak \@xnewline
+}
+\providecommand*\ems@affilnameformat[1]{\csuse{ems@affil#1name}\space}
+\newcommand*\emsaffil[2]{%
+	\newaffiltrue
+	\begingroup
+		%%% no page breaks for \\
+		\let\\\ems@affilcr
+		\let\protect\@unexpandable@protect
+		\@temptokena=\expandafter{\ems@authors}%
+		{\xdef\ems@temp{#2}}%
+		\xdef\ems@authors{\the\@temptokena\ems@las\ems@au@str\ems@temp}%
+		\global\let\ems@las\@empty
+		\global\let\ems@au@str\@empty
+		{\xdef\ems@temp{#2}}%
+		\@temptokena=\expandafter{\ems@affillist}%
+		\xdef\ems@affillist{\the\@temptokena\ems@affilnameformat{#1}\ems@temp}%
+	\endgroup
+}
+
+%%% metadata
+\newcommand*\ems@newmeta[1]{%
+	\@ifundefined{#1}{%
+		\csdef{#1}##1{\csgdef{ems@#1}{\ignorespaces ##1}}%
+	}{\PackageError{ems}{Command #1 already defined.}{}}%
+}
+\ems@newmeta{copyrightyear}
+\ems@newmeta{dedication}
+\ems@newmeta{doi}
+\ems@newmeta{doinumber}
+\ems@newmeta{issue}
+\ems@newmeta{journal}
+\ems@newmeta{keywords}
+\ems@newmeta{published}
+\ems@newmeta{received}
+\ems@newmeta{revised}
+\ems@newmeta{accepted}
+\ems@newmeta{communicated}
+\ems@newmeta{volumeyear}
+%%% expansion needed for calculation
+\newcommand*\volume[1]{\xdef\ems@volume{#1}}
+\providecommand*\keywordsname{Keywords}
+\providecommand*\classificationname{Mathematics Subject Classification (2020)}
+\newcommand*\classification[2][]{%
+	\ifx\relax#1\relax
+		\gdef\ems@classification{\ignorespaces #2}%
+	\else
+		\gdef\ems@classification{%
+			Primary\nobreakspace\ignorespaces #2;\space
+			Secondary\nobreakspace\ignorespaces #1}%
+	\fi
+}
+%%% defaults
+\doinumber{?}
+\journal{\expandafter\MakeUppercase\expandafter{\@ems@layout}}
+\doi{10.4171/\ems@journal/\ems@doinumber}
+\copyrightyear{\the\year}
+\issue{0}
+\volumeyear{0}
+\volume{0}
+
+%%% first and last page
+\newcounter{FirstPage}
+\newcommand*\firstpage[1]{\setcounter{page}{#1}\xdef\ems@FirstPage{#1}}
+\AtBeginDocument{\firstpage{1}}
+\RequirePackage{zref-base}[2019/11/29]
+\ifx\ZREF@base@ok Y\else\expandafter\endinput\fi
+\zref@newlist{LastPage}
+\newcommand*\ems@lastpage{%
+	\if@filesw
+		\begingroup
+			\toks@\expandafter\expandafter\expandafter{%
+				\expandafter\Z@L@main
+				\Z@L@LastPage
+			}%
+			\expandafter\zref@wrapper@immediate\expandafter{%
+				\expandafter\ZREF@label\expandafter{\the\toks@}{LastPage}%
+			}%
+		\endgroup
+	\fi
+}
+
+%%% section
+\def\@part[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \refstepcounter{part}%
+      \addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
+    \else
+      \addcontentsline{toc}{part}{#1}%
+    \fi
+    {\parindent \z@ \raggedright
+     \interlinepenalty \@M
+     \normalfont
+     \ifnum \c@secnumdepth >\m@ne
+       \bfseries\partname\nobreakspace\thepart
+       \par\nobreak
+     \fi
+     \raggedright\normalfont\large\bfseries\boldmath #2%
+     \par}%
+    \nobreak
+    \vskip 3ex
+    \@afterheading}
+\renewcommand*\section{%
+	\@startsection{section}{1}{\z@}%
+		{-2\ems@grid \@plus\z@ \@minus-.25\ems@grid}%
+		{\ems@grid \@plus\z@ \@minus.25\ems@grid}%
+		{\raggedright\normalfont\large\bfseries\boldmath}%
+}
+\renewcommand*\subsection{%
+	\@startsection{subsection}{2}{\z@}%
+		{-1\ems@grid \@plus\z@ \@minus-.25\ems@grid}{.5\ems@grid}%
+		{\raggedright\normalfont\bfseries\boldmath}%
+}
+%%% same spacing for all run-in sections
+\newcommand*\ems@runinformat[1]{#1\@addpunct{.}}
+\renewcommand*\subsubsection{%
+	\@startsection{subsubsection}{3}{\z@}%
+		{.5\ems@grid}{-.5em}{\normalfont\bfseries\boldmath\ems@runinformat}%
+}
+\renewcommand*\paragraph{%
+	\@startsection{paragraph}{4}{\z@}%
+		{.5\ems@grid}{-.5em}{\normalfont\bfseries\boldmath\ems@runinformat}%
+}
+\renewcommand*\subparagraph{%
+	\@startsection{subparagraph}{5}{\z@}%
+		{.5\ems@grid}{-.5em}{\normalfont\itshape\ems@runinformat}%
+}
+
+%%% footnote
+\RequirePackage[bottom]{footmisc}
+\footnotesep \z@
+\skip\footins \tw@\ems@grid \@plus\ems@grid \@minus\ems@grid
+
+%%% multiple columns
+\RequirePackage{multicol}
+\multicolsep \z@
+\multicolbaselineskip \z@skip
+\raggedcolumns
+
+%%% list
+\RequirePackage[shortlabels]{enumitem}
+\setlist{
+	font = \upshape,
+	itemsep = .25\baselineskip,
+	leftmargin = \parindent,
+	parsep = \z@,
+	partopsep = .5\baselineskip,
+	topsep = .25\baselineskip,
+}
+%%% align label left
+\setlist[enumerate]{ left=\z@, align=left }
+%%% align label with \parindent
+\setlist[enumerate, 1]{ align=left, labelindent=\parindent, leftmargin=* }
+\setlist[itemize]{ align=left, labelindent=\z@, leftmargin=\parindent, labelsep=*, }
+%% same as  \setlist[itemize]{ align=left, left=\z@..\parindent } %since version 3.6 [2018-11-30]
+\setlist[description]{ font=\mdseries }
+\renewcommand*\labelenumi{(\theenumi)}
+\renewcommand*\labelenumii{(\theenumii)}
+\renewcommand*\labelenumiii{(\theenumiii)}
+\renewcommand*\labelenumiv{(\theenumiv)}
+\renewcommand*\labelitemi{$\vcenter{\hbox{\scriptsize\textbullet}}$}
+%
+\newlist{footnoteitemize}{itemize}{1}
+\setlist[footnoteitemize]{label=$\vcenter{\hbox{\tiny\textbullet}}$,
+    align=left, labelindent=\z@, leftmargin=!, labelwidth=1em, labelsep=\z@ } %% not perfect ...
+%%% block
+\newenvironment{block}{%
+	\list{}{%
+		\topsep.5 \baselineskip
+		\leftmargin \parindent
+		\rightmargin \leftmargin
+	}%
+		\item\relax
+}{\endlist}
+
+%%% quote
+\renewenvironment{quote}{%
+	\list{}{%
+		\topsep.5 \baselineskip
+		\leftmargin \parindent
+		\rightmargin \leftmargin
+	}%
+		\item\relax\itshape
+}{\endlist}
+\newcommand\attrib[1]{%
+	\par\nopagebreak
+	\setbox\@tempboxa\hbox{{\upshape #1}}%
+	\ifdim\parindent <\dimexpr\linewidth-\wd\@tempboxa\relax
+		\leavevmode\hfill \unhbox\@tempboxa
+	\else
+		\parbox[t]{\dimexpr\@tempdima-\parindent}{\unhbox\@tempboxa}%
+	\fi
+}
+
+%%% float
+\renewcommand*\floatpagefraction{.8}
+\appto\@floatboxreset\centering{}{}
+\floatsep \ems@grid \@plus\z@ \@minus.5\ems@grid
+\textfloatsep \tw@\ems@grid \@plus\z@ \@minus.5\ems@grid
+\intextsep 1.5\ems@grid \@plus\z@ \@minus.5\ems@grid
+\dblfloatsep \floatsep
+\dbltextfloatsep \textfloatsep
+\@fptop \z@
+\@fpsep \ems@grid \@plus\z@ \@minus.5\ems@grid
+\@fpbot \z@ \@plus 1fil
+\@dblfptop \@fptop
+\@dblfpsep \@fpsep
+\@dblfpbot \@fpbot
+\RequirePackage{graphicx}
+\RequirePackage{float}
+\captionsetup{
+	font = small,
+	labelfont = bf,
+    labelsep = period,
+	position = bottom
+}
+\captionsetup[table]{ position = bottom } %v.1.3
+
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\defaultaddspace .25\ems@grid
+
+%%% funding
+\providecommand*\fundingname{Funding}
+\newenvironment{funding}[1][\fundingname]{%
+	\par \addvspace\ems@grid
+	\noindent\textbf{#1.}\enskip\ignorespaces
+}{}
+
+%%% acknowledg(e)ment(s)
+\providecommand*\ackname{Acknowledgements}
+\addto\captionsamerican{\renewcommand*\ackname{Acknowledgments}}
+\addto\captionsbritish{\renewcommand*\ackname{Acknowledgements}}
+\addto\captionsfrench{\renewcommand*\ackname{Remerciements}}
+%\addto\captionsgerman{\renewcommand*\ackname{Danksagung}}
+%\addto\captionsngerman{\renewcommand*\ackname{Danksagung}}
+%\addto\captionsswissgerman{\renewcommand*\ackname{Danksagung}}
+%\addto\captionsnswissgerman{\renewcommand*\ackname{Danksagung}}
+\newenvironment{ack}[1][\ackname]{%
+	\par \addvspace\ems@grid
+	\noindent\textbf{#1.}\enskip\ignorespaces
+}{}
+
+%%% bibliography
+\addto\captionsamerican{\renewcommand*\bibname{References}}%
+\addto\captionsbritish{\renewcommand*\bibname{References}}%
+\addto\captionsfrench{\renewcommand*\bibname{R\'{e}f\'{e}rences}}
+%\addto\captionsgerman{\renewcommand*\bibname{Literatur}}
+%\addto\captionsngerman{\renewcommand*\bibname{Literatur}}
+%\addto\captionsswissgerman{\renewcommand*\bibname{Literatur}}
+%\addto\captionsnswissgerman{\renewcommand*\bibname{Literatur}}
+\renewcommand*\thebibliography[1]{%
+	\section*\bibname
+	\list{\@biblabel{\@arabic\c@enumiv}}{%
+		\small
+		\settowidth\labelwidth{\@biblabel{#1}}%
+		\leftmargin \dimexpr\labelwidth+\labelsep\relax
+		\itemsep \z@
+        \parsep \z@
+        \usecounter{enumiv}%
+		\let\p@enumiv\@empty
+		\renewcommand\theenumiv{\@arabic\c@enumiv}%
+	}%
+    \interlinepenalty \@M
+	%\sloppy
+    \emergencystretch 1em
+	\sfcode`\.\@m
+}
+\ems@check{cite}{numeric}{
+	\RequirePackage[noadjust]{cite}
+	\renewcommand*\citedash{\hbox{--}\nobreak}
+	%%% cite always upright
+	\renewcommand*\@cite[2]{%
+		\leavevmode \cite@adjust
+		{\upshape
+			\citeleft{%
+				#1\if@tempswa\@safe@activesfalse\citemid{#2}\fi
+				\spacefactor\@m
+			}\citeright
+		}\@restore@auxhandle
+	}
+}{\renewcommand*\@cite[2]{\textup{[#1\if@tempswa , #2\fi]}}}
+
+%%% index pages
+\if@ems@index
+    \renewcommand*\@dotsep{4.42}
+    \renewcommand*\@pnumwidth{\tw@ em}
+    \renewcommand*\@tocrmarg{\thr@@ em \@plus\tw@ em}
+    \RequirePackage{ragged2e}
+    \pagestyle{empty}
+    \AtBeginDocument{
+    	\RaggedRight
+    	\lefthyphenmin 4
+    	\righthyphenmin 4
+    	\hfuzz .5em
+    	\emergencystretch \tw@ em\relax
+    }
+    \newcommand*\makeindextitle[1]{%
+    	\title{#1 of Volume \ems@volume\ (\ems@volumeyear)}\maketitle
+    }
+    \newcommand*\@doubleskip{\nobreak\hskip.6em\relax}
+    \newcommand*\paper[3]{%
+	   \@dottedtocline{\z@}{\z@}{1.5em}{#3,\@doubleskip #2}{#1}
+	   \par \addvspace{.5\ems@grid \@minus.25\ems@grid}%
+    }
+    \newcommand*\emptyline{\par \addvspace\ems@grid}
+    \newcommand*\person[2]{#1\@doubleskip #2\par}
+\fi
+
+%%% color
+\ems@check{mode}{print}{
+	\RequirePackage[cmyk]{xcolor}
+	\definecolorset{cmyk}{ems}{}{%
+		red, 0, 0.8, 0.8, 0.2;%
+		green, 0.5, 0, 0.9, 0.3;%
+		blue, 1, 0.2, 0, 0.4;%
+		yellow, 0, 0.1, 0.9, 0.3%
+	}
+}{
+	\RequirePackage[rgb]{xcolor}
+	\definecolorset{HTML}{ems}{}{%
+		red, CC2929;%
+		green, 59B312;% RGB triadic
+		blue, 007A99;%
+		yellow, B3A112% RYB triadic
+	}
+}
+
+%%% hyperref
+\RequirePackage[hyphens]{url}
+%%% do not break http:// at colon
+\patchcmd\UrlBreaks{\do\/}{}{}{\ems@warnpatch{UrlBreaks}}
+\renewcommand*\UrlBigBreaks{\do\/}
+\urlstyle{same}
+\RequirePackage[pdfa]{hyperref}
+\hypersetup{ pdfencoding = auto, psdextra }
+\ems@check{mode}{print}%
+	{\hypersetup{ draft, pdftrapped = false }}%
+	{\hypersetup{ allcolors = emsblue, colorlinks, bookmarksdepth = 3, bookmarksnumbered }}
+\newcommand*\email[1]{\href{mailto:#1}{\mbox{#1}}}
+
+%%% unnumbered sections in PDF bookmarks
+%%% http://tex.stackexchange.com/q/33696/
+\xpatchcmd\@startsection%
+	{\@ssect{#3}{#4}{#5}{#6}}%
+	{\@dblarg{\@sect{#1}{\@m}{#3}{#4}{#5}{#6}}}%
+	{}{\ems@warnpatch{@startsection}}
+\newcommand*\pdfmath[2]{\texorpdfstring{$#1$}{\$#2\$}}
+\pdfstringdefDisableCommands{%
+	\def\titlebreak{\space\ignorespaces}%
+	\def\tocbreak{\space\ignorespaces}%
+	\let\,\space
+	\let\\\textbackslash
+	\let\boldmath\relax
+	\let\nobreakdash\relax
+	\let\sb\textunderscore
+	\let\sp\textasciicircum
+}
+
+%%% has to be after amsthm for \@addpunct
+\frenchspacing
+
+%%% references always upright
+%%% http://tex.stackexchange.com/q/407419/
+\catcode`#=12
+\AtBeginDocument{%
+	\patchcmd\@setref%
+		{\expandafter\Hy@setref@link#1\@empty\@empty\@nil{#2}}%
+		{\textup{\expandafter\Hy@setref@link#1\@empty\@empty\@nil{#2}}}%
+		{}{\ems@warnpatch{@setref}}%
+	\renewcommand*\p@equation{\expandafter\upshape}%
+}
+\catcode`#=6
+\patchcmd\real@setref%
+	{\expandafter#2#1}%
+	{\textup{\expandafter#2#1}}%
+	{}{\ems@warnpatch{real@setref}}
+
+%%% binomial coefficients for displayed formulas
+\newcommand\emsbinom[2]{\biggl(\genfrac{}{}{0pt}{}{#1}{#2}\biggr)}
+
+\endinput
