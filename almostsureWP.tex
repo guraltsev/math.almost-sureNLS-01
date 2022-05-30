@@ -370,13 +370,13 @@ Notice that the constant $X_1$ in \eqref{IK1} does not depend on $P$ but only on
 \begin{proof}
 First, we prove \eqref{IK1} and without loss of generality we assume $l=1$ and set $e = e_1$. We use a \(TT^{*}\) argument for $T$ defined as 
 \begin{equation*}
-T f(x)=\frac{1}{(2\pi)^{d}} \int_{\R^{d}} e^{\xi x - i t p(\xi)} h_{N}(\xi)\hat{f}(\xi)d \xi,
+T f(x)=\frac{1}{(2\pi)^{d}} \int_{\R^{d}} e^{i \xi x - i t p(\xi)} h_{N}(\xi)\hat{f}(\xi)d \xi,
 \end{equation*}
 where $p$ is the symbol of the operator $P$, that is, $p(\xi)=\hat{P}(\xi)$, and
 \begin{equation*}
-h_{N}(\xi)=\phi\Big(\frac{|\xi)|}{2N}\Big)-\phi\Big(\frac{4|\xi|}{N}\Big)=\sum_{k=-1}^{1}\Delta_{2^{k}N}\phi(|\xi|)
+h_{N}(\xi)=\phi\Big(\frac{|\xi|}{2N}\Big)-\phi\Big(\frac{4|\xi|}{N}\Big)%=\sum_{k=-1}^{1}\Delta_{2^{k}N}\phi(|\xi|)
 \end{equation*}
-so that \(h_{N}(\xi)\Delta_{N}\phi(|(\xi)|)=\Delta_{N}\phi(|(\xi)|)\). Our claim follows from \(\|Tf\|_{L_{e}^{2,\infty} (I\times \R^d)}\lesssim N^{X_{1}} \|f\|_{L^{2}_{x}(\R^{d})}\), 
+so that \(h_{N}(\xi)\Delta_{N}\phi(|\xi|)=\Delta_{N}\phi(|\xi|)\). Our claim follows from \(\|Tf\|_{L_{e}^{2,\infty} (I\times \R^d)}\lesssim N^{X_{1}} \|f\|_{L^{2}_{x}(\R^{d})}\), 
 or equivalently \(\|T^{*}g\|_{L^{2}_{x}(\R^{d})}^{2}\lesssim N^{2X_{1}}\|g\|_{L_{e}^{2,1} (I\times \R^d)}^{2}\). By  \(TT^{*}\) argument  it suffices to show 
 \begin{equation}\label{ttsa}
 \|TT^{*}g\|_{L_{e}^{2,\infty} (I\times \R^d)}\lesssim N^{2X_{1}}\|g\|_{L_{e_l}^{2,1} (I\times \R^d)}.
@@ -443,13 +443,13 @@ $$
 $$
 Thus for $|x_1| \gtrsim N^{s-1} |t|$ one has
 $$|K_{N}(t,x_1 ,x')|\lesssim 
-\frac{1}{\langle N x_1 \rangle^{2}}  \int_{|\xi|\lesssim2^{N}} d\xi \lesssim
+\frac{1}{\langle N x_1 \rangle^{2}}  \int_{|\xi|\lesssim2N} d\xi \lesssim
   \frac{N^d}{\langle N x_1 \rangle^{2}}.$$
 The above estimates combined yield
 \begin{align*}
 \sup_{t\in \R , x' \in \R^{d-1}} |K_{N} (t,x_1, x')| &\lesssim   \frac{N^d}{\langle N |x_1|\rangle^{2}} +\min\Big(N^d , 1_{\{|x_1| \lesssim N^{s-1} |t|\} }  |t|^{-\frac{d}{s}}\Big)\\
 & \lesssim   \frac{N^d}{\langle N x_1\rangle^{2}} + N^d \min \left(1,|Nx_1|^{-\frac{d}{s} } \right)\\
-&\lesssim N^{d} \bigg( \frac{1}{\langle N x_1\rangle^{2}}  +\frac{1}{\langle N x_1\rangle^{d/s}} \bigg).
+&\lesssim N^{d} \bigg( \frac{1}{\langle N x_1\rangle^{2}}  +\frac{1}{\langle N x_1\rangle^{\frac{d}{s}}} \bigg).
 \end{align*}
 An integration in $x_1$ implies
 $$\left|\int_{\R} \sup_{t\in \R , x^\prime \in \R^{d-1}} |K_{N} (t,x_1, x')| dx_1 \right| \lesssim N^{d-1} 
@@ -627,7 +627,7 @@ Next, by \eqref{e1}, we have
 P_N 
 = P_{N} \sum_{k = 1}^d P_{N, e_k} \prod_{j = 1}^{k - 1}(1 - P_{N, e_j}) \,.
 \end{align*}
-Since $P_{2^{k'}N,e_j}$ are bounded operators on $L^2_x (\R^d )$, we obtain  
+Since $P_{N,e_j}$ are bounded operators on $L^2_x (\R^d )$, we obtain  
 $$
 \left\|\int_J e^{is P } P_N h(s) ds\right\|_{L^2 (\R^d )} \lesssim \sum^{d}_{l=1}\left\|\int_J e^{is P} P_{N,e_l} P_N h(s) ds\right\|_{L^2 (\R^d )}.
 $$
@@ -747,7 +747,7 @@ N^\alpha  \left\|\int_0^t e^{-i(t-s) P} P_N h(s) ds\right\|_{L_t^q L_x^r }
 \int_I \|e^{- i t P} P_N h(s)\|_{L_t^qL_x^r} ds
 \\
 & \lesssim N^\alpha \int_I \|P_N h(s)\|_{L^2_x} ds \\
-&= \|P_N h\|_{L^1_tL^2_x}.
+&= N^\alpha  \|P_N h\|_{L^1_tL^2_x}.
 \end{align*}
 Analogously, by using \eqref{lemmaIKe1}, we have
 \begin{multline*}
@@ -1367,7 +1367,7 @@ Furthermore, from \eqref{aonth} and the assumption $|n| \gtrsim 1$ it follows th
 \end{equation*}
 and similarly
 $$
-\left| \partial^2_{\xi_1\xi_1} \Big( \frac{1}{x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')} \Big) \right|
+\left| \partial^2_{\xi_1\xi_1}p \Big( \frac{1}{x_1 - t\partial_{\xi_{1}}p(\xi_1, \xi')} \Big) \right|
  \lesssim \frac{1}{|x_1|^2} \,.
 $$
 Since $|\partial_{\xi_1} \chi_n(\xi_1)| \lesssim 1$ and it is supported in \(B_{1}(n_{1})\) we obtain
@@ -1417,8 +1417,8 @@ Minkowski inequality, \eqref{usbe} with $(r_1, r_2) = (\frac{2dq_3 }{dq_3 -2s}, 
 \begin{aligned}
 &\leq \Big\|  \Big\| \sum_{k \in \Z^d} g_k (\omega) e^{-it P}  Q_k P_N f \Big\|_{L_\omega^p} \Big\|_{L_t^{q_2} L_x^{q_3} \cap L_t^{q_3} L_x^{q_3} (\R \times \R^d) } \\
 &\lesssim \sqrt{p} \Big\| \Big( \sum_{k \in \Z^d}  |e^{-it P}  Q_k  P_N f|^2 \Big)^{\frac{1}{2}}  \Big\|_{L_t^{q_2} L_x^{q_3} \cap L_t^{q_3} L_x^{q_3} (\R\times \R^d) } \\
-&\lesssim  \sqrt{p} \Big( \sum_{k \in \Z^d} \| e^{-it P}  Q_k P_N f  \|^2_{L_t^{q_2} L_x^{q_2} \cap L_t^{q_3} L_x^{\frac{2dq_3 }{dq_3 -2s}} (\R \times \R^d)}  \Big)^{1/2}\\
-&\lesssim   \sqrt{p} \Big( \sum_{k \in \Z^d} \|  Q_k P_N f  \|^2_{L_x^2 (\R^d) } \Big)^{1/2}\\
+&\lesssim  \sqrt{p} \Big( \sum_{k \in \Z^d} \| e^{-it P}  Q_k P_N f  \|^2_{L_t^{q_2} L_x^{q_2} \cap L_t^{q_3} L_x^{\frac{2dq_3 }{dq_3 -2s}} (\R \times \R^d)}  \Big)^{\frac{1}{2}}\\
+&\lesssim   \sqrt{p} \Big( \sum_{k \in \Z^d} \|  Q_k P_N f  \|^2_{L_x^2 (\R^d) } \Big)^{\frac{1}{2}}\\
 &\lesssim \sqrt{p} \|P_N f\|_{L_x^2 (\R^d)} \,.
 \end{aligned}
 \end{multline*}
@@ -1594,7 +1594,233 @@ Then, from the continuity and $w(0) = 0$ follows that $w$ is small for short tim
 
 
 \bibliographystyle{alpha}
-\bibliography{biblo}
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{CKS{\etalchar{+}}08}
+
+\bibitem[BOP15]{MR3350022}
+\'{A}rp\'{a}d B\'{e}nyi, Tadahiro Oh, and Oana Pocovnicu.
+\newblock On the probabilistic {C}auchy theory of the cubic nonlinear
+  {S}chr\"{o}dinger equation on {$\Bbb{R}^d$}, {$d\geq3$}.
+\newblock {\em Trans. Amer. Math. Soc. Ser. B}, 2:1--50, 2015.
+
+\bibitem[BOP19]{bop2}
+\'{A}rp\'{a}d B\'{e}nyi, Tadahiro Oh, and Oana Pocovnicu.
+\newblock Higher order expansions for the probabilistic local {C}auchy theory
+  of the cubic nonlinear {S}chr\"{o}dinger equation on {$\Bbb{R}^3$}.
+\newblock {\em Trans. Amer. Math. Soc. Ser. B}, 6:114--160, 2019.
+
+\bibitem[Bou94]{MR1309539}
+Jean Bourgain.
+\newblock Periodic nonlinear {S}chr\"{o}dinger equation and invariant measures.
+\newblock {\em Comm. Math. Phys.}, 166(1):1--26, 1994.
+
+\bibitem[Bou96]{MR1374420}
+Jean Bourgain.
+\newblock Invariant measures for the {$2$}{D}-defocusing nonlinear
+  {S}chr\"{o}dinger equation.
+\newblock {\em Comm. Math. Phys.}, 176(2):421--445, 1996.
+
+\bibitem[Bre19]{MR3907746}
+Justin~T. Brereton.
+\newblock Almost sure local well-posedness for the supercritical quintic {NLS}.
+\newblock {\em Tunis. J. Math.}, 1(3):427--453, 2019.
+
+\bibitem[BT08a]{MR2425133}
+Nicolas Burq and Nikolay Tzvetkov.
+\newblock Random data {C}auchy theory for supercritical wave equations. {I}.
+  {L}ocal theory.
+\newblock {\em Invent. Math.}, 173(3):449--475, 2008.
+
+\bibitem[BT08b]{MR2425134}
+Nicolas Burq and Nikolay Tzvetkov.
+\newblock Random data {C}auchy theory for supercritical wave equations. {II}.
+  {A} global existence result.
+\newblock {\em Invent. Math.}, 173(3):477--496, 2008.
+
+\bibitem[BTT13]{MR3237443}
+Nicolas Burq, Laurent Thomann, and Nikolay Tzvetkov.
+\newblock Long time dynamics for the one dimensional non linear
+  {S}chr\"{o}dinger equation.
+\newblock {\em Ann. Inst. Fourier (Grenoble)}, 63(6):2137--2198, 2013.
+
+\bibitem[Caz03]{MR2002047}
+Thierry Cazenave.
+\newblock {\em Semilinear {S}chr\"{o}dinger equations}, volume~10 of {\em
+  Courant Lecture Notes in Mathematics}.
+\newblock New York University, Courant Institute of Mathematical Sciences, New
+  York; American Mathematical Society, Providence, RI, 2003.
+
+\bibitem[CCT03]{christ2003ill}
+Michael Christ, James Colliander, and Terence Tao.
+\newblock Ill-posedness for nonlinear schrodinger and wave equations.
+\newblock {\em arXiv preprint math/0311048}, 2003.
+
+\bibitem[CKS{\etalchar{+}}08]{MR2415387}
+James Colliander, Markus Keel, Gigiola Staffilani, Hideo Takaoka, and Terence
+  Tao.
+\newblock Global well-posedness and scattering for the energy-critical
+  nonlinear {S}chr\"{o}dinger equation in {$\Bbb R^3$}.
+\newblock {\em Ann. of Math. (2)}, 167(3):767--865, 2008.
+
+\bibitem[COX11]{MR2787438}
+Yonggeun Cho, Tohru Ozawa, and Suxia Xia.
+\newblock Remarks on some dispersive estimates.
+\newblock {\em Commun. Pure Appl. Anal.}, 10(4):1121--1128, 2011.
+
+\bibitem[CW90]{MR1055532}
+Thierry Cazenave and Fred~B. Weissler.
+\newblock The {C}auchy problem for the critical nonlinear {S}chr\"{o}dinger
+  equation in {$H^s$}.
+\newblock {\em Nonlinear Anal.}, 14(10):807--836, 1990.
+
+\bibitem[Den12]{MR3022846}
+Yu~Deng.
+\newblock Two-dimensional nonlinear {S}chr\"{o}dinger equation with random
+  radial data.
+\newblock {\em Anal. PDE}, 5(5):913--960, 2012.
+
+\bibitem[Din18]{MR3852677}
+Van~Duong Dinh.
+\newblock On well-posedness, regularity and ill-posedness for the nonlinear
+  fourth-order {S}chr\"{o}dinger equation.
+\newblock {\em Bull. Belg. Math. Soc. Simon Stevin}, 25(3):415--437, 2018.
+
+\bibitem[Din21]{MR4214037}
+Van~Duong Dinh.
+\newblock Random data theory for the cubic fourth-order nonlinear
+  {S}chr\"{o}dinger equation.
+\newblock {\em Commun. Pure Appl. Anal.}, 20(2):651--680, 2021.
+
+\bibitem[DLM19]{dodson}
+Benjamin Dodson, Jonas L\"{u}hrmann, and Dana Mendelson.
+\newblock Almost sure local well-posedness and scattering for the 4{D} cubic
+  nonlinear {S}chr\"{o}dinger equation.
+\newblock {\em Adv. Math.}, 347:619--676, 2019.
+
+\bibitem[DNY21]{MR4236191}
+Yu~Deng, Andrea~R. Nahmod, and Haitian Yue.
+\newblock Invariant {G}ibbs measure and global strong solutions for the
+  {H}artree {NLS} equation in dimension three.
+\newblock {\em J. Math. Phys.}, 62(3):Paper No. 031514, 39, 2021.
+
+\bibitem[GV92]{MR1151250}
+Jean Ginibre and Giorgio Velo.
+\newblock Smoothing properties and retarded estimates for some dispersive
+  evolution equations.
+\newblock {\em Comm. Math. Phys.}, 144(1):163--188, 1992.
+
+\bibitem[HHK09]{MR2526409}
+Martin Hadac, Sebastian Herr, and Herbert Koch.
+\newblock Well-posedness and scattering for the {KP}-{II} equation in a
+  critical space.
+\newblock {\em Ann. Inst. H. Poincar\'{e} Anal. Non Lin\'{e}aire},
+  26(3):917--941, 2009.
+
+\bibitem[HHZ17]{MR3710698}
+Tianxiao Huang, Shanlin Huang, and Quan Zheng.
+\newblock Inhomogeneous oscillatory integrals and global smoothing effects for
+  dispersive equations.
+\newblock {\em J. Differential Equations}, 263(12):8606--8629, 2017.
+
+\bibitem[HTT11]{MR2824485}
+Sebastian Herr, Daniel Tataru, and Nikolay Tzvetkov.
+\newblock Global well-posedness of the energy-critical nonlinear
+  {S}chr\"{o}dinger equation with small initial data in {$H^1(\Bbb T^3)$}.
+\newblock {\em Duke Math. J.}, 159(2):329--349, 2011.
+
+\bibitem[IK06]{ionescu1}
+Alexandru~D. Ionescu and Carlos~E. Kenig.
+\newblock Low-regularity {S}chr\"{o}dinger maps.
+\newblock {\em Differential Integral Equations}, 19(11):1271--1300, 2006.
+
+\bibitem[IK07]{ionescu2}
+Alexandru~D. Ionescu and Carlos~E. Kenig.
+\newblock Low-regularity {S}chr\"{o}dinger maps. {II}. {G}lobal well-posedness
+  in dimensions {$d\geq 3$}.
+\newblock {\em Comm. Math. Phys.}, 271(2):523--559, 2007.
+
+\bibitem[Kar96]{MR1372681}
+V.~I. Karpman.
+\newblock Stabilization of soliton instabilities by higher order dispersion:
+  {K}d{V}-type equations.
+\newblock {\em Phys. Lett. A}, 210(1-2):77--84, 1996.
+
+\bibitem[KS00]{MR1779828}
+V.~I. Karpman and A.~G. Shagalov.
+\newblock Stability of solitons described by nonlinear {S}chr\"{o}dinger-type
+  equations with higher-order dispersion.
+\newblock {\em Phys. D}, 144(1-2):194--210, 2000.
+
+\bibitem[KT98]{MR1646048}
+Markus Keel and Terence Tao.
+\newblock Endpoint {S}trichartz estimates.
+\newblock {\em Amer. J. Math.}, 120(5):955--980, 1998.
+
+\bibitem[KTV14]{MR3618884}
+Herbert Koch, Daniel Tataru, and Monica Vi\c{s}an.
+\newblock {\em Dispersive equations and nonlinear waves}, volume~45 of {\em
+  Oberwolfach Seminars}.
+\newblock Birkh\"{a}user/Springer, Basel, 2014.
+\newblock Generalized Korteweg-de Vries, nonlinear Schr\"{o}dinger, wave and
+  Schr\"{o}dinger maps.
+
+\bibitem[LRS88]{MR939505}
+Joel~L. Lebowitz, Harvey~A. Rose, and Eugene~R. Speer.
+\newblock Statistical mechanics of the nonlinear {S}chr\"{o}dinger equation.
+\newblock {\em J. Statist. Phys.}, 50(3-4):657--687, 1988.
+
+\bibitem[Pau07]{MR2353631}
+Benoit Pausader.
+\newblock Global well-posedness for energy critical fourth-order
+  {S}chr\"{o}dinger equations in the radial case.
+\newblock {\em Dyn. Partial Differ. Equ.}, 4(3):197--225, 2007.
+
+\bibitem[PS10]{MR2746203}
+Benoit Pausader and Shuanglin Shao.
+\newblock The mass-critical fourth-order {S}chr\"{o}dinger equation in high
+  dimensions.
+\newblock {\em J. Hyperbolic Differ. Equ.}, 7(4):651--705, 2010.
+
+\bibitem[RV07]{MR2288737}
+Eric Ryckman and Monica Visan.
+\newblock Global well-posedness and scattering for the defocusing
+  energy-critical nonlinear {S}chr\"{o}dinger equation in {$\Bbb R^{1+4}$}.
+\newblock {\em Amer. J. Math.}, 129(1):1--60, 2007.
+
+\bibitem[Spi21]{spitz2021almost}
+Martin Spitz.
+\newblock Almost sure local wellposedness and scattering for the
+  energy-critical cubic nonlinear {S}chr\" odinger equation with supercritical
+  data.
+\newblock {\em arXiv preprint arXiv:2110.11051}, 2021.
+
+\bibitem[SSW21]{shen2021almost}
+Jia Shen, Avy Soffer, and Yifei Wu.
+\newblock Almost sure scattering for the nonradial energy-critical nls with
+  arbitrary regularity in 3d and 4d cases.
+\newblock {\em arXiv preprint arXiv:2111.11935}, 2021.
+
+\bibitem[Sy21]{MR4312285}
+Mouhamadou Sy.
+\newblock Almost sure global well-posedness for the energy supercritical
+  {S}chr\"{o}dinger equations.
+\newblock {\em J. Math. Pures Appl. (9)}, 154:108--145, 2021.
+
+\bibitem[Tho09]{MR2569900}
+Laurent Thomann.
+\newblock Random data {C}auchy problem for supercritical {S}chr\"{o}dinger
+  equations.
+\newblock {\em Ann. Inst. H. Poincar\'{e} Anal. Non Lin\'{e}aire},
+  26(6):2385--2402, 2009.
+
+\bibitem[Tzv10]{tzvetkov}
+Nikolay Tzvetkov.
+\newblock Construction of a {G}ibbs measure associated to the periodic
+  {B}enjamin-{O}no equation.
+\newblock {\em Probab. Theory Related Fields}, 146(3-4):481--514, 2010.
+
+\end{thebibliography}
+
 
 
 \end{document}
